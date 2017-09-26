@@ -19,10 +19,10 @@ class UsersSeeder extends Seeder
         Role::create(['name' => 'public']);
         Role::create(['name' => 'admin']);
 
-        $publicUser = factory(User::class, 1)->create()->first()->assignRole('admin');
+        $publicUser = factory(User::class, 1)->create()->first()->assignRole('public');
         $adminUser = factory(User::class, 1)->create([
             'email' => config('mail.from')['address'],
             'password' => Hash::make('secret')
-        ])->first()->assignRole('public');
+        ])->first()->assignRole('admin');
     }
 }

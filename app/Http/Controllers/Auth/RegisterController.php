@@ -68,4 +68,15 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    // TODO Overrides Registration Methods
+    protected function showRegistrationForm()
+    {
+        return redirect('login');
+    }
+
+    protected function register()
+    {
+
+    }
 }
