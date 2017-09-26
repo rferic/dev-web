@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+
+class UsersSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        app()['cache']->forget('spatie.permission.cache');
+        
+        Role::create(['name' => 'public']);
+        Role::create(['name' => 'admin']);
+        
+        $publicUser = factory(User::class, 1)->create();
+        $adminUser = factory(User::class, 1)->create([
+            'email' => config('mail.from')['address'],
+            'password' => Hash::make('secret')
+        ]);
+        
+        $publicUser->first()->assignRole('admin');
+        $adminUser->first()->assignRole('public');
+    }
+}
