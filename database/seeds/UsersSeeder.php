@@ -15,17 +15,14 @@ class UsersSeeder extends Seeder
     public function run()
     {
         app()['cache']->forget('spatie.permission.cache');
-        
+
         Role::create(['name' => 'public']);
         Role::create(['name' => 'admin']);
-        
-        $publicUser = factory(User::class, 1)->create();
+
+        $publicUser = factory(User::class, 1)->create()->first()->assignRole('admin');
         $adminUser = factory(User::class, 1)->create([
             'email' => config('mail.from')['address'],
             'password' => Hash::make('secret')
-        ]);
-        
-        $publicUser->first()->assignRole('admin');
-        $adminUser->first()->assignRole('public');
+        ])->first()->assignRole('public');
     }
 }
