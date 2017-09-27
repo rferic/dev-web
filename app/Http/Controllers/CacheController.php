@@ -15,7 +15,7 @@ class CacheController extends Controller
         return response()->json(['response' => true]);
     }
     
-    public function flush (Request $request)
+    public function flush ()
     {
         Cache::flush();
         return response()->json(['response' => true]);
