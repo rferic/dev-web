@@ -39,14 +39,14 @@ Route::group(
 Route::group(
     [
     	'prefix' => LaravelLocalization::setLocale(),
-    	'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    	'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'httpCache:60' ]
     ],
     function()
     {
     	/** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
     	Route::get('/', function()
     	{
-    		return view('welcome');
+            return view('welcome');
     	});
     }
 );
