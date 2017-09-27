@@ -25,7 +25,7 @@ Route::group(
     {
         Route::get('/', function ()
         {
-            return view('admin.dashboard');
+            return view('admin.home');
         });
     }
 );
