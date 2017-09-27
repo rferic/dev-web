@@ -1,0 +1,32 @@
+.auth-links {
+  margin-top: 10px;
+}
+
+.login-page {
+  background: #644C37;
+}
+
+.login-page a {
+  color: #644C37;
+}
+
+.login-page .login-box-body {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.login-page .btn.btn-flat {
+  background-color: #644C37;
+  border-color: #4a3b2d;
+}
+
+.login-page .btn.btn-flat:hover,
+.login-page .btn.btn-flat:active,
+.login-page .btn.btn-flat:focus {
+  background-color: #4a3b2d;
+  outline: 0;
+}
+
+.login-logo a {
+  color: white;
+}
+

@@ -116,14 +116,14 @@ return [
         ],
         [
             'text' => 'Users',
-            'url'  => 'admin/settings',
+            'url'  => 'dev/users',
             'icon' => 'user',
         ],
         'ACCOUNT SETTINGS',
         [
             'text' => 'Settings',
-            'url'  => 'admin/settings',
-            'icon' => 'lock',
+            'url'  => 'dev/settings',
+            'icon' => 'cog',
         ]/*,
         [
             'text'    => 'Multilevel',

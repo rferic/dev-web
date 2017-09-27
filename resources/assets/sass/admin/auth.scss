@@ -1,0 +1,33 @@
+@import '_variables';
+
+.auth-links {
+    margin-top: 10px;
+}
+
+.login-page {
+    background: $baseColor;
+
+    a {
+        color: $baseColor;
+    }
+
+    .login-box-body{
+        background-color: $whiteTransparence;
+    }
+
+    .btn.btn-flat{
+        background-color: $baseColor;
+        border-color: $baseColorDark;
+    }
+
+    .btn.btn-flat:hover,
+    .btn.btn-flat:active,
+    .btn.btn-flat:focus{
+        background-color: $baseColorDark;
+        outline:0;
+    }
+}
+
+.login-logo a {
+    color: white;
+}

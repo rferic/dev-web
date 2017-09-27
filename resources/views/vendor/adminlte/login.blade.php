@@ -1,8 +1,8 @@
 @extends('adminlte::master')
 
 @section('adminlte_css')
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/iCheck/square/blue.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/css/auth.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/iCheck/square/grey.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/auth.css') }}">
     @yield('css')
 @stop
 
@@ -12,6 +12,7 @@
     <div class="login-box">
         <div class="login-logo">
             <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
+            <img src="{{{ asset('img/logox64.png') }}}" />
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
@@ -76,8 +77,8 @@
     <script>
         $(function () {
             $('input').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey',
                 increaseArea: '20%' // optional
             });
         });

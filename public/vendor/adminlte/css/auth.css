@@ -1,3 +1,31 @@
 .auth-links {
     margin-top: 10px;
 }
+
+.login-page {
+    background: #644C37;
+}
+
+.login-page a{
+    color: #644C37;
+}
+
+.login-logo a {
+    color: white;
+}
+
+.login-box-body{
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn.btn-flat{
+    background-color: #644c37;
+    border-color: rgb(74, 59, 45);
+}
+
+.btn.btn-flat:hover,
+.btn.btn-flat:active,
+.btn.btn-flat:focus{
+    background-color: rgb(74, 59, 45);
+    outline:0;
+}
