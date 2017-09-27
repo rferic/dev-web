@@ -10,8 +10,7 @@ class CacheController extends Controller
 {    
     public function forget (Request $request)
     {
-        $url = $request->fullUrl();
-        Cache::forget(Hash::make($url));
+        Cache::forget($request->input('url'));
         return response()->json(['response' => true]);
     }
     

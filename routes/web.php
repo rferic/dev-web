@@ -22,6 +22,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
+Route::post('/cache/remove', 'CacheController@forget')->middleware('role:admin')->name('cache.remove');
+Route::post('/cache/clear', 'CacheController@flush')->middleware('role:admin')->name('cache.clear');
+
 Route::group(
     [
         'prefix' => 'dev',
