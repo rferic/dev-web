@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePageLocalesTable extends Migration
+class CreateContentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,15 @@ class CreatePageLocalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('page_locales', function (Blueprint $table) {
+        Schema::create('contents', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('page_id');
+            $table->string('key');
+            $table->longText('text');
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('page_id')->references('id')->on('page_locales');
         });
     }
 
@@ -26,6 +32,6 @@ class CreatePageLocalesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('page_locales');
+        Schema::dropIfExists('contents');
     }
 }

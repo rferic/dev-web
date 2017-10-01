@@ -115,6 +115,11 @@ return [
             'icon'        => 'file'
         ],
         [
+            'text'        => 'Menus',
+            'url'         => 'dev/menus',
+            'icon'        => 'bars'
+        ],
+        [
             'text' => 'Users',
             'url'  => 'dev/users',
             'icon' => 'user',

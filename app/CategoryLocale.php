@@ -5,36 +5,35 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\User;
 use App\Page;
-use App\Content;
+use App\User;
 
-class PageLocale extends Model
+class CategoryLocale extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
+        'category_id',
         'user_id',
-        'page_id',
         'lang',
         'slug',
         'title',
         'description',
         'layout',
-        'options',
+        'content',
         'seo_title',
         'seo_description',
         'seo_keywords'
     ];
 
+    public function getRouteKeyName ()
+    {
+        return 'slug';
+    }
+
     public function node ()
     {
         return $this->belongsTo(Page::class, 'page_id');
-    }
-
-    public function contents ()
-    {
-        return $this->hasMany(Content::class);
     }
 
     public function author ()

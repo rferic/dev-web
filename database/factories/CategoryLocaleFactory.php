@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\PageLocale::class, function (Faker $faker) {
+$factory->define(App\CategoryLocale::class, function (Faker $faker) {
     $title = $faker->sentence;
 
     return [
@@ -10,7 +10,7 @@ $factory->define(App\PageLocale::class, function (Faker $faker) {
         'title' => $title,
         'description' => $faker->paragraph,
         'layout' => $faker->word,
-        'options' => json_encode([
+        'content' => json_encode([
             $faker->word => $faker->randomDigitNotNull,
             $faker->word => $faker->word
         ]),
@@ -20,6 +20,6 @@ $factory->define(App\PageLocale::class, function (Faker $faker) {
             $faker->word,
             $faker->word,
             $faker->word
-        ])
+        ]),
     ];
 });

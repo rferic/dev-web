@@ -6,35 +6,32 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\User;
-use App\Page;
-use App\Content;
+use App\Menu;
+use App\PageLocale;
 
-class PageLocale extends Model
+class MenuItem extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
         'user_id',
-        'page_id',
+        'menu_id',
         'lang',
-        'slug',
-        'title',
-        'description',
-        'layout',
-        'options',
-        'seo_title',
-        'seo_description',
-        'seo_keywords'
+        'label',
+        'type',
+        'page_id',
+        'url_external',
+        'priority'
     ];
 
-    public function node ()
+    public function menu ()
     {
-        return $this->belongsTo(Page::class, 'page_id');
+        return $this->belongsTo(Menu::class, 'menu_id');
     }
 
-    public function contents ()
+    public function pages ()
     {
-        return $this->hasMany(Content::class);
+        return $this->hasMany(PageLocale::class);
     }
 
     public function author ()

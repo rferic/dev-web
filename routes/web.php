@@ -23,10 +23,22 @@ Route::group(
     ],
     function ()
     {
-        Route::get('/', function ()
-        {
-            return view('admin.home');
-        });
+        Route::get('/', 'Admin\DashboardController@index')->name('admin.dashboard');
+
+        Route::get('/menus', 'Admin\MenuController@index')->name('admin.menus');
+        Route::get('/menus/{menu}', 'Admin\MenuController@detail')->name('admin.menu');
+        Route::get('/menus/{menu}/trash', 'Admin\MenuController@trash')->name('admin.menu.trash');
+        Route::get('/menus/{menu}/restore', 'Admin\MenuController@restore')->name('admin.menu.restore');
+        Route::get('/menus/{menu}/destroy', 'Admin\MenuController@destroy')->name('admin.menu.destroy');
+
+        Route::get('/pages', 'Admin\PageController@index')->name('admin.pages');
+        Route::get('/pages{page}', 'Admin\PageController@detail')->name('admin.page');
+
+        Route::get('/users', 'Admin\UserController@index')->name('admin.users');
+        Route::get('/users/{user}', 'Admin\UserController@detail')->name('admin.user');
+
+        Route::get('/admins', 'Admin\AdminController@index')->name('admin.admins');
+        Route::get('/admins/{user}', 'Admin\AdminController@detail')->name('admin.admin');
     }
 );
 

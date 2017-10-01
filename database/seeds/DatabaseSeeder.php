@@ -1,6 +1,17 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+
+use App\User;
+use App\Content;
+use App\Category;
+use App\MenuItem;
+use App\PageLocale;
+use App\CategoryLocale;
+use App\Page;
+use App\Menu;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +22,123 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UsersSeeder::class);
+        $adminUser = $this->UsersSeeder();
+        $categories = [
+            $this->CategoriesSeeder(['user_id' => $adminUser->id, 'type' => 'uniq_lang']),
+            $this->CategoriesSeeder(['user_id' => $adminUser->id, 'type' => 'multi_lang']),
+            $this->CategoriesSeeder(['user_id' => $adminUser->id, 'type' => 'all_lang']),
+        ];
+        $pages = [];
+
+        foreach ($categories AS $category) {
+            $response = $this->PagesSeeder(['user_id' => $adminUser->id, 'category_id' => $category->id]);
+
+            foreach ($response AS $item) {
+                array_push($pages, $item->toArray());
+            }
+        }
+
+        $this->MenusSeeder(['user_id' => $adminUser->id, 'pages' => $pages]);
     }
+
+    private function UsersSeeder ()
+    {
+        app()['cache']->forget('spatie.permission.cache');
+
+        Role::create(['name' => 'public']);
+        Role::create(['name' => 'admin']);
+
+        $publicUser = factory(User::class, 1)->create()->first()->assignRole('public');
+        $adminUser = factory(User::class, 1)->create([
+            'email' => config('mail.from')['address'],
+            'password' => Hash::make('secret')
+        ])->first()->assignRole('admin');
+
+        return $adminUser;
+    }
+
+    private function CategoriesSeeder ($params)
+    {
+        return factory(Category::class, 1)->create([
+            'user_id' => $params['user_id'],
+            'type' => $params['type']
+        ])->each( function ($category)
+        {
+            factory(CategoryLocale::class, 1)->create([
+                'category_id' => $category->id,
+                'user_id' => $category->user_id,
+                'lang' => 'en'
+            ]);
+
+            factory(CategoryLocale::class, 1)->create([
+                'category_id' => $category->id,
+                'user_id' => $category->user_id,
+                'lang' => 'es'
+            ]);
+
+        })->first();
+    }
+
+    private function PagesSeeder ($params)
+    {
+        $locales = [];
+
+        $pages = factory(Page::class, 3)->create([
+            'category_id' => $params['category_id'],
+            'user_id' => $params['user_id']
+        ]);
+
+        foreach ($pages AS $page) {
+            $boolean = (bool)random_int(0, 1);
+
+            if ($boolean) {
+                $locale = factory(PageLocale::class, 1)->create([
+                    'user_id' => $params['user_id'],
+                    'page_id' => $page->id,
+                    'lang' => 'en'
+                ])->first();
+            }
+
+            if (!$boolean || (bool)random_int(0, 1)) {
+                $locale = factory(PageLocale::class, 1)->create([
+                    'user_id' => $params['user_id'],
+                    'page_id' => $page->id,
+                    'lang' => 'es'
+                ])->first();
+            }
+
+            factory(Content::class, random_int(1, 3))->create(['page_id' => $locale->id]);
+
+            array_push($locales, $locale);
+        }
+
+        return $locales;
+    }
+
+    private function MenusSeeder ($params)
+    {
+        $menus = factory(Menu::class, 5)->create([
+            'user_id' => $params['user_id']
+        ])->toArray();
+
+        foreach ($menus AS $menu) {
+            factory(MenuItem::class, random_int(1, 5))->create([
+                'user_id' => $menu['user_id'],
+                'menu_id' => $menu['id'],
+                'lang' => (bool)random_int(0, 1) ? 'en' : 'es',
+                'type' => 'internal',
+                'page_id' => $params['pages'][random_int(0, COUNT($params['pages'])-1)]['id'],
+                'url_external' => null
+            ]);
+
+            factory(MenuItem::class, 1)->create([
+                'user_id' => $menu['user_id'],
+                'menu_id' => $menu['id'],
+                'lang' => (bool)random_int(0, 1) ? 'en' : 'es',
+                'type' => 'external',
+                'url_external' => 'www.url.com'
+            ]);
+        }
+    }
+
 }
