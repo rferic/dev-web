@@ -31,7 +31,7 @@
                                 </td>
                             @endif
                             <td>{{ $item->id }}</td>
-                            <td><a href="{{ route('admin.menu', $item->id) }}">{{ $item->name }}</a></td>
+                            <td><a href="{{ route('admin.menu.detail', $item->id) }}">{{ $item->name }}</a></td>
                             <td>{{ $item->description }}</td>
                             <td><a href="{{ route('admin.admin', $item->author->id) }}">{{ $item->author->name }}</a></td>
                             <td>{{ $item->created_at }}</td>

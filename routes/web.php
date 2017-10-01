@@ -25,11 +25,15 @@ Route::group(
     {
         Route::get('/', 'Admin\DashboardController@index')->name('admin.dashboard');
 
-        Route::get('/menus', 'Admin\MenuController@index')->name('admin.menus');
-        Route::get('/menus/{menu}', 'Admin\MenuController@detail')->name('admin.menu');
+        Route::get('/menus', 'Admin\MenuController@index')->name('admin.menu.index');
+        Route::get('/menus/create', 'Admin\MenuController@create')->name('admin.menu.create');
+        Route::get('/menus/{menu}', 'Admin\MenuController@detail')->name('admin.menu.detail');
         Route::get('/menus/{menu}/trash', 'Admin\MenuController@trash')->name('admin.menu.trash');
         Route::get('/menus/{menu}/restore', 'Admin\MenuController@restore')->name('admin.menu.restore');
         Route::get('/menus/{menu}/destroy', 'Admin\MenuController@destroy')->name('admin.menu.destroy');
+
+        Route::post('/menus', 'Admin\MenuController@store')->name('admin.menu.store');
+        Route::put('/menus/{menu}', 'Admin\MenuController@edit')->name('admin.menu.edit');
 
         Route::get('/pages', 'Admin\PageController@index')->name('admin.pages');
         Route::get('/pages{page}', 'Admin\PageController@detail')->name('admin.page');

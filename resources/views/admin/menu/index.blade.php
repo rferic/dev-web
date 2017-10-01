@@ -7,10 +7,13 @@
 @stop
 
 @section('content')
-    @if (session('message'))
-        @include('admin.partials.message')
-    @endif
-
+    @include('admin.partials.message')
+    
+    <div class="col-md-12">
+        <a href="{{ route('admin.menu.create') }}" class="btn btn-app pull-right">
+            <i class="fa fa-plus"></i> {{ __('Create') }}
+        </a>
+    </div>
     <div class="col-md-12">
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -21,12 +24,12 @@
                 <div class="tab-pane {{ (!session('currentPanel') || session('currentPanel') === 'default') ? 'active' : '' }}" id="available">
                     <?php $collection = $menus; ?>
                     <?php $typeList = 'default'; ?>
-                    @include('admin.menus.partials.list')
+                    @include('admin.menu.partials.list')
                 </div>
                 <div class="tab-pane {{ (session('currentPanel') && session('currentPanel') === 'trash') ? 'active' : '' }}" id="disable">
                     <?php $collection = $menusTrashed; ?>
                     <?php $typeList = 'trashed'; ?>
-                    @include('admin.menus.partials.list')
+                    @include('admin.menu.partials.list')
                 </div>
             </div>
         </div>
