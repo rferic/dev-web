@@ -12,6 +12,9 @@ use App\Menu;
 
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
+
 class MenuController extends Controller
 {
     public function index ()
@@ -29,20 +32,7 @@ class MenuController extends Controller
 
     public function detail (Menu $menu)
     {
-        $itemsLocale = [];
-        $items = $menu->items()->get();
-
-        foreach (LaravelLocalization::getSupportedLanguagesKeys() AS $locale) {
-            $itemsLocale[$locale] = [];
-        }
-
-        foreach ($items AS $item) {
-            if (isset($itemsLocale[$item->lang])) {
-                array_push($itemsLocale[$item->lang], $item);
-            }
-        }
-
-        return view('admin.menu.form', compact('menu', 'itemsLocale'));
+        return view('admin.menu.form', compact('menu'));
     }
 
     public function store (MenuRequest $request)
@@ -85,5 +75,12 @@ class MenuController extends Controller
 
         return back()
             ->with('message', ['class' => 'alert-success', 'content' => __('Menu has been restored')]);
+    }
+
+    public function getItemsLocale (Request $request, Menu $menu)
+    {
+        $locale = Input::get('locale');
+        $items = $menu->items()->where('lang', $locale)->orderBy('priority', 'ASC');
+        return Response::json($items->get(['id', 'label', 'type', 'page_id', 'url_external', 'priority']));
     }
 }

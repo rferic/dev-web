@@ -35,6 +35,8 @@ Route::group(
         Route::post('/menus', 'Admin\MenuController@store')->name('admin.menu.store');
         Route::put('/menus/{menu}', 'Admin\MenuController@edit')->name('admin.menu.edit');
 
+        Route::post('/menus-items/{menu}', 'Admin\MenuController@getItemsLocale')->name('admin.menu.getItemsLocale');
+
         Route::get('/pages', 'Admin\PageController@index')->name('admin.pages');
         Route::get('/pages{page}', 'Admin\PageController@detail')->name('admin.page');
 

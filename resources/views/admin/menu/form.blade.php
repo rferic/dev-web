@@ -11,6 +11,7 @@
     @include('admin.partials.errors')
 
     <div class="col-md-4 col-sm-8 col-xs-12 {{ !isset($menu) ? 'col-md-offset-4 col-sm-offset-2 col-xs-offset-0' : '' }}">
+        <h2>{{ __('Menu') }}</h2>
         <form class="form-horizontal" method="POST" action="{{ isset($menu) ? route('admin.menu.edit', $menu->id) : route('admin.menu.store') }}">
             {{ csrf_field() }}
             @if ($menu)
@@ -30,7 +31,14 @@
             <p class="clearfix"></p>
         </form>
     </div>
-    @if ($itemsLocale)
+    @if ($menu)
+        <h2>{{ __('Items Menu') }}</h2>
         @include('admin.menu-items.list')
+    @endif
+@endsection
+
+@section('script')
+    @if ($menu)
+        <script src="{{ asset('js/admin/admin.js') }}"></script>
     @endif
 @endsection
