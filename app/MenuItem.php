@@ -26,17 +26,17 @@ class MenuItem extends Model
 
     public function menu ()
     {
-        return $this->belongsTo(Menu::class, 'menu_id');
+        return $this->belongsTo(Menu::class);
     }
 
     public function page ()
     {
-        return $this->belongsTo(PageLocale::class, 'page_id');
+        return $this->belongsTo(PageLocale::class);
     }
 
     public function author ()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function isAuthor ()
