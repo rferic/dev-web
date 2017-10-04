@@ -5,15 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MenuRequest;
-
-use App\MenuItem;
-
-use App\Menu;
-
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+
+use App\Menu;
 
 class MenuController extends Controller
 {
