@@ -29,9 +29,9 @@ class MenuItem extends Model
         return $this->belongsTo(Menu::class, 'menu_id');
     }
 
-    public function pages ()
+    public function page ()
     {
-        return $this->hasMany(PageLocale::class);
+        return $this->belongsTo(PageLocale::class, 'page_id');
     }
 
     public function author ()
