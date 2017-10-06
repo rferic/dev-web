@@ -41972,8 +41972,8 @@ module.exports = __webpack_require__(44);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_resource__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_components_ItemsMenu_vue__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_components_ItemsMenu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__admin_components_ItemsMenu_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_components_Menu_vue__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_components_Menu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__admin_components_Menu_vue__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -41994,7 +41994,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_resource__["a" /* default */]);
 var app = new Vue({
     el: '#app',
     components: {
-        ItemsMenu: __WEBPACK_IMPORTED_MODULE_1__admin_components_ItemsMenu_vue___default.a
+        MenuDragAndDrop: __WEBPACK_IMPORTED_MODULE_1__admin_components_Menu_vue___default.a
     }
 });
 
@@ -45555,184 +45555,12 @@ function toComment(sourceMap) {
 /* 58 */,
 /* 59 */,
 /* 60 */,
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(65)
-}
-var normalizeComponent = __webpack_require__(38)
-/* script */
-var __vue_script__ = __webpack_require__(62)
-/* template */
-var __vue_template__ = __webpack_require__(69)
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-95f0a71a"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\admin\\components\\ItemsMenu.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] ItemsMenu.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-95f0a71a", Component.options)
-  } else {
-    hotAPI.reload("data-v-95f0a71a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'ItemsMenu',
-  props: ['locale', 'urlrequest', 'loadingmessage', 'errormessage'],
-  components: {
-    draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
-  },
-  data: function data() {
-    return {
-      loading: true,
-      error: false,
-      items: []
-    };
-  },
-
-  computed: {
-    show: function show() {
-      return !this.loading && !this.error;
-    }
-  },
-  methods: {
-    getItems: function getItems() {
-      var context = this;
-      this.loading = true;
-
-      axios.post(this.urlrequest, {
-        locale: this.locale
-      }).then(function (response) {
-        context.loading = false;
-        context.error = false;
-
-        context.setItems(response.data);
-      }).catch(function (error) {
-        context.loading = false;
-        context.error = true;
-      });
-    },
-    setItems: function setItems(items) {
-      this.items = items;
-      this.reorder();
-    },
-    reorder: function reorder() {
-      this.items.forEach(function (item, key) {
-        item.priority = key;
-      });
-      console.log(this.items[0].label);
-    },
-    eventMove: function eventMove(ev) {
-      this.reorder();
-    }
-  },
-  mounted: function mounted() {
-    this.getItems();
-  }
-});
-
-/***/ }),
+/* 61 */,
+/* 62 */,
 /* 63 */,
 /* 64 */,
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(66);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(67)("2142025b", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-95f0a71a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ItemsMenu.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-95f0a71a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ItemsMenu.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(52)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.list-complete-item[data-v-95f0a71a] {\r\n  padding: 4px;\r\n  margin-top: 4px;\r\n  border: solid 1px;\r\n  transition: all 1s;\n}\n.list-complete-enter[data-v-95f0a71a], .list-complete-leave-active[data-v-95f0a71a] {\r\n  opacity: 0;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 65 */,
+/* 66 */,
 /* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -45987,7 +45815,197 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 69 */
+/* 69 */,
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(71)
+}
+var normalizeComponent = __webpack_require__(38)
+/* script */
+var __vue_script__ = __webpack_require__(73)
+/* template */
+var __vue_template__ = __webpack_require__(74)
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-3a8c3edb"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\admin\\components\\Menu.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Menu.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3a8c3edb", Component.options)
+  } else {
+    hotAPI.reload("data-v-3a8c3edb", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(72);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(67)("783ef5de", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3a8c3edb\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Menu.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3a8c3edb\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Menu.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(52)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.list-complete-item[data-v-3a8c3edb] {\r\n  transition: all 1s;\r\n  cursor: move;\n}\n.list-complete-enter[data-v-3a8c3edb], .list-complete-leave-active[data-v-3a8c3edb] {\r\n  opacity: 0;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MenuItem__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MenuItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__MenuItem__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'MenuDragAndDrop',
+  props: ['locale', 'urlrequest', 'loadingmessage', 'errormessage', 'voidmessage', 'routepages'],
+  components: {
+    draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a,
+    MenuItemDragAndDrop: __WEBPACK_IMPORTED_MODULE_1__MenuItem___default.a
+  },
+  data: function data() {
+    return {
+      loading: true,
+      error: false,
+      items: []
+    };
+  },
+
+  computed: {
+    show: function show() {
+      return !this.loading && !this.error;
+    },
+    hasItems: function hasItems() {
+      return this.items.length;
+    }
+  },
+  methods: {
+    getItems: function getItems() {
+      var context = this;
+      this.loading = true;
+
+      axios.post(this.urlrequest, {
+        locale: this.locale
+      }).then(function (response) {
+        context.loading = false;
+        context.error = false;
+
+        context.setItems(response.data);
+      }).catch(function (error) {
+        context.loading = false;
+        context.error = true;
+      });
+    },
+    setItems: function setItems(items) {
+      this.items = items;
+      this.reorder();
+    },
+    reorder: function reorder() {
+      this.items.forEach(function (item, key) {
+        item.priority = key;
+      });
+    },
+    eventMove: function eventMove(ev) {
+      this.reorder();
+    },
+    getUrlPage: function getUrlPage(item) {
+      console.log(item);
+      return 'asd';
+    }
+  },
+  mounted: function mounted() {
+    this.getItems();
+  }
+});
+
+/***/ }),
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -45998,24 +46016,36 @@ var render = function() {
     ? _c(
         "div",
         [
-          _c(
-            "draggable",
-            { attrs: { list: _vm.items }, on: { end: _vm.eventMove } },
-            [
-              _c(
-                "transition-group",
-                { attrs: { name: "list-complete" } },
-                _vm._l(_vm.items, function(item) {
-                  return _c(
-                    "div",
-                    { key: item.id, staticClass: "list-complete-item" },
-                    [_vm._v("\n        " + _vm._s(item.label) + "\n      ")]
+          _vm.hasItems
+            ? _c(
+                "draggable",
+                { attrs: { list: _vm.items }, on: { end: _vm.eventMove } },
+                [
+                  _c(
+                    "transition-group",
+                    { attrs: { name: "list-complete" } },
+                    _vm._l(_vm.items, function(item) {
+                      return _c(
+                        "div",
+                        {
+                          key: item.id,
+                          staticClass: "list-complete-item well well-sm"
+                        },
+                        [
+                          _c("menu-item-drag-and-drop", {
+                            attrs: { item: item, routepages: _vm.routepages }
+                          })
+                        ],
+                        1
+                      )
+                    })
                   )
-                })
+                ],
+                1
               )
-            ],
-            1
-          )
+            : _c("div", { staticClass: "alert alert-warning" }, [
+                _vm._v("\n    " + _vm._s(_vm.voidmessage) + "\n  ")
+              ])
         ],
         1
       )
@@ -46039,7 +46069,119 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-95f0a71a", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-3a8c3edb", module.exports)
+  }
+}
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(38)
+/* script */
+var __vue_script__ = __webpack_require__(76)
+/* template */
+var __vue_template__ = __webpack_require__(77)
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\admin\\components\\MenuItem.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] MenuItem.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0b0ef9e4", Component.options)
+  } else {
+    hotAPI.reload("data-v-0b0ef9e4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 76 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'MenuItemDragAndDrop',
+  props: ['item', 'routepages'],
+  computed: {
+    isInternal: function isInternal() {
+      return this.item.type === 'internal';
+    },
+    url: function url() {
+      return this.isInternal ? this.routepages + '/' + this.item.page_id : this.item.url_external;
+    }
+  }
+});
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("i", {
+      staticClass: "glyphicon",
+      class: {
+        "glyphicon-resize-small": _vm.isInternal,
+        "glyphicon-globe": !_vm.isInternal
+      }
+    }),
+    _vm._v(" "),
+    _c("b", [_vm._v(_vm._s(_vm.item.label))]),
+    _vm._v(" "),
+    _c("span", [
+      _vm._v("( "),
+      _c("a", { attrs: { href: _vm.url } }, [
+        _vm._v("/" + _vm._s(_vm.item.label))
+      ]),
+      _vm._v(" )")
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-0b0ef9e4", module.exports)
   }
 }
 

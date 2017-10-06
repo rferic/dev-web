@@ -13,11 +13,11 @@ import VueResource from 'vue-resource'
 
 Vue.use(VueResource)
 
-import ItemsMenu from './admin/components/ItemsMenu.vue'
+import MenuDragAndDrop from './admin/components/Menu.vue'
 
 const app = new Vue({
     el: '#app',
     components: {
-        ItemsMenu,
+        MenuDragAndDrop
     }
 });

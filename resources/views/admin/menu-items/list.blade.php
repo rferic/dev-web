@@ -10,12 +10,14 @@
         <div class="tab-content">
             @foreach (LaravelLocalization::getSupportedLocales() AS $locale => $language)
                 <div class="tab-pane {{ $locale === LaravelLocalization::getCurrentLocale() ? 'active' : '' }}" id="{{ $locale }}">
-                    <items-menu
+                    <menu-drag-and-drop
                         locale="{{ $locale }}"
                         urlrequest="{{ route('admin.menu.getItemsLocale', $menu->id) }}"
                         loadingmessage="{{ __('Loading...') }}"
                         errormessage="{{ __('Error on request. Please, reload page') }}"
-                    ></items-menu>
+                        voidmessage="{{ __('Items not found') }}"
+                        routepages="{{ route('admin.pages') }}"
+                    ></menu-drag-and-drop>
                 </div>
             @endforeach
         </div>

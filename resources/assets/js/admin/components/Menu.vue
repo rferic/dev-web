@@ -1,12 +1,15 @@
 <template>
   <div v-if="show">
-    <draggable  :list="items" @end="eventMove">
+    <draggable v-if="hasItems" :list="items" @end="eventMove">
       <transition-group name="list-complete">
-        <div v-for="item in items" :key="item.id" class="list-complete-item">
-          {{item.label}}
+        <div v-for="item in items" :key="item.id" class="list-complete-item well well-sm">
+          <menu-item-drag-and-drop v-bind:item="item" v-bind:routepages="routepages" />
         </div>
       </transition-group>
     </draggable>
+    <div v-else class="alert alert-warning">
+      {{ voidmessage }}
+    </div>
   </div>
   <div v-else>
     <div v-if="!error" class="alert alert-warning">
@@ -20,12 +23,14 @@
 
 <script>
 import draggable from 'vuedraggable'
+import MenuItemDragAndDrop from './MenuItem'
 
 export default {
-  name: 'ItemsMenu',
-  props: ['locale', 'urlrequest', 'loadingmessage', 'errormessage'],
+  name: 'MenuDragAndDrop',
+  props: ['locale', 'urlrequest', 'loadingmessage', 'errormessage', 'voidmessage', 'routepages'],
   components: {
-    draggable
+    draggable,
+    MenuItemDragAndDrop
   },
   data () {
     return {
@@ -37,6 +42,9 @@ export default {
   computed: {
     show () {
       return !this.loading && !this.error
+    },
+    hasItems () {
+      return this.items.length
     }
   },
   methods: {
@@ -66,11 +74,15 @@ export default {
       this.items.forEach((item, key) => {
         item.priority = key
       });
-      console.log(this.items[0].label)
     },
 
     eventMove (ev) {
       this.reorder()
+    },
+
+    getUrlPage (item) {
+      console.log(item)
+      return 'asd'
     }
   },
   mounted () {
@@ -81,10 +93,8 @@ export default {
 
 <style scoped>
 .list-complete-item {
-  padding: 4px;
-  margin-top: 4px;
-  border: solid 1px;
   transition: all 1s;
+  cursor: move;
 }
 
 .list-complete-enter, .list-complete-leave-active {

@@ -23,20 +23,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $adminUser = $this->UsersSeeder();
-        $categories = [
-            $this->CategoriesSeeder(['user_id' => $adminUser->id, 'type' => 'uniq_lang']),
-            $this->CategoriesSeeder(['user_id' => $adminUser->id, 'type' => 'multi_lang']),
-            $this->CategoriesSeeder(['user_id' => $adminUser->id, 'type' => 'all_lang']),
-        ];
-        $pages = [];
-
-        foreach ($categories AS $category) {
-            $response = $this->PagesSeeder(['user_id' => $adminUser->id, 'category_id' => $category->id]);
-
-            foreach ($response AS $item) {
-                array_push($pages, $item->toArray());
-            }
-        }
+        $pages = $this->PagesSeeder(['user_id' => $adminUser->id]);
 
         $this->MenusSeeder(['user_id' => $adminUser->id, 'pages' => $pages]);
     }
@@ -57,34 +44,11 @@ class DatabaseSeeder extends Seeder
         return $adminUser;
     }
 
-    private function CategoriesSeeder ($params)
-    {
-        return factory(Category::class, 1)->create([
-            'user_id' => $params['user_id'],
-            'type' => $params['type']
-        ])->each( function ($category)
-        {
-            factory(CategoryLocale::class, 1)->create([
-                'category_id' => $category->id,
-                'user_id' => $category->user_id,
-                'lang' => 'en'
-            ]);
-
-            factory(CategoryLocale::class, 1)->create([
-                'category_id' => $category->id,
-                'user_id' => $category->user_id,
-                'lang' => 'es'
-            ]);
-
-        })->first();
-    }
-
     private function PagesSeeder ($params)
     {
         $locales = [];
 
-        $pages = factory(Page::class, 3)->create([
-            'category_id' => $params['category_id'],
+        $pages = factory(Page::class, 8)->create([
             'user_id' => $params['user_id']
         ]);
 
@@ -136,7 +100,7 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => $menu['id'],
                 'lang' => (bool)random_int(0, 1) ? 'en' : 'es',
                 'type' => 'external',
-                'url_external' => 'www.url.com'
+                'url_external' => 'http://www.url.com'
             ]);
         }
     }
