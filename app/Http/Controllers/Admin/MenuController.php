@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MenuRequest;
+
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
 use App\Menu;
+use App\MenuItem;
 
 class MenuController extends Controller
 {
@@ -77,5 +79,18 @@ class MenuController extends Controller
         $locale = Input::get('locale');
         $items = $menu->items()->where('lang', $locale)->with('page')->orderBy('priority', 'ASC');
         return Response::json($items->get(['id', 'label', 'type', 'page_id', 'url_external', 'priority']));
+    }
+
+    public function reorderItemsLocale (Request $request, Menu $menu)
+    {
+        $items = Input::get('items');
+
+        foreach ($items AS $item) {
+            $menuItem = MenuItem::find($item['id']);
+            $menuItem->priority = $item['priority'];
+            $menuItem->save();
+        }
+
+        return Response::json(true);
     }
 }

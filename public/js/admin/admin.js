@@ -41972,8 +41972,10 @@ module.exports = __webpack_require__(44);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_resource__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_components_Menu_vue__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_components_Menu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__admin_components_Menu_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_voo_i18n__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__admin_translations__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__admin_components_Menu_vue__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__admin_components_Menu_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__admin_components_Menu_vue__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -41987,14 +41989,17 @@ window.Vue = __webpack_require__(33);
 
 
 
+
+
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_resource__["a" /* default */]);
+Vue.use(__WEBPACK_IMPORTED_MODULE_1_voo_i18n__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__admin_translations__["a" /* default */]);
 
 
 
 var app = new Vue({
     el: '#app',
     components: {
-        MenuDragAndDrop: __WEBPACK_IMPORTED_MODULE_1__admin_components_Menu_vue___default.a
+        MenuDragAndDrop: __WEBPACK_IMPORTED_MODULE_3__admin_components_Menu_vue___default.a
     }
 });
 
@@ -45938,13 +45943,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MenuDragAndDrop',
-  props: ['locale', 'urlrequest', 'loadingmessage', 'errormessage', 'voidmessage', 'routepages'],
+  props: ['menu', 'locale', 'routemenu', 'routemenuitem', 'routepage'],
   components: {
     draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a,
     MenuItemDragAndDrop: __WEBPACK_IMPORTED_MODULE_1__MenuItem___default.a
@@ -45968,18 +45990,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     getItems: function getItems() {
       var context = this;
-      this.loading = true;
+      this.serverLoading();
 
-      axios.post(this.urlrequest, {
+      axios.post(this.routemenu + '/' + this.menu + '/getItemsLocale', {
         locale: this.locale
       }).then(function (response) {
-        context.loading = false;
-        context.error = false;
-
+        context.serverOk();
         context.setItems(response.data);
       }).catch(function (error) {
-        context.loading = false;
-        context.error = true;
+        context.serverError();
       });
     },
     setItems: function setItems(items) {
@@ -45995,8 +46014,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.reorder();
     },
     getUrlPage: function getUrlPage(item) {
-      console.log(item);
-      return 'asd';
+      return this.routepage + '/' + item.page.slug;
+    },
+    saveReorder: function saveReorder() {
+      var context = this;
+      this.serverLoading();
+
+      axios.post(this.routemenu + '/' + this.menu + '/reorder', {
+        items: this.items
+      }).then(function (response) {
+        context.serverOk();
+      }).catch(function (error) {
+        context.serverError();
+      });
+    },
+    removeItem: function removeItem(item_id) {
+      console.log(item_id);
+    },
+    serverLoading: function serverLoading() {
+      this.loading = true;
+      this.error = false;
+    },
+    serverError: function serverError() {
+      this.loading = false;
+      this.error = true;
+    },
+    serverOk: function serverOk() {
+      this.loading = false;
+      this.error = false;
     }
   },
   mounted: function mounted() {
@@ -46017,6 +46062,35 @@ var render = function() {
         "div",
         [
           _vm.hasItems
+            ? _c("div", { staticClass: "text-right" }, [
+                _c("button", { staticClass: "btn btn-primary" }, [
+                  _c("span", {
+                    staticClass: "glyphicon glyphicon-plus",
+                    attrs: { "aria-hidden": "true" }
+                  }),
+                  _vm._v(" " + _vm._s(_vm.$t("Add")) + "\n    ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success",
+                    on: { click: _vm.saveReorder }
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "glyphicon glyphicon-floppy-disk",
+                      attrs: { "aria-hidden": "true" }
+                    }),
+                    _vm._v(" " + _vm._s(_vm.$t("Save")) + "\n    ")
+                  ]
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _vm.hasItems
             ? _c(
                 "draggable",
                 { attrs: { list: _vm.items }, on: { end: _vm.eventMove } },
@@ -46033,7 +46107,18 @@ var render = function() {
                         },
                         [
                           _c("menu-item-drag-and-drop", {
-                            attrs: { item: item, routepages: _vm.routepages }
+                            attrs: {
+                              item: item,
+                              routemenuitem: _vm.routemenuitem
+                            },
+                            on: {
+                              serverLoadingEvent: _vm.serverLoading,
+                              serverErrorEvent: _vm.serverError,
+                              serverOkEvent: _vm.serverOk,
+                              removeItemEvent: function($event) {
+                                _vm.removeItem($event.target.value)
+                              }
+                            }
                           })
                         ],
                         1
@@ -46044,7 +46129,7 @@ var render = function() {
                 1
               )
             : _c("div", { staticClass: "alert alert-warning" }, [
-                _vm._v("\n    " + _vm._s(_vm.voidmessage) + "\n  ")
+                _vm._v("\n    " + _vm._s(_vm.$t("Items not found")) + "\n  ")
               ])
         ],
         1
@@ -46052,13 +46137,21 @@ var render = function() {
     : _c("div", [
         !_vm.error
           ? _c("div", { staticClass: "alert alert-warning" }, [
-              _vm._v("\n    " + _vm._s(_vm.loadingmessage) + "\n  ")
+              _vm._v("\n    " + _vm._s(_vm.$t("Loading")) + "...\n  ")
             ])
           : _vm._e(),
         _vm._v(" "),
         _vm.error
           ? _c("div", { staticClass: "alert alert-danger" }, [
-              _vm._v("\n    " + _vm._s(_vm.errormessage) + "\n  ")
+              _vm._v(
+                "\n    " +
+                  _vm._s(
+                    _vm.$t(
+                      "Please, reload page: Error on request. Please, reload page"
+                    )
+                  ) +
+                  "\n  "
+              )
             ])
           : _vm._e()
       ])
@@ -46078,15 +46171,19 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(78)
+}
 var normalizeComponent = __webpack_require__(38)
 /* script */
 var __vue_script__ = __webpack_require__(76)
 /* template */
-var __vue_template__ = __webpack_require__(77)
+var __vue_template__ = __webpack_require__(80)
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-0b0ef9e4"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -46133,22 +46230,90 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MenuItemDragAndDrop',
-  props: ['item', 'routepages'],
+  props: ['item', 'routemenuitem'],
   computed: {
     isInternal: function isInternal() {
       return this.item.type === 'internal';
     },
-    url: function url() {
-      return this.isInternal ? this.routepages + '/' + this.item.page_id : this.item.url_external;
+    urlPage: function urlPage() {
+      return this.isInternal ? this.routepages + '/' + this.item.page.slug : this.item.url_external;
+    },
+    urlEdit: function urlEdit() {
+      return this.routemenuitem + '/' + this.item.id + '/detail';
+    },
+    urlRemove: function urlRemove() {
+      return this.routemenuitem + '/' + this.item.id + '/destroy';
+    }
+  },
+  methods: {
+    destroy: function destroy() {
+      var context = this;
+
+      axios.delete(this.routemenuitem + '/' + this.item.id + '/destroy', {
+        items: context.item
+      }).then(function (response) {
+        console.log(context.item.id);
+        context.$emit('serverOkEvent', context.item.id);
+      }).catch(function (error) {
+        context.$emit('serverErrorEvent', context.item.id);
+      });
     }
   }
 });
 
 /***/ }),
-/* 77 */
+/* 77 */,
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(79);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(67)("6588f02b", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0b0ef9e4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MenuItem.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0b0ef9e4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./MenuItem.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(52)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.btn-danger[data-v-0b0ef9e4] {\r\n  margin-left: 10px;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -46163,16 +46328,48 @@ var render = function() {
         "glyphicon-globe": !_vm.isInternal
       }
     }),
+    _c("br"),
     _vm._v(" "),
     _c("b", [_vm._v(_vm._s(_vm.item.label))]),
     _vm._v(" "),
     _c("span", [
       _vm._v("( "),
-      _c("a", { attrs: { href: _vm.url } }, [
+      _c("a", { attrs: { href: _vm.urlPage } }, [
         _vm._v("/" + _vm._s(_vm.item.label))
       ]),
       _vm._v(" )")
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-danger btn-sm pull-right",
+        attrs: { type: "button", "aria-label": "Left Align" },
+        on: { click: _vm.destroy }
+      },
+      [
+        _c("span", {
+          staticClass: "glyphicon glyphicon-trash",
+          attrs: { "aria-hidden": "true" }
+        })
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "a",
+      {
+        staticClass: "btn btn-primary btn-sm pull-right",
+        attrs: { href: _vm.urlEdit, type: "button", "aria-label": "Left Align" }
+      },
+      [
+        _c("span", {
+          staticClass: "glyphicon glyphicon-pencil",
+          attrs: { "aria-hidden": "true" }
+        })
+      ]
+    ),
+    _vm._v(" "),
+    _c("p", { staticClass: "clearfix" })
   ])
 }
 var staticRenderFns = []
@@ -46184,6 +46381,155 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-0b0ef9e4", module.exports)
   }
 }
+
+/***/ }),
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__translations__ = __webpack_require__(86);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  install: function (Vue, translations = {}) {
+
+    Object(__WEBPACK_IMPORTED_MODULE_1__translations__["b" /* set */])(translations);
+
+    Vue.directive('locale', {
+      params: ['key', 'replace'],
+
+      update: function (locale) {
+        var translated_substrings = this.vm.$t(this.params.key, this.params.replace).split('|');
+
+        var children = this.el.children;
+
+        for (var i = 0; i < children.length; i++) {
+          if (translated_substrings[i]) {
+            children[i].innerText = translated_substrings[i];
+          }
+        }
+      }
+    })
+
+    Vue.prototype.$t = function (key, replacements = {}) {
+      var locale = replacements['locale'] || this.$root.locale
+
+      var translation = Object(__WEBPACK_IMPORTED_MODULE_1__translations__["a" /* fetch */])(locale, key)
+
+      return Object(__WEBPACK_IMPORTED_MODULE_0__format__["a" /* replace */])(translation, replacements)
+    }
+
+    Vue.filter('translate', function (key, replacements = {}) {
+      return this.$t(key, replacements)
+    })
+  }
+});
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return replace; });
+var replace = function (translation, replacements = {}) {
+  return translation.replace(/\{\w+\}/g, function (placeholder) {
+    var key = placeholder.replace('{', '').replace('}', '')
+
+    if (replacements[key] !== undefined) {
+      return replacements[key]
+    }
+
+    return placeholder
+  })
+}
+
+
+/***/ }),
+/* 86 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return set; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return fetch; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+
+
+const locale_translations = {
+  /*
+  'es': {
+    'hello': 'hola'
+  }
+  */
+}
+
+var set = function (translations) {
+  // we could just assign locale_translations = translations, but
+  // I would like to keep locale_translations as a const,
+  // therefore set each set of translations manually
+  Object.keys(translations).forEach(function (locale) {
+    locale_translations[locale] = translations[locale]
+  })
+}
+
+var fetch = function (locale, key) {
+  if (! locale) return key;
+
+  var translations = locale_translations[locale]
+
+  if (translations && key in translations) {
+    return translations[key];
+  }
+
+  // key not found, fall back from dialect translations
+
+  if (locale.indexOf('_') > -1) {
+    return fetch(locale.substr(0, locale.indexOf('_')), key)
+  }
+
+  if (locale.indexOf('-') > -1) {
+    return fetch(locale.substr(0, locale.indexOf('-')), key)
+  }
+
+  // key does not exist
+
+  if (translations && window.console && __WEBPACK_IMPORTED_MODULE_0_vue___default.a.config.debug) {
+    console.warn(`[vue-i18n] Translations exist for the locale '${locale}', but there is not an entry for '${key}'`)
+  }
+
+  return key
+}
+
+
+/***/ }),
+/* 87 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var translations = {
+  'en': {
+    'Add': 'Add2',
+    'Save': 'Save',
+    'Loading': 'Loading',
+    'Error on request. Please, reload page': 'Error on request. Please, reload page',
+    'Items not found': 'Items not found'
+  },
+  'es': {
+    'Add': 'Add',
+    'Save': 'Save',
+    'Loading': 'Loading',
+    'Error on request. Please, reload page': 'Error on request. Please, reload page',
+    'Items not found': 'Items not found'
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (translations);
 
 /***/ })
 /******/ ]);

@@ -26,13 +26,12 @@
                 <textarea type="text" class="form-control" name="description" placeholder="{{ __('Description') }}" value="{{ isset($menu) ? $menu->description : old('description') }}" required>{{ isset($menu) ? $menu->description : old('description') }}</textarea>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-block btn-default">{{ __(isset($menu) ? 'Update' : 'Create') }}</button>
+                <button type="submit" class="btn btn-block btn-primary">{{ __(isset($menu) ? 'Update' : 'Create') }}</button>
             </div>
             <p class="clearfix"></p>
         </form>
     </div>
     @if ($menu)
-        <h2>{{ __('Items Menu') }}</h2>
         @include('admin.menu-items.list')
     @endif
 @endsection

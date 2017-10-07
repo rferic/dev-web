@@ -30,12 +30,18 @@ Route::group(
         Route::get('/menus/{menu}', 'Admin\MenuController@detail')->name('admin.menu.detail');
         Route::get('/menus/{menu}/trash', 'Admin\MenuController@trash')->name('admin.menu.trash');
         Route::get('/menus/{menu}/restore', 'Admin\MenuController@restore')->name('admin.menu.restore');
-        Route::get('/menus/{menu}/destroy', 'Admin\MenuController@destroy')->name('admin.menu.destroy');
 
         Route::post('/menus', 'Admin\MenuController@store')->name('admin.menu.store');
+        Route::post('/menus/{menu}/getItemsLocale', 'Admin\MenuController@getItemsLocale')->name('admin.menu.getItemsLocale');
+        Route::post('/menus/{menu}/reorder', 'Admin\MenuController@reorderItemsLocale')->name('admin.menu.reorderItemsLocale');
         Route::put('/menus/{menu}', 'Admin\MenuController@edit')->name('admin.menu.edit');
+        Route::delete('/menus/{menu}/destroy', 'Admin\MenuController@destroy')->name('admin.menu.destroy');
 
-        Route::post('/menus-items/{menu}', 'Admin\MenuController@getItemsLocale')->name('admin.menu.getItemsLocale');
+        Route::get('/menus-items', 'Admin\MenuItemController@create')->name('admin.menu.items.create');
+        Route::get('/menus-items/{item}', 'Admin\MenuItemController@detail')->name('admin.menu.items.detail');
+        Route::post('/menus-items', 'Admin\MenuItemController@store')->name('admin.menu.items.store');
+        Route::put('/menus-items/{item}', 'Admin\MenuItemController@store')->name('admin.menu.items.edit');
+        Route::delete('/menus-items/{item}/destroy', 'Admin\MenuItemController@destroy')->name('admin.menu.items.destroy');
 
         Route::get('/pages', 'Admin\PageController@index')->name('admin.pages');
         Route::get('/pages{page}', 'Admin\PageController@detail')->name('admin.page');
