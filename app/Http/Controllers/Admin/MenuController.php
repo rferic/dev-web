@@ -81,14 +81,51 @@ class MenuController extends Controller
         return Response::json($items->get(['id', 'label', 'type', 'page_id', 'url_external', 'priority']));
     }
 
-    public function reorderItemsLocale (Request $request, Menu $menu)
+    public function save (Request $request, Menu $menu)
     {
+        $locale = Input::get('locale');
         $items = Input::get('items');
 
+        $itemsOriginal = $menu->items()->where('lang', $locale)->get();
+
+        // Loop for check if is needsted remove
+        foreach ($itemsOriginal AS $itemOriginal) {
+            $find = false;
+
+            foreach ($items AS $item) {
+                if (isset($item['id']) && !is_null($item['id']) && $item['id'] === $itemOriginal->id) {
+                    $find = true;
+                }
+            }
+
+            if (!$find) {
+                $item->forceDelete();
+            }
+        }
+
+        // Loop for check if is needsted create
         foreach ($items AS $item) {
-            $menuItem = MenuItem::find($item['id']);
-            $menuItem->priority = $item['priority'];
-            $menuItem->save();
+            if (!isset($item['id']) && !is_null($item['id'])) {
+                $params = [
+                    'menu_id' => $menu->id,
+                    'lang' => $locale,
+                    'label' => $item['label'],
+                    'type' => $item['type'],
+                    'page_id' => $item['page_id'],
+                    'url_external' => $item['url_external'],
+                    'priority' => $item['priority']
+                ];
+
+                MenuItem::create($params);
+            } else {
+                $itemMenu = MenuItem::find($item['id']);
+                $itemMenu->label = $item['label'];
+                $itemMenu->type = $item['type'];
+                $itemMenu->page_id = $item['page_id'];
+                $itemMenu->url_external = $item['url_external'];
+                $itemMenu->priority = $item['priority'];
+                $itemMenu->save();
+            }
         }
 
         return Response::json(true);

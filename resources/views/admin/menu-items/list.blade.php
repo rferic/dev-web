@@ -14,8 +14,10 @@
                     <menu-drag-and-drop
                         menu="{{ $menu->id }}"
                         locale="{{ $locale }}"
-                        routemenu="{{ url('/dev/menus/') }}"
-                        routemenuitem="{{ url('/dev/menus-items/') }}"
+                        routemenuget="{{ route('admin.menu.getItemsLocale', $menu->id) }}"
+                        routemenusave="{{ route('admin.menu.save', $menu->id) }}"
+                        routemenuitem="{{ route('admin.menu.items.create', $menu->id) }}"
+                        routepageslist="{{ route('admin.pages.list') }}"
                         routepage="{{ url('/dev/pages/') }}"
                     ></menu-drag-and-drop>
                 </div>

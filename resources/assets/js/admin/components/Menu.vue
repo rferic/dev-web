@@ -1,39 +1,54 @@
 <template>
-  <div v-if="show">
-    <div v-if="hasItems" class="text-right">
-      <button class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ $t('Add') }}
-      </button>
-      <button class="btn btn-success" @click="saveReorder">
-        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save') }}
-      </button>
-    </div>
-    <hr />
-    <draggable v-if="hasItems" :list="items" @end="eventMove">
-      <transition-group name="list-complete">
-        <div v-for="item in items" :key="item.id" class="list-complete-item well well-sm">
-          <menu-item-drag-and-drop
-            v-bind:item="item"
-            :routemenuitem="routemenuitem"
-            @serverLoadingEvent="serverLoading"
-            @serverErrorEvent="serverError"
-            @serverOkEvent="serverOk"
-            @removeItemEvent="removeItem($event.target.value)"
-          />
+  <div v-if="viewList">
+    <div v-if="show">
+      <div v-if="hasItems" class="text-right">
+        <button class="btn btn-primary" @click="showForm">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ $t('Add', { locale: locale }) }}
+        </button>
+        <button class="btn btn-success" @click="save">
+          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save', { locale: locale }) }}
+        </button>
+        <hr v-show="requireSave" />
+        <div v-show="requireSave" class="alert alert-warning text-left">
+          {{ $t('Remember, Your changes only apply when you save.', { locale: locale }) }}
         </div>
-      </transition-group>
-    </draggable>
-    <div v-else class="alert alert-warning">
-      {{ $t('Items not found') }}
+      </div>
+      <hr />
+      <draggable v-if="hasItems" :list="items" @end="eventMove">
+        <transition-group name="list-complete">
+          <div v-for="item in items" :key="item.id" class="list-complete-item well well-sm">
+            <menu-item-drag-and-drop
+              :item="item"
+              @serverLoadingEvent="serverLoading"
+              @serverErrorEvent="serverError"
+              @serverOkEvent="serverOk"
+              @removeItemEvent="removeItem"
+              @showEditEvent="showEdit"
+              @proccessMenuItemFormEvent="proccessMenuItemForm"
+            />
+          </div>
+        </transition-group>
+      </draggable>
+      <div v-else class="alert alert-warning">
+        {{ $t('Items not found', { locale: locale }) }}
+      </div>
+    </div>
+    <div v-else>
+      <div v-if="!error" class="alert alert-warning">
+        {{ $t('Loading', { locale: locale }) }}...
+      </div>
+      <div v-if="error" class="alert alert-danger">
+        {{ $t('Error on request. Please, reload page', { locale: locale }) }}
+      </div>
     </div>
   </div>
   <div v-else>
-    <div v-if="!error" class="alert alert-warning">
-      {{ $t('Loading') }}...
-    </div>
-    <div v-if="error" class="alert alert-danger">
-      {{ $t('Please, reload page: Error on request. Please, reload page') }}
-    </div>
+    <menu-item-form
+      :locale="locale"
+      :routepageslist="routepageslist"
+      :itemEdit="itemEdit"
+      @showListEvent="showList"
+    />
   </div>
 </template>
 
@@ -41,25 +56,32 @@
 
 import draggable from 'vuedraggable'
 import MenuItemDragAndDrop from './MenuItem'
+import MenuItemForm from './MenuItemForm'
 
 export default {
   name: 'MenuDragAndDrop',
   props: [
     'menu',
     'locale',
-    'routemenu',
+    'routemenuget',
+    'routemenusave',
     'routemenuitem',
+    'routepageslist',
     'routepage'
   ],
   components: {
     draggable,
-    MenuItemDragAndDrop
+    MenuItemDragAndDrop,
+    MenuItemForm
   },
   data () {
     return {
       loading: true,
       error: false,
-      items: []
+      requireSave: false,
+      viewList: true,
+      items: [],
+      itemEdit: null
     }
   },
   computed: {
@@ -73,24 +95,22 @@ export default {
   methods: {
     getItems () {
       let context = this
-      this.serverLoading();
+      this.serverLoading()
 
-      axios.post(`${this.routemenu}/${this.menu}/getItemsLocale`, {
+      axios.post(`${this.routemenuget}`, {
         locale: this.locale
       }).then(function (response) {
         context.serverOk();
-        context.setItems(response.data)
+        context.items = response.data
       }).catch(function (error) {
+        console.log(error)
         context.serverError();
       })
     },
 
-    setItems (items) {
-      this.items = items
-      this.reorder()
-    },
-
     reorder () {
+      this.requireSave = true
+
       this.items.forEach((item, key) => {
         item.priority = key
       });
@@ -104,21 +124,52 @@ export default {
       return `${this.routepage}/${item.page.slug}`
     },
 
-    saveReorder () {
-      let context = this
-      this.serverLoading();
+    removeItem (item_id) {
+      let newList = []
+      this.requireSave = true
 
-      axios.post(`${this.routemenu}/${this.menu}/reorder`, {
-        items: this.items
+      this.items.forEach((item, key) => {
+        if (item.id !== item_id) {
+          newList.push(item)
+        }
+      })
+
+      this.items = newList
+    },
+
+    proccessMenuItemForm (item) {
+      console.log(item)
+    },
+
+    save () {
+      let context = this
+      this.serverLoading()
+      this.reorder()
+
+      axios.post(`${this.routemenusave}`, {
+        items: this.items,
+        locale: this.locale
       }).then(function (response) {
+        this.requireSave = false
         context.serverOk();
       }).catch(function (error) {
+        console.log(error)
         context.serverError();
       })
     },
 
-    removeItem (item_id) {
-      console.log(item_id)
+    showForm () {
+      this.viewList = false
+    },
+
+    showList () {
+      this.viewList = true
+      this.itemEdit = null
+    },
+
+    showEdit (item) {
+      this.itemEdit = item
+      this.showForm()
     },
 
     serverLoading () {

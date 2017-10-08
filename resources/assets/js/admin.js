@@ -10,10 +10,12 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueResource from 'vue-resource'
+import VeeValidate from 'vee-validate';
 import i18n from 'voo-i18n'
-import translations from './admin/translations'
+import translations from './admin/includes/translations'
 
 Vue.use(VueResource)
+Vue.use(VeeValidate);
 Vue.use(i18n, translations)
 
 import MenuDragAndDrop from './admin/components/Menu.vue'
