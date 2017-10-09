@@ -108,7 +108,8 @@
           type: null,
           page_id: null,
           url_external: null,
-          priority: 0
+          priority: 0,
+          edit: true
         }
       }
     },
@@ -119,6 +120,10 @@
         } else {
           return this.$t('Update', { locale: this.locale })
         }
+      },
+      
+      action () {
+        return this.item.id === null ? 'addItemEvent' : 'updateItemEvent'
       },
 
       isInternal () {
@@ -155,8 +160,8 @@
           if (!result) {
             console.log('Form not validate')
           } else {
-            console.log(this.item)
-            this.$emit('proccessMenuItemFormEvent', this.item)
+            console.log(this.action)
+            this.$emit(this.action, this.item)
           }
         }).catch(error => {
           console.log(error)

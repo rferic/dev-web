@@ -24,7 +24,8 @@
               @serverOkEvent="serverOk"
               @removeItemEvent="removeItem"
               @showEditEvent="showEdit"
-              @proccessMenuItemFormEvent="proccessMenuItemForm"
+              @addItemEvent="addItem"
+              @updateItemEvent="updateItem"
             />
           </div>
         </transition-group>
@@ -81,6 +82,7 @@ export default {
       requireSave: false,
       viewList: true,
       items: [],
+      itemsForRemove: [],
       itemEdit: null
     }
   },
@@ -131,13 +133,26 @@ export default {
       this.items.forEach((item, key) => {
         if (item.id !== item_id) {
           newList.push(item)
+        } else {
+            this.itemsForRemove.push(item)
         }
       })
 
       this.items = newList
     },
 
-    proccessMenuItemForm (item) {
+    addItem (item) {
+      item.priority = this.items.length
+      this.items.push(item)
+      console.log(item)
+    },
+
+    updateItem (itemEdit) {
+      this.items.forEach((item, key) => {
+        if (item.id !== itemEdit.id) {
+          this.items[key] = itemEdit
+        }
+      })
       console.log(item)
     },
 
@@ -148,6 +163,7 @@ export default {
 
       axios.post(`${this.routemenusave}`, {
         items: this.items,
+        itemsForRemove: this.itemsForRemove,
         locale: this.locale
       }).then(function (response) {
         this.requireSave = false
