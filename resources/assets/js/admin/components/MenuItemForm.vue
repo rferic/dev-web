@@ -121,7 +121,7 @@
           return this.$t('Update', { locale: this.locale })
         }
       },
-      
+
       action () {
         return this.item.id === null ? 'addItemEvent' : 'updateItemEvent'
       },
@@ -160,7 +160,14 @@
           if (!result) {
             console.log('Form not validate')
           } else {
-            console.log(this.action)
+            if (this.item.page_id !== null) {
+              this.pages.forEach((page, key) => {
+                if (page.id === this.item.page_id) {
+                  this.item.page = page
+                }
+              })
+            }
+
             this.$emit(this.action, this.item)
           }
         }).catch(error => {

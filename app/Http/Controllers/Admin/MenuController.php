@@ -87,13 +87,16 @@ class MenuController extends Controller
         $items = Input::get('items');
         $items = Input::get('items');
         $itemsForRemove = Input::get('itemsForRemove');
+        $itemsOriginal = $menu->items()->where('lang', $locale)->get();
 
         // Loop for check for remove
         foreach ($itemsForRemove AS $item) {
-            $item->forceDelete();
+            foreach( $itemsOriginal AS $itemOriginal) {
+                if ($itemOriginal->id === $item['id']) {
+                    $itemOriginal->forceDelete();
+                }
+            }
         }
-        
-        $itemsOriginal = $menu->items()->where('lang', $locale)->get();
 
         // Loop for check if is needsted create / update
         foreach ($items AS $item) {
@@ -107,14 +110,15 @@ class MenuController extends Controller
                     'type' => $item['type'],
                     'page_id' => $item['page_id'],
                     'url_external' => $item['url_external'],
-                    'priority' => $item['priority']
+                    'priority' => $item['priority'],
+                    'user_id' => auth()->user()->id
                 ];
-                
+
                 MenuItem::create($params);
             } else {
                 foreach ($itemsOriginal AS $itemOriginal) {
                     if ($itemOriginal->id === $item['id']) {
-                        if ($item['edit'] === true || $item['priority'] !== $itemOriginal->priority) {
+                        if ((isset($item['edit']) && $item['edit'] === true) || $item['priority'] !== $itemOriginal->priority) {
                             // Update a item
                             $itemOriginal = MenuItem::find($item['id']);
                             $itemOriginal->label = $item['label'];

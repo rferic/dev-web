@@ -16,16 +16,15 @@
       <hr />
       <draggable v-if="hasItems" :list="items" @end="eventMove">
         <transition-group name="list-complete">
-          <div v-for="item in items" :key="item.id" class="list-complete-item well well-sm">
+          <div v-for="(item, index) in items" :key="index" class="list-complete-item well well-sm">
             <menu-item-drag-and-drop
               :item="item"
+              :routepage="routepage"
               @serverLoadingEvent="serverLoading"
               @serverErrorEvent="serverError"
               @serverOkEvent="serverOk"
               @removeItemEvent="removeItem"
               @showEditEvent="showEdit"
-              @addItemEvent="addItem"
-              @updateItemEvent="updateItem"
             />
           </div>
         </transition-group>
@@ -49,6 +48,8 @@
       :routepageslist="routepageslist"
       :itemEdit="itemEdit"
       @showListEvent="showList"
+      @addItemEvent="addItem"
+      @updateItemEvent="updateItem"
     />
   </div>
 </template>
@@ -134,7 +135,9 @@ export default {
         if (item.id !== item_id) {
           newList.push(item)
         } else {
+          if (item.id !== null) {
             this.itemsForRemove.push(item)
+          }
         }
       })
 
@@ -144,16 +147,24 @@ export default {
     addItem (item) {
       item.priority = this.items.length
       this.items.push(item)
-      console.log(item)
+      this.requireSave = true
+      this.showList()
     },
 
     updateItem (itemEdit) {
       this.items.forEach((item, key) => {
-        if (item.id !== itemEdit.id) {
-          this.items[key] = itemEdit
+        if (item.id === itemEdit.id) {
+          this.items[key].edit = true
+          this.items[key].label = itemEdit.label
+          this.items[key].type = itemEdit.type
+          this.items[key].page_id = itemEdit.page_id
+          this.items[key].page = itemEdit.page
+          this.items[key].url_external = itemEdit.url_external
         }
       })
-      console.log(item)
+
+      this.requireSave = true
+      this.showList()
     },
 
     save () {
@@ -166,7 +177,7 @@ export default {
         itemsForRemove: this.itemsForRemove,
         locale: this.locale
       }).then(function (response) {
-        this.requireSave = false
+        context.requireSave = false
         context.serverOk();
       }).catch(function (error) {
         console.log(error)

@@ -45979,6 +45979,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -46000,6 +46002,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       requireSave: false,
       viewList: true,
       items: [],
+      itemsForRemove: [],
       itemEdit: null
     };
   },
@@ -46041,19 +46044,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.routepage + '/' + item.page.slug;
     },
     removeItem: function removeItem(item_id) {
+      var _this = this;
+
       var newList = [];
       this.requireSave = true;
 
       this.items.forEach(function (item, key) {
         if (item.id !== item_id) {
           newList.push(item);
+        } else {
+          if (item.id !== null) {
+            _this.itemsForRemove.push(item);
+          }
         }
       });
 
       this.items = newList;
     },
-    proccessMenuItemForm: function proccessMenuItemForm(item) {
-      console.log(item);
+    addItem: function addItem(item) {
+      item.priority = this.items.length;
+      this.items.push(item);
+      this.requireSave = true;
+      this.showList();
+    },
+    updateItem: function updateItem(itemEdit) {
+      var _this2 = this;
+
+      this.items.forEach(function (item, key) {
+        if (item.id === itemEdit.id) {
+          _this2.items[key].edit = true;
+          _this2.items[key].label = itemEdit.label;
+          _this2.items[key].type = itemEdit.type;
+          _this2.items[key].page_id = itemEdit.page_id;
+          _this2.items[key].page = itemEdit.page;
+          _this2.items[key].url_external = itemEdit.url_external;
+        }
+      });
+
+      this.requireSave = true;
+      this.showList();
     },
     save: function save() {
       var context = this;
@@ -46062,9 +46091,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       axios.post('' + this.routemenusave, {
         items: this.items,
+        itemsForRemove: this.itemsForRemove,
         locale: this.locale
       }).then(function (response) {
-        this.requireSave = false;
+        context.requireSave = false;
         context.serverOk();
       }).catch(function (error) {
         console.log(error);
@@ -46207,24 +46237,25 @@ var render = function() {
                         _c(
                           "transition-group",
                           { attrs: { name: "list-complete" } },
-                          _vm._l(_vm.items, function(item) {
+                          _vm._l(_vm.items, function(item, index) {
                             return _c(
                               "div",
                               {
-                                key: item.id,
+                                key: index,
                                 staticClass: "list-complete-item well well-sm"
                               },
                               [
                                 _c("menu-item-drag-and-drop", {
-                                  attrs: { item: item },
+                                  attrs: {
+                                    item: item,
+                                    routepage: _vm.routepage
+                                  },
                                   on: {
                                     serverLoadingEvent: _vm.serverLoading,
                                     serverErrorEvent: _vm.serverError,
                                     serverOkEvent: _vm.serverOk,
                                     removeItemEvent: _vm.removeItem,
-                                    showEditEvent: _vm.showEdit,
-                                    proccessMenuItemFormEvent:
-                                      _vm.proccessMenuItemForm
+                                    showEditEvent: _vm.showEdit
                                   }
                                 })
                               ],
@@ -46282,7 +46313,11 @@ var render = function() {
               routepageslist: _vm.routepageslist,
               itemEdit: _vm.itemEdit
             },
-            on: { showListEvent: _vm.showList }
+            on: {
+              showListEvent: _vm.showList,
+              addItemEvent: _vm.addItem,
+              updateItemEvent: _vm.updateItem
+            }
           })
         ],
         1
@@ -46368,17 +46403,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MenuItemDragAndDrop',
-  props: ['item'],
+  props: ['item', 'routepage'],
   computed: {
     isInternal: function isInternal() {
       return this.item.type === 'internal';
     },
     urlPage: function urlPage() {
-      return this.isInternal ? this.routepages + '/' + this.item.page.slug : this.item.url_external;
+      return this.isInternal ? this.routepage + '/' + this.item.page.slug : this.item.url_external;
     }
   }
 });
@@ -46442,14 +46476,10 @@ var render = function() {
     }),
     _c("br"),
     _vm._v(" "),
-    _c("b", [_vm._v(_vm._s(_vm.item.label))]),
-    _vm._v(" "),
-    _c("span", [
-      _vm._v("( "),
+    _c("b", [
       _c("a", { attrs: { href: _vm.urlPage } }, [
-        _vm._v("/" + _vm._s(_vm.item.label))
-      ]),
-      _vm._v(" )")
+        _vm._v(_vm._s(_vm.item.label))
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -46788,7 +46818,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         type: null,
         page_id: null,
         url_external: null,
-        priority: 0
+        priority: 0,
+        edit: true
       }
     };
   },
@@ -46800,6 +46831,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else {
         return this.$t('Update', { locale: this.locale });
       }
+    },
+    action: function action() {
+      return this.item.id === null ? 'addItemEvent' : 'updateItemEvent';
     },
     isInternal: function isInternal() {
       return this.item.type === 'internal';
@@ -46833,8 +46867,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (!result) {
           console.log('Form not validate');
         } else {
-          console.log(_this.item);
-          _this.$emit('proccessMenuItemFormEvent', _this.item);
+          if (_this.item.page_id !== null) {
+            _this.pages.forEach(function (page, key) {
+              if (page.id === _this.item.page_id) {
+                _this.item.page = page;
+              }
+            });
+          }
+
+          _this.$emit(_this.action, _this.item);
         }
       }).catch(function (error) {
         console.log(error);
