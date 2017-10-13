@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
 use App\Menu;
-use App\MenuItem;
+use App\Http\Controllers\Admin\MenuItemController;
 
 class MenuController extends Controller
 {
@@ -85,48 +85,23 @@ class MenuController extends Controller
     {
         $locale = Input::get('locale');
         $items = Input::get('items');
-        $items = Input::get('items');
         $itemsForRemove = Input::get('itemsForRemove');
         $itemsOriginal = $menu->items()->where('lang', $locale)->get();
 
-        // Loop for check for remove
-        foreach ($itemsForRemove AS $item) {
-            foreach( $itemsOriginal AS $itemOriginal) {
-                if ($itemOriginal->id === $item['id']) {
-                    $itemOriginal->forceDelete();
-                }
-            }
-        }
+        MenuItemController::destroyFromList($itemsOriginal, $itemsForRemove);
 
         // Loop for check if is needsted create / update
         foreach ($items AS $item) {
             // Check if is a new item
             if (!isset($item['id']) || is_null($item['id'])) {
                 // Create a new item
-                $params = [
-                    'menu_id' => $menu->id,
-                    'lang' => $locale,
-                    'label' => $item['label'],
-                    'type' => $item['type'],
-                    'page_id' => $item['page_id'],
-                    'url_external' => $item['url_external'],
-                    'priority' => $item['priority'],
-                    'user_id' => auth()->user()->id
-                ];
-
-                MenuItem::create($params);
+                MenuItemController::store($item, $menu, $locale);
             } else {
                 foreach ($itemsOriginal AS $itemOriginal) {
                     if ($itemOriginal->id === $item['id']) {
                         if ((isset($item['edit']) && $item['edit'] === true) || $item['priority'] !== $itemOriginal->priority) {
                             // Update a item
-                            $itemOriginal = MenuItem::find($item['id']);
-                            $itemOriginal->label = $item['label'];
-                            $itemOriginal->type = $item['type'];
-                            $itemOriginal->page_id = $item['page_id'];
-                            $itemOriginal->url_external = $item['url_external'];
-                            $itemOriginal->priority = $item['priority'];
-                            $itemOriginal->save();
+                            MenuItemController::save($item);
                         }
                     }
                 }

@@ -11,19 +11,41 @@ use App\MenuItem;
 
 class MenuItemController extends Controller
 {
-    public function create ()
+    static function destroyFromList ($itemsOriginal, $itemsForRemove = [])
     {
-
+        // Loop for check for remove
+        foreach ($itemsForRemove AS $item) {
+            foreach( $itemsOriginal AS $itemOriginal) {
+                if ($itemOriginal->id === $item['id']) {
+                    $itemOriginal->forceDelete();
+                }
+            }
+        }
     }
-
-    public function detail ()
+    
+    static function store ($item, $menu, $locale)
     {
-
+        $params = [
+            'menu_id' => $menu->id,
+            'lang' => $locale,
+            'label' => $item['label'],
+            'type' => $item['type'],
+            'page_id' => $item['page_id'],
+            'url_external' => $item['url_external'],
+            'priority' => $item['priority'],
+            'user_id' => auth()->user()->id
+        ];
+        MenuItem::create($params);
     }
-
-    public function destroy (Request $request, MenuItem $item)
+    
+    static function save ($params)
     {
-        //$item->forceDelete();
-        return Response::json(true);
+        $item = MenuItem::find($params['id']);
+        $item->label = $params['label'];
+        $item->type = $params['type'];
+        $item->page_id = $params['page_id'];
+        $item->url_external = $params['url_external'];
+        $item->priority = $params['priority'];
+        $item->save();
     }
 }
