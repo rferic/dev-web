@@ -43,7 +43,7 @@ Route::group(
 
         Route::get('/pages', 'Admin\PageController@index')->name('admin.pages');
         Route::get('/pages{page}', 'Admin\PageController@detail')->name('admin.page');
-        Route::post('/pages/get-list', 'Admin\PageController@list')->name('admin.pages.list');
+        Route::post('/pages/listiing', 'Admin\PageController@listing')->name('admin.pages.list');
 
         Route::get('/users', 'Admin\UserController@index')->name('admin.users');
         Route::get('/users/{user}', 'Admin\UserController@detail')->name('admin.user');

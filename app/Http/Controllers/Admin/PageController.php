@@ -12,7 +12,7 @@ use App\PageLocale;
 
 class PageController extends Controller
 {
-    public function list (Request $request)
+    public function listing (Request $request)
     {
         $locale = Input::get('locale');
         $pages = PageLocale::where('lang', $locale);
