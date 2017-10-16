@@ -21,7 +21,9 @@ class Menu extends Model
         parent::boot();
 
         static::deleting (function ($menu) {
-            $menu->items()->forceDelete();
+            if ($menu->forceDeleting) {
+                $menu->items()->forceDelete();
+            }
         });
     }
 

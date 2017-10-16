@@ -29,6 +29,11 @@ class PageController extends Controller
 
         return view('admin.page.index', compact('pages', 'pagesTrashed'));
     }
+    
+    public function detail (Page $page)
+    {
+        return view('admin.page.form', compact('page'));
+    }
 
     public function trash (Page $page)
     {

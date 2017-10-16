@@ -23,6 +23,7 @@ class MenuItem extends Model
         'url_external',
         'priority'
     ];
+    protected $happens = ['page'];
 
     public function menu ()
     {
@@ -42,5 +43,10 @@ class MenuItem extends Model
     public function isAuthor ()
     {
         return $this->owner->id === auth()->id();
+    }
+    
+    public function getPageAttribute ()
+    {
+        return $this->pageLocale->page;
     }
 }

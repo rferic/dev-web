@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\User;
 use App\PageLocale;
 use App\Content;
+use App\MenuItem;
 
 class Page extends Model
 {
@@ -20,8 +21,11 @@ class Page extends Model
         parent::boot();
 
         static::deleting (function ($page) {
-            $page->contents()->forceDelete();
-            $page->locales()->forceDelete();
+            if ($page->forceDeleting) {
+                $page->contents()->forceDelete();
+                $page->menuItems()->forceDelete();
+                $page->locales()->forceDelete();
+            }
         });
     }
 
@@ -43,5 +47,10 @@ class Page extends Model
     public function contents ()
     {
         return $this->hasManyThrough(Content::class, PageLocale::class);
+    }
+    
+    public function menuItems ()
+    {
+        return $this->hasManyThrough(MenuItem::class, PageLocale::class);
     }
 }

@@ -14,13 +14,13 @@ class Content extends Model
     protected $fillable = [ 'page_locale_id', 'key', 'text'];
     protected $happens = ['page'];
 
-    public function page_locale ()
+    public function pageLocale ()
     {
         return $this->belongsTo(PageLocale::class, 'page_locale_id');
     }
     
     public function getPageAttribute ()
     {
-        return $this->page_locale->page;
+        return $this->pageLocale->page;
     }
 }
