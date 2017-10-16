@@ -11,10 +11,10 @@ class Content extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = [ 'page_id', 'key', 'text'];
+    protected $fillable = [ 'page_locale_id', 'key', 'text'];
 
-    public function page ()
+    public function page_locale ()
     {
-        return $this->belongsTo(PageLocale::class, 'page_id');
+        return $this->belongsTo(PageLocale::class, 'page_locale_id');
     }
 }

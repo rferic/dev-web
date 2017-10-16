@@ -44,22 +44,22 @@
       </div>
 
       <div v-if="isInternal" class="form-group">
-        <label class="control-label col-md-4" for="page_id">{{ $t('Page', { locale: locale }) }}</label>
-        <div class="col-md-8" :class="{ 'has-error' : errors.has('page_id')}">
+        <label class="control-label col-md-4" for="page_locale_id">{{ $t('Page', { locale: locale }) }}</label>
+        <div class="col-md-8" :class="{ 'has-error' : errors.has('page_locale_id')}">
           <select
-            name="page_id"
-            v-model="item.page_id"
+            name="page_locale_id"
+            v-model="item.page_locale_id"
             v-validate
             data-vv-rules="required|max:100"
             class="form-control"
-            :class="{ 'has-error' : errors.has('page_id')}">
+            :class="{ 'has-error' : errors.has('page_locale_id')}">
 
-            <option v-for="(page, index) in pages" :value="page.id">
-              {{ page.title }}
+            <option v-for="(page_locale, index) in pages_locales" :value="page_locale.id">
+              {{ page_locale.title }}
             </option>
 
           </select>
-          <span v-show="errors.has('page_id')" class="text-danger">{{ errors.first('page_id') }}</span>
+          <span v-show="errors.has('page_locale_id')" class="text-danger">{{ errors.first('page_locale_id') }}</span>
         </div>
       </div>
 
@@ -101,12 +101,12 @@
     ],
     data () {
       return {
-        pages: [],
+        pages_locales: [],
         item: {
           id: null,
           label: null,
           type: null,
-          page_id: null,
+          page_locale_id: null,
           url_external: null,
           priority: 0,
           edit: true
@@ -149,7 +149,7 @@
         axios.post(`${this.routepageslist}`, {
           locale: this.locale
         }).then(function (response) {
-          context.pages = response.data
+          context.pages_locales = response.data
         }).catch(function (error) {
           console.log(error)
         })
@@ -160,10 +160,10 @@
           if (!result) {
             console.log('Form not validate')
           } else {
-            if (this.item.page_id !== null) {
-              this.pages.forEach((page, key) => {
-                if (page.id === this.item.page_id) {
-                  this.item.page = page
+            if (this.item.page_locale_id !== null) {
+              this.pages_locales.forEach((page_locale, key) => {
+                if (page_locale.id === this.item.page_locale_id) {
+                  this.item.page_locale = page_locale
                 }
               })
             }
@@ -180,7 +180,7 @@
         this.item.id = this.itemEdit.id
         this.item.label = this.itemEdit.label
         this.item.type = this.itemEdit.type
-        this.item.page_id = this.itemEdit.page_id
+        this.item.page_locale_id = this.itemEdit.page_locale_id
         this.item.url_external = this.itemEdit.url_external
         this.item.priority = this.itemEdit.priority
       }

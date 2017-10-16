@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
                 ])->first();
             }
 
-            factory(Content::class, random_int(1, 3))->create(['page_id' => $locale->id]);
+            factory(Content::class, random_int(1, 3))->create(['page_locale_id' => $locale->id]);
 
             array_push($locales, $locale);
         }
@@ -86,12 +86,14 @@ class DatabaseSeeder extends Seeder
         ])->toArray();
 
         foreach ($menus AS $menu) {
+            $page = $params['pages'][random_int(0, COUNT($params['pages'])-1)];
+            
             factory(MenuItem::class, random_int(1, 5))->create([
                 'user_id' => $menu['user_id'],
                 'menu_id' => $menu['id'],
-                'lang' => (bool)random_int(0, 1) ? 'en' : 'es',
+                'lang' => $page['lang'],
                 'type' => 'internal',
-                'page_id' => $params['pages'][random_int(0, COUNT($params['pages'])-1)]['id'],
+                'page_locale_id' => $page['id'],
                 'url_external' => null
             ]);
 

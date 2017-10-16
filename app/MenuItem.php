@@ -19,7 +19,7 @@ class MenuItem extends Model
         'lang',
         'label',
         'type',
-        'page_id',
+        'page_locale_id',
         'url_external',
         'priority'
     ];
@@ -29,7 +29,7 @@ class MenuItem extends Model
         return $this->belongsTo(Menu::class);
     }
 
-    public function page ()
+    public function pageLocale ()
     {
         return $this->belongsTo(PageLocale::class);
     }

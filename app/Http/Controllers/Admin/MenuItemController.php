@@ -30,7 +30,7 @@ class MenuItemController extends Controller
             'lang' => $locale,
             'label' => $item['label'],
             'type' => $item['type'],
-            'page_id' => $item['page_id'],
+            'page_locale_id' => $item['page_locale_id'],
             'url_external' => $item['url_external'],
             'priority' => $item['priority'],
             'user_id' => auth()->user()->id
@@ -43,7 +43,7 @@ class MenuItemController extends Controller
         $item = MenuItem::find($params['id']);
         $item->label = $params['label'];
         $item->type = $params['type'];
-        $item->page_id = $params['page_id'];
+        $item->page_locale_id = $params['page_locale_id'];
         $item->url_external = $params['url_external'];
         $item->priority = $params['priority'];
         $item->save();

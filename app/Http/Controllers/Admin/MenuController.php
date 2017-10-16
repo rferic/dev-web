@@ -77,8 +77,8 @@ class MenuController extends Controller
     public function getItemsLocale (Request $request, Menu $menu)
     {
         $locale = Input::get('locale');
-        $items = $menu->items()->where('lang', $locale)->with('page')->orderBy('priority', 'ASC');
-        return Response::json($items->get(['id', 'label', 'type', 'page_id', 'url_external', 'priority']));
+        $items = $menu->items()->where('lang', $locale)->with('pageLocale')->orderBy('priority', 'ASC');
+        return Response::json($items->get(['id', 'label', 'type', 'page_locale_id', 'url_external', 'priority']));
     }
 
     public function save (Request $request, Menu $menu)

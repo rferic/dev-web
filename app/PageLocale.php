@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\User;
-use App\Page;
+use App\PageLocale;
 use App\Content;
 
 class PageLocale extends Model
@@ -29,7 +29,7 @@ class PageLocale extends Model
 
     public function node ()
     {
-        return $this->belongsTo(Page::class, 'page_id');
+        return $this->belongsTo(PageLocale::class, 'page_locale_id');
     }
 
     public function contents ()

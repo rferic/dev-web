@@ -15,13 +15,13 @@ class CreateContentsTable extends Migration
     {
         Schema::create('contents', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('page_id');
+            $table->unsignedInteger('page_locale_id');
             $table->string('key');
             $table->longText('text');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('page_id')->references('id')->on('page_locales');
+            $table->foreign('page_locale_id')->references('id')->on('page_locales');
         });
     }
 

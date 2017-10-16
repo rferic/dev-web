@@ -21,7 +21,7 @@ export default {
       return this.item.type === 'internal'
     },
     urlPage () {
-      return this.isInternal ? `${this.routepage}/${this.item.page.slug}` : this.item.url_external
+      return this.isInternal ? `${this.routepage}/${this.item.page_locale.slug}` : this.item.url_external
     }
   }
 }

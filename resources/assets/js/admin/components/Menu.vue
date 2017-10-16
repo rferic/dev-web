@@ -124,7 +124,7 @@ export default {
     },
 
     getUrlPage (item) {
-      return `${this.routepage}/${item.page.slug}`
+      return `${this.routepage}/${item.page_locale.slug}`
     },
 
     removeItem (item_id) {
@@ -157,8 +157,8 @@ export default {
           this.items[key].edit = true
           this.items[key].label = itemEdit.label
           this.items[key].type = itemEdit.type
-          this.items[key].page_id = itemEdit.page_id
-          this.items[key].page = itemEdit.page
+          this.items[key].page_locale_id = itemEdit.page_locale_id
+          this.items[key].page_locale = itemEdit.page_locale
           this.items[key].url_external = itemEdit.url_external
         }
       })

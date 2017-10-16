@@ -20,7 +20,7 @@ class CreateMenuItemsTable extends Migration
             $table->string('lang');
             $table->string('label');
             $table->enum('type', ['internal', 'external']);
-            $table->unsignedInteger('page_id')->nullable();
+            $table->unsignedInteger('page_locale_id')->nullable();
             $table->string('url_external')->nullable();
             $table->unsignedInteger('priority');
             $table->timestamps();
@@ -28,7 +28,7 @@ class CreateMenuItemsTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('menu_id')->references('id')->on('menus');
-            $table->foreign('page_id')->references('id')->on('pages');
+            $table->foreign('page_locale_id')->references('id')->on('page_locales');
         });
     }
 
