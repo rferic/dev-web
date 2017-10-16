@@ -7,12 +7,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\User;
 use App\PageLocale;
+use App\Content;
 
 class Page extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [ 'user_id' ];
+
+    protected static function boot ()
+    {
+        parent::boot();
+
+        static::deleting (function ($page) {
+            $page->contents()->forceDelete();
+            $page->locales()->forceDelete();
+        });
+    }
 
     public function locales ()
     {
@@ -27,5 +38,10 @@ class Page extends Model
     public function isAuthor ()
     {
         return $this->owner->id === auth()->id();
+    }
+    
+    public function contents ()
+    {
+        return $this->hasManyThrough(Content::class, PageLocale::class);
     }
 }

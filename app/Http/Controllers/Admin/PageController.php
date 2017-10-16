@@ -29,4 +29,30 @@ class PageController extends Controller
 
         return view('admin.page.index', compact('pages', 'pagesTrashed'));
     }
+
+    public function trash (Page $page)
+    {
+        $page->delete();
+
+        return back()
+            ->with('message', ['class' => 'alert-success', 'content' => __('Page has been moved to trash')])
+            ->with('currentPanel', 'trash');
+    }
+
+    public function destroy (Request $request, $id)
+    {
+        Page::withTrashed()->findOrFail($id)->forceDelete();
+
+        return back()
+            ->with('message', ['class' => 'alert-success', 'content' => __('Page has been removed')])
+            ->with('currentPanel', 'trash');
+    }
+
+    public function restore (Request $request, $id)
+    {
+        Page::withTrashed()->findOrFail($id)->restore();
+
+        return back()
+            ->with('message', ['class' => 'alert-success', 'content' => __('Page has been restored')]);
+    }
 }

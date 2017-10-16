@@ -27,6 +27,15 @@ class PageLocale extends Model
         'seo_keywords'
     ];
 
+    protected static function boot ()
+    {
+        parent::boot();
+
+        static::deleting (function ($page_locale) {
+            $page_locale->contents()->forceDelete();
+        });
+    }
+
     public function node ()
     {
         return $this->belongsTo(PageLocale::class, 'page_locale_id');
