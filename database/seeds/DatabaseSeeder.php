@@ -6,10 +6,8 @@ use Illuminate\Support\Facades\Hash;
 
 use App\User;
 use App\Content;
-use App\Category;
 use App\MenuItem;
 use App\PageLocale;
-use App\CategoryLocale;
 use App\Page;
 use App\Menu;
 
