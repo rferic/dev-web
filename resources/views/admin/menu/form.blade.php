@@ -14,7 +14,7 @@
         <h2>{{ __('Menu') }}</h2>
         <form class="form-horizontal" method="POST" action="{{ isset($menu) ? route('admin.menu.edit', $menu->id) : route('admin.menu.store') }}">
             {{ csrf_field() }}
-            @if ($menu)
+            @if (isset($menu))
                 {{ method_field("PUT") }}
             @endif
             <div class="form-group">
@@ -31,13 +31,13 @@
             <p class="clearfix"></p>
         </form>
     </div>
-    @if ($menu)
+    @if (isset($menu))
         @include('admin.menu-items.list')
     @endif
 @endsection
 
 @section('script')
-    @if ($menu)
+    @if (isset($menu))
         <script src="{{ asset('js/admin/admin.js') }}"></script>
     @endif
 @endsection
