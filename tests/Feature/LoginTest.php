@@ -17,6 +17,7 @@ class LoginTest extends TestCase
     
     protected $admin;
     protected $user;
+    protected $passwordGlobal = 'secret';
     
     protected function setUp ()
     {
@@ -29,11 +30,12 @@ class LoginTest extends TestCase
         
         $this->admin = factory(User::class, 1)->create([
             'email' => config('mail.from')['address'],
-            'password' => Hash::make('secret')
+            'password' => Hash::make($this->passwordGlobal)
         ])->first()->assignRole('admin');
         
         $this->user = factory(User::class, 1)->create([
-            'email' => 'public@example.com'
+            'email' => 'public@example.com',
+            'password' => Hash::make($this->passwordGlobal)
         ])->first()->assignRole('public');
     }
     
@@ -49,29 +51,72 @@ class LoginTest extends TestCase
     {
         $this->withExceptionHandling();
         
-        $response = $this->get('/login');
+        $response = $this->get(route('login'));
         $response->assertStatus(200);
     }
     
     public function testLoadLoginAdminLogged ()
     {
         $this->withExceptionHandling();
-        $this->signIn($this->admin);
         
-        $response = $this->get('/login');
+        $response = $this
+                ->actingAs($this->admin)
+                ->get(route('login'));
         $response
                 ->assertStatus(302)
-                ->assertRedirect('dev');
+                ->assertRedirect(route('admin.dashboard'));
     }
     
     public function testLoadLoginUserLogged ()
     {
         $this->withExceptionHandling();
-        $this->signIn($this->user);
         
-        $response = $this->get('/login');
+        $response = $this
+                ->actingAs($this->user)
+                ->get(route('login'));
         $response
                 ->assertStatus(302)
-                ->assertRedirect('profile');
+                ->assertRedirect(route('profile'));
+    }
+    
+    public function testFormLoginErrors ()
+    {
+        $this->withExceptionHandling();
+        
+        $response = $this->post(route('login'), []);
+        $response->assertSessionHasErrors('email');
+        
+        $response = $this->post(route('login'), ['email' => 'wrongmail@mail.com']);
+        $response
+            ->assertStatus(302)
+            ->assertRedirect(route('home'));
+        
+        $response = $this->post(route('login'), ['email' => $this->user->email, 'password' => 'worngpassword']);
+        $response
+            ->assertStatus(302)
+            ->assertRedirect(route('home'));
+        
+        $response = $this->post(route('login'), ['email' => $this->user->email]);
+        $response->assertSessionHasErrors('password');
+    }
+    
+    public  function testFormLoginAdmin ()
+    {
+        $this->withExceptionHandling();
+        
+        $response = $this->post(route('login'), ['email' => $this->admin->email, 'password' => $this->passwordGlobal]);
+        $response
+            ->assertStatus(302)
+            ->assertRedirect(route('admin.dashboard'));
+    }
+    
+    public function testFormLoginUser ()
+    {
+        $this->withExceptionHandling();
+        
+        $response = $this->post(route('login'), ['email' => $this->user->email, 'password' => $this->passwordGlobal]);
+        $response
+            ->assertStatus(302)
+            ->assertRedirect(route('profile'));
     }
 }
