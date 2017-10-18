@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 
 use App\User;
 
@@ -15,8 +14,7 @@ class AdminPanelTest extends TestCase
 {
     use DatabaseMigrations;
     
-    protected $admin;
-    protected $user;
+    protected $admin, $user;
     
     protected function setUp ()
     {
@@ -27,8 +25,8 @@ class AdminPanelTest extends TestCase
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'public']);
         
-        $this->admin = factory(User::class, 1)->create()->first()->assignRole('admin');
-        $this->user = factory(User::class, 1)->create()->first()->assignRole('public');
+        $this->admin = factory(User::class)->create()->assignRole('admin');
+        $this->user = factory(User::class)->create()->assignRole('public');
     }
     
     public function testAdminCanAccess ()

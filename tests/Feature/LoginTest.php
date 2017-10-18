@@ -15,9 +15,7 @@ class LoginTest extends TestCase
 {
     use DatabaseMigrations;
     
-    protected $admin;
-    protected $user;
-    protected $passwordGlobal = 'secret';
+    protected $admin, $user, $passwordGlobal = 'secret';
     
     protected function setUp ()
     {
@@ -28,15 +26,15 @@ class LoginTest extends TestCase
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'public']);
         
-        $this->admin = factory(User::class, 1)->create([
+        $this->admin = factory(User::class)->create([
             'email' => config('mail.from')['address'],
             'password' => Hash::make($this->passwordGlobal)
-        ])->first()->assignRole('admin');
+        ])->assignRole('admin');
         
-        $this->user = factory(User::class, 1)->create([
+        $this->user = factory(User::class)->create([
             'email' => 'public@example.com',
             'password' => Hash::make($this->passwordGlobal)
-        ])->first()->assignRole('public');
+        ])->assignRole('public');
     }
     
     public function testPermissionsUsers ()
