@@ -67,7 +67,6 @@ export default {
     'locale',
     'routemenuget',
     'routemenusave',
-    'routemenuitem',
     'routepageslist',
     'routepage'
   ],

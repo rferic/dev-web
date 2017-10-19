@@ -38,13 +38,6 @@ Route::group(
         Route::post('/menus/{menu}/save', 'Admin\MenuController@save')->name('admin.menu.save');
         Route::put('/menus/{menu}', 'Admin\MenuController@edit')->name('admin.menu.edit');
 
-        /*
-         * Admin Menu Item Routes
-         */
-        Route::get('/menus-items/{menus}', 'Admin\MenuItemController@create')->name('admin.menu.items.create');
-        Route::get('/menus-items/{item}', 'Admin\MenuItemController@detail')->name('admin.menu.items.detail');
-        Route::post('/menus-items', 'Admin\MenuItemController@store')->name('admin.menu.items.store');
-
 
         /*
          * Admin Pages Routes
