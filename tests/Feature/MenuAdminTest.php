@@ -90,7 +90,7 @@ class MenuAdminTest extends TestCase
                 ->assertSessionHas('message', __('Menu has been created'));
     }
     
-    public function testUpdateMenu ()
+    public function testEditMenu ()
     {
         $this->withExceptionHandling();
         
@@ -118,6 +118,63 @@ class MenuAdminTest extends TestCase
         
     }
     
+    public function testSaveMenu ()
+    {
+        $this->withExceptionHandling();
+        
+        $items = factory(MenuItem::class, 5)->make([
+            'menu_id' => $this->menu->id,
+            'user_id' => $this->user->id,
+            'type' => 'external',
+            'page_locale_id' => null
+        ]);
+        $locale = 'en';
+        
+        /******* TESING PUSH NEW ITEMS *******/
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.menu.save', $this->menu->id), [
+                    'locale' => $locale,
+                    'items' => $items,
+                    'itemsForRemove' => []
+                ]);
+        
+        $response
+                ->assertSuccessful()
+                ->assertExactJson([true]);
+        
+        /******* TESING PUSH UPDATE & REMOVE ITEMS *******/
+        $items = factory(MenuItem::class, 5)->create([
+            'menu_id' => $this->menu->id,
+            'user_id' => $this->user->id,
+            'type' => 'external',
+            'lang' => $locale,
+            'page_locale_id' => null
+        ]);
+        $items[0]->edit = true;
+        $items[0]->priority = 8;
+        
+        $itemsForUpdate = [
+            $items[0],
+            $items[2],
+            $items[3],
+            $items[4],
+        ];
+        $itemsForRemove = [$items[1]];
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.menu.save', $this->menu->id), [
+                    'locale' => $locale,
+                    'items' => $itemsForUpdate,
+                    'itemsForRemove' => $itemsForRemove
+                ]);
+        
+        $response
+                ->assertSuccessful()
+                ->assertExactJson([true]);
+    }
+    
     public function testTrashMenu ()
     {
         $this->withExceptionHandling();
@@ -138,10 +195,63 @@ class MenuAdminTest extends TestCase
     {
         $this->withExceptionHandling();
         
+        $this->menu->delete();
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->get(route('admin.menu.restore', $this->menu->id), ['HTTP_REFERER' => $this->urlOriginFake]);
+        
+        $response
+                ->assertStatus(302)
+                ->assertRedirect($this->urlOriginFake)
+                ->assertSessionHas('message', ['class' => 'alert-success', 'content' => __('Menu has been restored')])
+                ->assertSessionMissing('currentPanel');
+        
     }
     
     public function testDestroyMenu ()
     {
         $this->withExceptionHandling();
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->get(route('admin.menu.destroy', $this->menu->id), ['HTTP_REFERER' => $this->urlOriginFake]);
+        
+        $response
+                ->assertStatus(302)
+                ->assertRedirect($this->urlOriginFake)
+                ->assertSessionHas('message', ['class' => 'alert-success', 'content' => __('Menu has been removed')])
+                ->assertSessionHas('currentPanel', 'trash');
+    }
+    
+    public function testGetItems ()
+    {
+        $this->withExceptionHandling();
+        
+        $locale = 'en';
+        
+        factory(MenuItem::class, 5)->create([
+            'menu_id' => $this->menu->id,
+            'user_id' => $this->user->id,
+            'type' => 'external',
+            'lang' => $locale,
+            'page_locale_id' => null
+        ]);
+        
+        $expectedResponse = $this->menu
+                ->items()
+                ->where('lang', $locale)
+                ->with('pageLocale')
+                ->orderBy('priority', 'ASC')
+                ->get(['id', 'label', 'type', 'page_locale_id', 'url_external', 'priority'])
+                ->toArray();
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.menu.getItemsLocale', $this->menu->id), [ 'locale' => $locale ], ['HTTP_REFERER' => $this->urlOriginFake]);
+        
+        $response
+                ->assertSuccessful()
+                ->assertJson($expectedResponse);
     }
 }
