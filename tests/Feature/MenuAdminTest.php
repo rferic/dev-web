@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Spatie\Permission\Models\Role;
 
 use App\User;
+use App\Page;
+use App\PageLocale;
 use App\Menu;
 use App\MenuItem;
 
@@ -27,13 +29,27 @@ class MenuAdminTest extends TestCase
         Role::create(['name' => 'admin']);
         
         $this->user = factory(User::class)->create()->assignRole('admin');
-        $this->menu = factory(Menu::class)->create([
-            'user_id' => $this->user->id
-        ]);
-        $this->items = factory(MenuItem::class, 5)->make([
-            'menu_id' => $this->menu->id,
-            'user_id' => $this->user->id
-        ]);
+        
+        factory(Page::class, 8)->create()->each(function ($page) {
+            $random = (bool)random_int(0, 1);
+            
+            if ($random) {
+                factory(PageLocale::class)->create([
+                    'lang' => 'en',
+                    'page_id' => $page->id
+                ]);
+            }
+            
+            if (!$random || (bool)random_int(0, 1)) {
+                factory(PageLocale::class)->create([
+                    'lang' => 'es',
+                    'page_id' => $page->id
+                ]);
+            }
+        });
+        
+        $this->menu = factory(Menu::class)->create();
+        $this->items = factory(MenuItem::class, 5)->make();
     }
     
     public function testSeeViewIndex ()
@@ -122,12 +138,7 @@ class MenuAdminTest extends TestCase
     {
         $this->withExceptionHandling();
         
-        $items = factory(MenuItem::class, 5)->make([
-            'menu_id' => $this->menu->id,
-            'user_id' => $this->user->id,
-            'type' => 'external',
-            'page_locale_id' => null
-        ]);
+        $items = factory(MenuItem::class, 5)->make();
         $locale = 'en';
         
         /******* TESING PUSH NEW ITEMS *******/
@@ -144,13 +155,7 @@ class MenuAdminTest extends TestCase
                 ->assertExactJson([true]);
         
         /******* TESING PUSH UPDATE & REMOVE ITEMS *******/
-        $items = factory(MenuItem::class, 5)->create([
-            'menu_id' => $this->menu->id,
-            'user_id' => $this->user->id,
-            'type' => 'external',
-            'lang' => $locale,
-            'page_locale_id' => null
-        ]);
+        $items = factory(MenuItem::class, 5)->create();
         $items[0]->edit = true;
         $items[0]->priority = 8;
         
@@ -230,13 +235,7 @@ class MenuAdminTest extends TestCase
         
         $locale = 'en';
         
-        factory(MenuItem::class, 5)->create([
-            'menu_id' => $this->menu->id,
-            'user_id' => $this->user->id,
-            'type' => 'external',
-            'lang' => $locale,
-            'page_locale_id' => null
-        ]);
+        factory(MenuItem::class, 5)->create();
         
         $expectedResponse = $this->menu
                 ->items()
