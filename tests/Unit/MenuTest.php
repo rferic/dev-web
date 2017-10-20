@@ -14,7 +14,7 @@ use App\MenuItem;
 use App\Page;
 use App\PageLocale;
 
-class MenuAdminTest extends TestCase
+class MenuTest extends TestCase
 {
     use DatabaseMigrations;
     
