@@ -36,7 +36,7 @@ class PageLocale extends Model
         });
     }
 
-    public function node ()
+    public function page ()
     {
         return $this->belongsTo(PageLocale::class, 'page_locale_id');
     }
