@@ -19,10 +19,12 @@ Vue.use(VeeValidate);
 Vue.use(i18n, translations)
 
 import MenuDragAndDrop from './admin/components/Menu.vue'
+import PageForm from './admin/components/Page.vue'
 
 const app = new Vue({
     el: '#app',
     components: {
-        MenuDragAndDrop
+        MenuDragAndDrop,
+        PageForm
     }
 });
