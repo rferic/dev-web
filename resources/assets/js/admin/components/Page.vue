@@ -1,6 +1,6 @@
 <template>
-  <div>
-    Hello World
+  <div class="nav-tabs-custom">
+    Hello world
   </div>
 </template>
 
@@ -36,7 +36,8 @@
       let page = null
       let context = this
       
-      Object.keys(context.supportedLocales).forEach(function(key, supportedLocale) {
+      for (var key in context.supportedLocales) {
+        let supportedLocale = context.supportedLocales[key]
         let contentsPage = []
         
         pagesOrigin.forEach((pageOrigin) => {
@@ -72,7 +73,7 @@
           seo_keywords: (page === null) ? [] : JSON.parse(page.seo_keywords),
           contents: contentsPage
         })
-      })
+      }
     },
     methods: {}
   }
