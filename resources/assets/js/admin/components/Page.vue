@@ -10,7 +10,8 @@
     props: [
       'supported_locales_json',
       'page_locales_json',
-      'locale',
+      'contents_json',
+      'locale'
     ],
     data () {
       return {
@@ -31,13 +32,27 @@
     },
     mounted () {
       let pagesOrigin = JSON.parse(this.page_locales_json)
+      let contents = JSON.parse(this.contents_json)
       let page = null
       let context = this
       
       Object.keys(context.supportedLocales).forEach(function(key, supportedLocale) {
+        let contentsPage = []
+        
         pagesOrigin.forEach((pageOrigin) => {
           if (pageOrigin.lang === key) {
             page = pageOrigin
+            
+            contents.forEach((content) => {
+              if (page.id === content.page_id) {
+                contentsPage.push({
+                  id: content.id,
+                  key: content.key,
+                  value: JSON.parse(content.text)
+                })
+              }
+            })
+            
             return false
           }
         })
@@ -54,7 +69,8 @@
           options: (page === null) ? {} : JSON.parse(page.options),
           seo_title: (page === null) ? '' : page.seo_title,
           seo_description: (page === null) ? '' : page.seo_description,
-          seo_keywords: (page === null) ? [] : JSON.parse(page.seo_keywords)
+          seo_keywords: (page === null) ? [] : JSON.parse(page.seo_keywords),
+          contents: contentsPage
         })
       })
     },

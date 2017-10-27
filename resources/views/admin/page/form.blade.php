@@ -15,6 +15,7 @@
             locale="{{ LaravelLocalization::getCurrentLocale() }}"
             supported_locales_json="{{ json_encode(LaravelLocalization::getSupportedLocales()) }}"
             page_locales_json="{{ isset($page) ? json_encode($page->locales()->get()) : '[]'  }}"
+            contents_json="{{ isset($page) ? json_encode($page->contents()->get()) : '[]'  }}"
         ></page-form>
     </div>
 @endsection
