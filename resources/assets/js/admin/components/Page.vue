@@ -36,7 +36,22 @@
       return {
         loading: false,
         pagesLocales: [],
-        pageLocaleCurrent: null
+        pageLocaleCurrent: null,
+        pageLocaleStructure : {
+          exist: false,
+          status: false,
+          current: false,
+          id: null,
+          slug: '',
+          title: '',
+          description: '',
+          layout: '',
+          options: {},
+          seo_title: '',
+          seo_description: '',
+          seo_keywords: [],
+          contents: []
+        }
       }
     },
     
@@ -89,20 +104,21 @@
         })
         
         context.pagesLocales.push({
+          exist: (page === null) ? this.pageLocaleStructure.exist: true,
+          status: (page === null) ? this.pageLocaleStructure.status : true,
           current: this.pageLocaleCurrent === null ? true : false,
           lang: supportedLocale,
           lang_iso: key,
-          status: (page === null) ? false : true,
-          id: (page === null) ? null : page.id,
-          slug: (page === null) ? '' : page.slug,
-          title: (page === null) ? '' : page.title,
-          description: (page === null) ? '' : page.description,
-          layout: (page === null) ? '' : page.layout,
-          options: (page === null) ? {} : JSON.parse(page.options),
-          seo_title: (page === null) ? '' : page.seo_title,
-          seo_description: (page === null) ? '' : page.seo_description,
-          seo_keywords: (page === null) ? [] : JSON.parse(page.seo_keywords),
-          contents: contentsPage
+          id: (page === null) ? this.pageLocaleStructure.id : page.id,
+          slug: (page === null) ? this.pageLocaleStructure.slug : page.slug,
+          title: (page === null) ? this.pageLocaleStructure.title : page.title,
+          description: (page === null) ? this.pageLocaleStructure.description : page.description,
+          layout: (page === null) ? this.pageLocaleStructure.layout : page.layout,
+          options: (page === null) ? this.pageLocaleStructure.options : JSON.parse(page.options),
+          seo_title: (page === null) ? this.pageLocaleStructure.seo_title : page.seo_title,
+          seo_description: (page === null) ? this.pageLocaleStructure.seo_description : page.seo_description,
+          seo_keywords: (page === null) ? this.pageLocaleStructure.seo_keywords : JSON.parse(page.seo_keywords),
+          contents: contentsPage 
         })
         
         if (this.pageLocaleCurrent === null) {
