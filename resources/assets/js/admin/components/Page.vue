@@ -19,6 +19,7 @@
 
 <script>
   import PageLocale from './PageLocale'
+  import pageLocaleVoidStructure from '../includes/pageLocaleVoidStructure'
   
   export default {
     name: 'PageForm',
@@ -36,22 +37,7 @@
       return {
         loading: false,
         pagesLocales: [],
-        pageLocaleCurrent: null,
-        pageLocaleStructure : {
-          exist: false,
-          status: false,
-          current: false,
-          id: null,
-          slug: '',
-          title: '',
-          description: '',
-          layout: '',
-          options: {},
-          seo_title: '',
-          seo_description: '',
-          seo_keywords: [],
-          contents: []
-        }
+        pageLocaleCurrent: null
       }
     },
     
@@ -104,20 +90,20 @@
         })
         
         context.pagesLocales.push({
-          exist: (page === null) ? this.pageLocaleStructure.exist: true,
-          status: (page === null) ? this.pageLocaleStructure.status : true,
-          current: this.pageLocaleCurrent === null ? true : false,
           lang: supportedLocale,
           lang_iso: key,
-          id: (page === null) ? this.pageLocaleStructure.id : page.id,
-          slug: (page === null) ? this.pageLocaleStructure.slug : page.slug,
-          title: (page === null) ? this.pageLocaleStructure.title : page.title,
-          description: (page === null) ? this.pageLocaleStructure.description : page.description,
-          layout: (page === null) ? this.pageLocaleStructure.layout : page.layout,
-          options: (page === null) ? this.pageLocaleStructure.options : JSON.parse(page.options),
-          seo_title: (page === null) ? this.pageLocaleStructure.seo_title : page.seo_title,
-          seo_description: (page === null) ? this.pageLocaleStructure.seo_description : page.seo_description,
-          seo_keywords: (page === null) ? this.pageLocaleStructure.seo_keywords : JSON.parse(page.seo_keywords),
+          exist: (page === null) ? pageLocaleVoidStructure.exist: true,
+          status: (page === null) ? pageLocaleVoidStructure.status : true,
+          current: this.pageLocaleCurrent === null ? true : false,
+          id: (page === null) ? pageLocaleVoidStructure.id : page.id,
+          slug: (page === null) ? pageLocaleVoidStructure.slug : page.slug,
+          title: (page === null) ? pageLocaleVoidStructure.title : page.title,
+          description: (page === null) ? pageLocaleVoidStructure.description : page.description,
+          layout: (page === null) ? pageLocaleVoidStructure.layout : page.layout,
+          options: (page === null) ? pageLocaleVoidStructure.options : JSON.parse(page.options),
+          seo_title: (page === null) ? pageLocaleVoidStructure.seo_title : page.seo_title,
+          seo_description: (page === null) ? pageLocaleVoidStructure.seo_description : page.seo_description,
+          seo_keywords: (page === null) ? pageLocaleVoidStructure.seo_keywords : JSON.parse(page.seo_keywords),
           contents: contentsPage 
         })
         
