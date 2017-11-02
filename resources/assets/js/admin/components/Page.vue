@@ -19,7 +19,7 @@
 
 <script>
   import PageLocale from './PageLocale'
-  import pageLocaleVoidStructure from '../includes/pageLocaleVoidStructure'
+  import pageLocaleVoidStructure from '../structures/pageLocaleVoidStructure'
   
   export default {
     name: 'PageForm',
