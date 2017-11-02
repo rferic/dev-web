@@ -1,10 +1,25 @@
 <template>
-  <div class="nav-tabs-custom">
-    Hello world
+  <div v-if="localesExists" class="nav-tabs-custom">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li v-for="(pageLocale, index) in pagesLocales" :key="index" :class="{ active: pageLocale.current }">
+          <a :href="`#locale-${pageLocale.lang_iso}`" data-toggle="tab" aria-expanded="true" @click="setPageLocaleCurrent(pageLocale.lang_iso)">{{ pageLocale.lang.name }}</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane" id="`#locale-${pageLocale.lang_iso}`" v-for="(pageLocale, index) in pagesLocales" :key="index" :class="{ active: pageLocale.current }">
+            <page-locale
+              :pageLocale="pageLocale"
+            />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+  import PageLocale from './PageLocale'
+  
   export default {
     name: 'PageForm',
     props: [
@@ -13,23 +28,38 @@
       'contents_json',
       'locale'
     ],
+    components: {
+      PageLocale
+    },
+    
     data () {
       return {
         loading: false,
         pagesLocales: [],
+        pageLocaleCurrent: null
       }
     },
+    
     computed: {
+      localesExists () {
+        return this.pagesLocales.length > 0
+      },
       supportedLocales () {
         return JSON.parse(this.supported_locales_json)
       },
       page_locales () {
         return JSON.parse(this.page_locales_json)
-      },
-      pageExist () {
-        return this.page.length > 0
       }
     },
+    
+    methods: {
+      setPageLocaleCurrent (pageLocaleISOCurrent) {
+        this.pagesLocales.forEach((pageLocale) => {
+          pageLocale.current = pageLocale.lang_iso === pageLocaleISOCurrent ? true : false
+        })
+      }
+    },
+    
     mounted () {
       let pagesOrigin = JSON.parse(this.page_locales_json)
       let contents = JSON.parse(this.contents_json)
@@ -59,6 +89,7 @@
         })
         
         context.pagesLocales.push({
+          current: this.pageLocaleCurrent === null ? true : false,
           lang: supportedLocale,
           lang_iso: key,
           status: (page === null) ? false : true,
@@ -73,8 +104,11 @@
           seo_keywords: (page === null) ? [] : JSON.parse(page.seo_keywords),
           contents: contentsPage
         })
+        
+        if (this.pageLocaleCurrent === null) {
+          this.pageLocaleCurrent = key
+        }
       }
-    },
-    methods: {}
+    }
   }
 </script>

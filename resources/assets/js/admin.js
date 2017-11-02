@@ -10,13 +10,15 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueResource from 'vue-resource'
-import VeeValidate from 'vee-validate';
+import VeeValidate from 'vee-validate'
 import i18n from 'voo-i18n'
 import translations from './admin/includes/translations'
+import ToggleButton from 'vue-js-toggle-button'
 
 Vue.use(VueResource)
-Vue.use(VeeValidate);
+Vue.use(VeeValidate)
 Vue.use(i18n, translations)
+Vue.use(ToggleButton)
 
 import MenuDragAndDrop from './admin/components/Menu.vue'
 import PageForm from './admin/components/Page.vue'
