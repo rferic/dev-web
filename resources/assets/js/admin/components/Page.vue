@@ -10,6 +10,7 @@
         <div class="tab-pane" id="`#locale-${pageLocale.lang_iso}`" v-for="(pageLocale, index) in pagesLocales" :key="index" :class="{ active: pageLocale.current }">
             <page-locale
               :pageLocale="pageLocale"
+              :locale="locale"
             />
         </div>
       </div>
