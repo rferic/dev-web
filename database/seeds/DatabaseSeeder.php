@@ -9,6 +9,7 @@ use App\MenuItem;
 use App\PageLocale;
 use App\Page;
 use App\Menu;
+use App\Content;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,16 +32,24 @@ class DatabaseSeeder extends Seeder
             $random = (bool)random_int(0, 1);
             
             if ($random) {
-                factory(PageLocale::class)->create([
+                $pageLocale = factory(PageLocale::class)->create([
                     'lang' => 'en',
                     'page_id' => $page->id
+                ]);
+                
+                factory(Content::class)->create([
+                    'page_locale_id' => $pageLocale->id
                 ]);
             }
             
             if (!$random || (bool)random_int(0, 1)) {
-                factory(PageLocale::class)->create([
+                $pageLocale = factory(PageLocale::class)->create([
                     'lang' => 'es',
                     'page_id' => $page->id
+                ]);
+                
+                factory(Content::class)->create([
+                    'page_locale_id' => $pageLocale->id
                 ]);
             }
         });

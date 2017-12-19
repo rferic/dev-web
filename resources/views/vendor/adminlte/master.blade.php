@@ -24,8 +24,9 @@
             <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css">
         @endif
 
-        <!-- Theme style -->
+        <!-- Theme styles -->
         <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         @if(config('adminlte.plugins.datatables'))
             <!-- DataTables -->

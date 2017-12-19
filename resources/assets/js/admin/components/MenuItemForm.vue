@@ -50,7 +50,7 @@
             name="page_locale_id"
             v-model="item.page_locale_id"
             v-validate
-            data-vv-rules="required|max:100"
+            data-vv-rules="required"
             class="form-control"
             :class="{ 'has-error' : errors.has('page_locale_id')}">
 
@@ -92,7 +92,6 @@
   import slugMixin from '../includes/slugMixin'
 
   export default {
-    mixins: [slugMixin],
     name: 'MenuItemForm',
     props: [
       'locale',

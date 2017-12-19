@@ -10,10 +10,12 @@ $factory->define(App\PageLocale::class, function (Faker $faker) {
         'slug' => str_slug($title, '-'),
         'title' => $title,
         'description' => $faker->paragraph,
-        'layout' => $faker->word,
+        'layout' => 'default',
         'options' => json_encode([
-            $faker->word => $faker->randomDigitNotNull,
-            $faker->word => $faker->word
+            'inject' => [
+                'css' => $faker->word,
+                'js' => 'console.log(' . $faker->word . ')'
+            ]
         ]),
         'seo_title' => $faker->sentence,
         'seo_description' => $faker->paragraph,

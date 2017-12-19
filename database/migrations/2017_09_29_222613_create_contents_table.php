@@ -18,8 +18,13 @@ class CreateContentsTable extends Migration
             $table->unsignedInteger('page_locale_id');
             $table->string('key');
             $table->longText('text');
+            $table->longText('styles');
+            $table->longText('css_inject');
+            $table->longText('js_inject');
             $table->timestamps();
             $table->softDeletes();
+            
+            $table->index('id');
 
             $table->foreign('page_locale_id')->references('id')->on('page_locales');
         });
