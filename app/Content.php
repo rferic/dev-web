@@ -11,7 +11,7 @@ class Content extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = [ 'page_locale_id', 'key', 'text'];
+    protected $fillable = [ 'page_locale_id', 'key', 'text', 'styles', 'css_inject', 'js_inject', 'priority'];
     protected $happens = ['page'];
 
     public function pageLocale ()

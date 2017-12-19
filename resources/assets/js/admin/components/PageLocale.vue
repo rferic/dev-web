@@ -71,13 +71,13 @@
 
         <!-- Description Locale -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="slug">{{ $t('Description', { locale: locale }) }}*</label>
-          <div class="col-lg-10 col-md-8 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('slug')}">
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="description">{{ $t('Description', { locale: locale }) }}*</label>
+          <div class="col-lg-10 col-md-8 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('description')}">
             <textarea
               name="description"
               v-model="item.description"
               v-validate
-              data-vv-rules="required|500"
+              data-vv-rules="required|max:500"
               class="form-control"
               :class="{ 'has-error' : errors.has('description')}"></textarea>
             <span v-show="errors.has('description')" class="text-danger">{{ errors.first('description') }}</span>

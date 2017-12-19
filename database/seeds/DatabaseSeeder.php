@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
                     'page_id' => $page->id
                 ]);
                 
-                factory(Content::class)->create([
+                factory(Content::class, 3)->create([
                     'page_locale_id' => $pageLocale->id
                 ]);
             }
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
                     'page_id' => $page->id
                 ]);
                 
-                factory(Content::class)->create([
+                factory(Content::class, 3)->create([
                     'page_locale_id' => $pageLocale->id
                 ]);
             }

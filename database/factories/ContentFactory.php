@@ -9,6 +9,7 @@ $factory->define(App\Content::class, function (Faker $faker) {
         'text' => $faker->randomHtml(2, 5),
         'styles' => $faker->url,
         'css_inject' => $faker->word,
-        'js_inject' => 'console.log("' . $faker->word . '")'
+        'js_inject' => 'console.log("' . $faker->word . '")',
+        'priority' => $faker->numberBetween(0, 10)
     ];
 });

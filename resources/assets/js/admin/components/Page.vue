@@ -38,7 +38,8 @@
       return {
         loading: false,
         pagesLocales: [],
-        pageLocaleCurrent: null
+        pageLocaleCurrent: null/*,
+        contents: []*/
       }
     },
     
@@ -51,6 +52,9 @@
       },
       page_locales () {
         return JSON.parse(this.page_locales_json)
+      },
+      contents () {
+        return JSON.parse(this.contents_json)
       }
     },
     
@@ -64,25 +68,23 @@
     
     mounted () {
       let pagesOrigin = JSON.parse(this.page_locales_json)
-      let contents = JSON.parse(this.contents_json)
+      let contentsOrigin = JSON.parse(this.contents_json)
       let page = null
       let context = this
+      let contentsPage = []
       
       for (var key in context.supportedLocales) {
         let supportedLocale = context.supportedLocales[key]
-        let contentsPage = []
         
         pagesOrigin.forEach((pageOrigin) => {
           if (pageOrigin.lang === key) {
             page = pageOrigin
+            page.contents = [];
             
-            contents.forEach((content) => {
-              if (page.id === content.page_id) {
-                contentsPage.push({
-                  id: content.id,
-                  key: content.key,
-                  value: JSON.parse(content.text)
-                })
+            contentsOrigin.forEach((contentOrigin) => {
+              
+              if (page.id === contentOrigin.page_id) {
+                contentsPage.push(contentOrigin)
               }
             })
             

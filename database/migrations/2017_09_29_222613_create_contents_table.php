@@ -21,6 +21,7 @@ class CreateContentsTable extends Migration
             $table->longText('styles');
             $table->longText('css_inject');
             $table->longText('js_inject');
+            $table->unsignedInteger('priority');
             $table->timestamps();
             $table->softDeletes();
             
