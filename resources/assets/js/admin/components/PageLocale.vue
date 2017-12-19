@@ -90,7 +90,15 @@
       </div>
       
       <div class="col-sm-12">
-        <draggable v-if="hasContents" :list="this.item.options.contents" @end="eventMove"></draggable>
+        <draggable v-if="hasContents" :list="this.item.contents" @end="eventMove">
+          <transition-group name="list-complete">
+            <div v-for="(content, index) in this.item.contents" :key="index" class="list-complete-item well well-sm">
+              <content-item
+                :item="content"
+                />
+            </div>
+          </transition-group>
+        </draggable>
       </div>
       
       <div class="col-sm-12">
@@ -120,7 +128,7 @@
   import draggable from 'vuedraggable'
   import slugMixin from '../includes/slugMixin'
   import layoutsArray from '../includes/layoutsArray'
-  import Content from './Content'
+  import ContentItem from './ContentItem'
   
   export default {
     mixins: [slugMixin],
@@ -130,12 +138,13 @@
       'pageLocale'
     ],
     components: {
-      draggable
+      draggable,
+      ContentItem
     },
     
     computed: {
       hasContents () {
-        return this.item.options.contents && this.item.options.contents.length
+        return this.item.contents.length > 0
       }
     },
     
@@ -153,7 +162,22 @@
       
       onSwitchChangeEventHandler (ev) {
         this.pageLocale.status = ev.value
+      },
+      
+      eventMove (ev) {
+        this.reorder()
+      },
+      
+      reorder () {
+        this.pageLocale.contents.forEach((content, key) => {
+          console.log(key)
+          content.priority = key
+        });
       }
+    },
+    
+    mounted () {
+      this.reorder()
     }
   }
 </script>
@@ -162,4 +186,13 @@
   .vue-js-switch {
     font-size: 16px;
   }
+
+  .list-complete-item {
+    transition: all 1s;
+    cursor: move;
+  }
+
+  .list-complete-enter, .list-complete-leave-active {
+    opacity: 0;
+}
 </style>

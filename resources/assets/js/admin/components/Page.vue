@@ -52,9 +52,6 @@
       },
       page_locales () {
         return JSON.parse(this.page_locales_json)
-      },
-      contents () {
-        return JSON.parse(this.contents_json)
       }
     },
     
