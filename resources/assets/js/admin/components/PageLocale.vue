@@ -170,7 +170,6 @@
       
       reorder () {
         this.pageLocale.contents.forEach((content, key) => {
-          console.log(key)
           content.priority = key
         });
       }

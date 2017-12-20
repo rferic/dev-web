@@ -17,6 +17,8 @@ class CreateContentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('page_locale_id');
             $table->string('key');
+            $table->string('id_html');
+            $table->string('class_html');
             $table->longText('text');
             $table->longText('styles');
             $table->longText('css_inject');
