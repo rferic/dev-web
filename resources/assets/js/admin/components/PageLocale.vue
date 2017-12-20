@@ -86,27 +86,31 @@
       </div>
       
       <div class="col-sm-12">
-        <h3>{{ $t('Content')}}</h3>
+        <h3>{{ $t('Contents')}}</h3>
       </div>
       
       <div class="col-sm-12">
-        <draggable v-if="hasContents" :list="this.item.contents" @end="eventMove">
+        <draggable v-if="showList" :list="this.item.contents" @end="eventMove">
           <transition-group name="list-complete">
             <div v-for="(content, index) in this.item.contents" :key="index" class="list-complete-item well well-sm">
               <content-item
                 :item="content"
+                @removeContentEvent="removeContent"
+                @showEditContentEvent="showEditContent"
                 />
             </div>
           </transition-group>
         </draggable>
+        <content-form v-else
+          @cancelEditContentEvent="cancelEditContent"
+          @saveEditContentEvent="saveEditContent"
+          :locale="locale"
+          :item="contentEdit.content"
+          />
       </div>
       
       <div class="col-sm-12">
         <h3>{{ $t('SEO')}}</h3>
-      </div>
-      
-      <div class="col-sm-12">
-        <h3>{{ $t('Inject CSS & JS')}}</h3>
       </div>
       
       <p class="clearfix"></p>
@@ -129,6 +133,7 @@
   import slugMixin from '../includes/slugMixin'
   import layoutsArray from '../includes/layoutsArray'
   import ContentItem from './ContentItem'
+  import ContentForm from './ContentForm'
   
   export default {
     mixins: [slugMixin],
@@ -139,19 +144,25 @@
     ],
     components: {
       draggable,
-      ContentItem
-    },
-    
-    computed: {
-      hasContents () {
-        return this.item.contents.length > 0
-      }
+      ContentItem,
+      ContentForm
     },
     
     data () {
       return {
         item: this.pageLocale,
-        layoutsArray: layoutsArray
+        layoutsArray: layoutsArray,
+        contentEdit: {}
+      }
+    },
+    
+    computed: {
+      showList() {
+        return !this.contentEdit.state && this.hasContents
+      },
+      
+      hasContents () {
+        return this.item.contents.length > 0
       }
     },
     
@@ -172,11 +183,47 @@
         this.pageLocale.contents.forEach((content, key) => {
           content.priority = key
         });
+      },
+      
+      removeContent (item) {
+        let contents = []
+        
+        this.pageLocale.contents.forEach((content, key) => {
+          if (item !== content.id) {
+            contents.push(content)
+          }
+        });
+        
+        this.pageLocale.contents = contents
+        this.reorder()
+      },
+      
+      showEditContent (item) {
+        this.contentEdit = {
+          state: true,
+          content: item
+        }
+      },
+      
+      showListContents () {
+        this.contentEdit = {
+          state: false,
+          content: null
+        }
+      },
+      
+      cancelEditContent () {
+        this.showListContents();
+      },
+      
+      saveEditContent () {
+        this.showListContents();
       }
     },
     
     mounted () {
       this.reorder()
+      this.showListContents()
     }
   }
 </script>

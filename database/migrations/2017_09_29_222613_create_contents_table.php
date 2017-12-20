@@ -20,9 +20,8 @@ class CreateContentsTable extends Migration
             $table->string('id_html');
             $table->string('class_html');
             $table->longText('text');
-            $table->longText('styles');
-            $table->longText('css_inject');
-            $table->longText('js_inject');
+            $table->longText('header_inject');
+            $table->longText('footer_inject');
             $table->unsignedInteger('priority');
             $table->timestamps();
             $table->softDeletes();
