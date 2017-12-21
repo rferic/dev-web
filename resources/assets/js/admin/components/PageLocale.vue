@@ -169,6 +169,15 @@
       <p class="clearfix"></p>
       
     </form>
+    
+    <div class="col-sm-12" v-if="isTrash">
+      <p class="clearfix"></p>
+      <button class="btn btn-danger btn-xl">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{ $t('Confirm disable', { locale: locale }) }}
+      </button>
+    </div>
+    
+    <p class="clearfix"></p>
   </div>
 </template>
 
@@ -199,7 +208,11 @@
       return {
         item: this.pageLocale,
         layoutsArray: layoutsArray,
-        contentEdit: {}
+        contentEdit: {
+          content: {
+            key: ''
+          }
+        }
       }
     },
     
@@ -210,6 +223,10 @@
       
       hasContents () {
         return this.item.contents.length > 0
+      },
+      
+      isTrash () {
+        return !this.pageLocale.status && this.item.id !== null
       }
     },
     

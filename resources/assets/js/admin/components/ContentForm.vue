@@ -26,7 +26,7 @@
       <div class="row">
         <!-- ID Content -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="key">{{ $t('ID', { locale: locale }) }}</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="id_html">{{ $t('ID', { locale: locale }) }}</label>
           <div class="col-lg-10 col-md-8 col-sm-6" :class="{ 'has-error' : errors.has('id_html')}">
             <input
               type="text"
@@ -134,7 +134,7 @@
       
       cancelEdit () {
         this.content.key = this.dataOrigin.key
-        this.content.id_html = this.dataOrigin.key
+        this.content.id_html = this.dataOrigin.id_html
         this.content.class_html = this.dataOrigin.class_html
         this.content.text = this.dataOrigin.text
         this.content.header_inject = this.dataOrigin.header_inject

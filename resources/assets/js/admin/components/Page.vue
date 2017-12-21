@@ -30,7 +30,8 @@
       'supported_locales_json',
       'page_locales_json',
       'contents_json',
-      'locale'
+      'locale',
+      'routepageupdate'
     ],
     components: {
       PageLocale
@@ -40,8 +41,7 @@
       return {
         loading: false,
         pagesLocales: [],
-        pageLocaleCurrent: null/*,
-        contents: []*/
+        pageLocaleCurrent: null
       }
     },
     
@@ -65,7 +65,15 @@
       },
       
       savePageLocale (pageLocale) {
-        console.log(pageLocale)
+        axios.post(`${this.routepageupdate}`, {
+          pageLocale: pageLocale,
+          locale: pageLocale.lang_iso
+        }).then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error)
+          context.serverError();
+        })
       }
     },
     

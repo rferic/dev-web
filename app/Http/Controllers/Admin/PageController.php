@@ -12,6 +12,7 @@ use App\Page;
 use App\PageLocale;
 
 use App\Http\Helpers\PageHelper;
+use App\Http\Controllers\Admin\PageLocaleController;
 
 class PageController extends Controller
 {
@@ -59,5 +60,19 @@ class PageController extends Controller
 
         return back()
             ->with('message', ['class' => 'alert-success', 'content' => __('Page has been restored')]);
+    }
+    
+    public function update (Request $request, Page $page)
+    {
+        $pageLocaleData = Input::get('pageLocale');
+        $locale = Input::get('locale');
+        
+        if (is_null($pageLocaleData['id']))
+            PageLocaleController::store($page->id, $pageLocaleData, $locale);
+        else
+            PageLocaleController::save($page->id, $pageLocaleData, $locale);
+        
+        return Response::json($request->input('pageLocale'));
+        return Response::json($page);
     }
 }
