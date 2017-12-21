@@ -105,12 +105,54 @@
           @cancelEditContentEvent="cancelEditContent"
           @saveEditContentEvent="saveEditContent"
           :locale="locale"
-          :item="contentEdit.content"
+          :content="contentEdit.content"
           />
+        <button type="button" class="btn btn-app btn-block" @click="showEditContent(null)"><i class="fa fa-plus"></i>{{ $t('New content', { locale: locale }) }}</button>
       </div>
       
       <div class="col-sm-12">
         <h3>{{ $t('SEO')}}</h3>
+      </div>
+      
+      <div class="row">
+        <!-- SEO Title Locale -->
+        <div class="form-group col-md-6 col-sm-12">
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="seo_title">{{ $t('SEO Title', { locale: locale }) }}*</label>
+          <div class="col-lg-10 col-md-8 col-sm-6" :class="{ 'has-error' : errors.has('seo_title')}">
+            <input
+              type="text"
+              name="seo_title"
+              v-model="item.seo_title"
+              v-validate
+              data-vv-rules="required|max:100"
+              class="form-control"
+              :class="{ 'has-error' : errors.has('seo_title')}" />
+            <span v-show="errors.has('seo_title')" class="text-danger">{{ errors.first('seo_title') }}</span>
+          </div>
+        </div>
+        
+        <!-- SEO Keywords Locale -->
+        <div class="form-group col-md-6 col-sm-12">
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="seo_title">{{ $t('SEO Keywords', { locale: locale }) }}</label>
+          <div class="col-lg-10 col-md-8 col-sm-6">
+            <input-tag class="form-control" :tags="item.seo_keywords"></input-tag>
+          </div>
+        </div>
+      </div>
+        
+      <!-- SEO Description Locale -->
+      <div class="form-group col-md-12 col-sm-12">
+        <label class="control-label col-lg-1 col-md-2 col-sm-6" for="description">{{ $t('SEO Description', { locale: locale }) }}*</label>
+        <div class="col-lg-11 col-md-10 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('seo_description')}">
+          <textarea
+            name="seo_description"
+            v-model="item.seo_description"
+            v-validate
+            data-vv-rules="max:500"
+            class="form-control"
+            :class="{ 'has-error' : errors.has('seo_description')}"></textarea>
+          <span v-show="errors.has('seo_description')" class="text-danger">{{ errors.first('seo_description') }}</span>
+        </div>
       </div>
       
       <p class="clearfix"></p>
@@ -132,8 +174,10 @@
   import draggable from 'vuedraggable'
   import slugMixin from '../includes/slugMixin'
   import layoutsArray from '../includes/layoutsArray'
+  import contentVoidStructure from '../structures/contentVoidStructure'
   import ContentItem from './ContentItem'
   import ContentForm from './ContentForm'
+  import InputTag from 'vue-input-tag'
   
   export default {
     mixins: [slugMixin],
@@ -144,6 +188,7 @@
     ],
     components: {
       draggable,
+      InputTag,
       ContentItem,
       ContentForm
     },
@@ -201,7 +246,7 @@
       showEditContent (item) {
         this.contentEdit = {
           state: true,
-          content: item
+          content: item === null ? Object.assign({}, contentVoidStructure) : item
         }
       },
       
@@ -216,8 +261,13 @@
         this.showListContents();
       },
       
-      saveEditContent () {
-        this.showListContents();
+      saveEditContent (content) {
+        if (content.page_id === null) {
+          this.item.contents.push(content)
+          this.reorder()
+        }
+        
+        this.showListContents()
       }
     },
     
@@ -240,5 +290,9 @@
 
   .list-complete-enter, .list-complete-leave-active {
     opacity: 0;
-}
+  }
+  
+  .vue-input-tag-wrapper {
+    padding-bottom: 34px;
+  }
 </style>

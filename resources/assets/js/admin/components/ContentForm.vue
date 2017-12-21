@@ -1,6 +1,6 @@
 <template>
   <div class="bg-aqua-active color-palette">
-    <form autocomplete="off" @submit.prevent="validateBeforeSubmit" class="form-horizontal">
+    <form autocomplete="off" @submit.prevent="validateBeforeSubmitContent" class="form-horizontal form-content">
       <div class="col-sm-12">
         <h4>{{ $t('Edit content')}}</h4>
       </div>
@@ -83,7 +83,7 @@
         
         <div class="col-md-12 col-sm-12">
           <div class="col-md-6 col-sm-12">
-            <button class="btn btn-danger btn-xl">
+            <button class="btn btn-danger btn-xl" @click="cancelEdit" type="button">
               {{ $t('Cancel', { locale: locale }) }}
             </button>
           </div>
@@ -100,7 +100,6 @@
 </template>
 
 <script>
-  import contentVoidStructure from '../structures/contentVoidStructure'
   import editor from 'ace-vue2'
   import 'brace/mode/html'
   import 'brace/mode/javascript'
@@ -109,14 +108,14 @@
   
   export default {
     name: 'ContentForm',
-    props: [ 'locale', 'item' ],
+    props: [ 'locale', 'content' ],
     components: {
       editor
     },
     
     data () {
       return {
-        content: contentVoidStructure
+        dataOrigin: {}
       }
     },
     
@@ -133,19 +132,45 @@
         this.content.footer_inject = value
       },
       
-      validateBeforeSubmit () {}
+      cancelEdit () {
+        this.content.key = this.dataOrigin.key
+        this.content.id_html = this.dataOrigin.key
+        this.content.class_html = this.dataOrigin.class_html
+        this.content.text = this.dataOrigin.text
+        this.content.header_inject = this.dataOrigin.header_inject
+        this.content.footer_inject = this.dataOrigin.footer_inject
+        
+        this.$emit('cancelEditContentEvent', this.content)
+      },
+      
+      validateBeforeSubmitContent () {
+        this.$validator.validateAll().then(result => {
+          if (!result) {
+            console.log('Form not validate')
+          } else {
+            this.$emit('saveEditContentEvent', this.content)
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     },
     
     mounted () {
-      if (this.item !== null) {
-        this.content = this.item
+      this.dataOrigin = {
+        key: this.content.key,
+        id_html: this.content.id_html,
+        class_html: this.content.class_html,
+        text: this.content.text,
+        header_inject: this.content.header_inject,
+        footer_inject: this.content.footer_inject
       }
     }
   }
 </script>
 
 <style>
-  form {
+  form.form-content {
     background-color: #4984933b;
   }
 </style>
