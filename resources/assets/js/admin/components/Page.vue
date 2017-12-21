@@ -11,6 +11,7 @@
             <page-locale
               :pageLocale="pageLocale"
               :locale="locale"
+              @savePageLocaleEvent="savePageLocale"
             />
         </div>
       </div>
@@ -25,6 +26,7 @@
   export default {
     name: 'PageForm',
     props: [
+      'page',
       'supported_locales_json',
       'page_locales_json',
       'contents_json',
@@ -60,6 +62,10 @@
         this.pagesLocales.forEach((pageLocale) => {
           pageLocale.current = pageLocale.lang_iso === pageLocaleISOCurrent ? true : false
         })
+      },
+      
+      savePageLocale (pageLocale) {
+        console.log(pageLocale)
       }
     },
     

@@ -139,19 +139,21 @@
           </div>
         </div>
       </div>
-        
-      <!-- SEO Description Locale -->
-      <div class="form-group col-md-12 col-sm-12">
-        <label class="control-label col-lg-1 col-md-2 col-sm-6" for="description">{{ $t('SEO Description', { locale: locale }) }}*</label>
-        <div class="col-lg-11 col-md-10 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('seo_description')}">
-          <textarea
-            name="seo_description"
-            v-model="item.seo_description"
-            v-validate
-            data-vv-rules="max:500"
-            class="form-control"
-            :class="{ 'has-error' : errors.has('seo_description')}"></textarea>
-          <span v-show="errors.has('seo_description')" class="text-danger">{{ errors.first('seo_description') }}</span>
+       
+      <div class="row">
+        <!-- SEO Description Locale -->
+        <div class="form-group col-md-6 col-sm-12">
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="description">{{ $t('SEO Description', { locale: locale }) }}</label>
+          <div class="col-lg-10 col-md-8 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('seo_description')}">
+            <textarea
+              name="seo_description"
+              v-model="item.seo_description"
+              v-validate
+              data-vv-rules="max:500"
+              class="form-control"
+              :class="{ 'has-error' : errors.has('seo_description')}"></textarea>
+            <span v-show="errors.has('seo_description')" class="text-danger">{{ errors.first('seo_description') }}</span>
+          </div>
         </div>
       </div>
       
@@ -253,7 +255,7 @@
       showListContents () {
         this.contentEdit = {
           state: false,
-          content: null
+          content: contentVoidStructure
         }
       },
       
@@ -270,12 +272,12 @@
         this.showListContents()
       },
       
-      validateBeforeSubmitContent () {
+      validateBeforeSubmit () {
         this.$validator.validateAll().then(result => {
           if (!result) {
             console.log('Form not validate')
           } else {
-            
+            this.$emit('savePageLocaleEvent', this.item)
           }
         }).catch(error => {
           console.log(error)

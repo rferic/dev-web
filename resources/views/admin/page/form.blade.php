@@ -12,6 +12,7 @@
 
     <div class="col-md-12 col-sm-12 col-xs-12">
         <page-form
+            page="{{ $page->id }}"
             locale="{{ LaravelLocalization::getCurrentLocale() }}"
             supported_locales_json="{{ json_encode(LaravelLocalization::getSupportedLocales()) }}"
             page_locales_json="{{ isset($page) ? json_encode($page->locales()->get()) : '[]'  }}"
