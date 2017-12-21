@@ -160,7 +160,7 @@
       <div class="col-sm-12">
         <div class="col-sm-12">
           <button class="btn btn-success btn-xl pull-right" type="submit">
-            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save', { locale: locale }) }}
+            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save language', { locale: locale }) }}
           </button>
         </div>
       </div>
@@ -268,6 +268,18 @@
         }
         
         this.showListContents()
+      },
+      
+      validateBeforeSubmitContent () {
+        this.$validator.validateAll().then(result => {
+          if (!result) {
+            console.log('Form not validate')
+          } else {
+            
+          }
+        }).catch(error => {
+          console.log(error)
+        })
       }
     },
     

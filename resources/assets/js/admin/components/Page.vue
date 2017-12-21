@@ -66,12 +66,15 @@
     mounted () {
       let pagesOrigin = JSON.parse(this.page_locales_json)
       let contentsOrigin = JSON.parse(this.contents_json)
-      let page = null
+      let page 
       let context = this
-      let contentsPage = []
+      let contentsPage
       
       for (var key in context.supportedLocales) {
         let supportedLocale = context.supportedLocales[key]
+        
+        page = null
+        contentsPage = []
         
         pagesOrigin.forEach((pageOrigin) => {
           if (pageOrigin.lang === key) {
@@ -84,7 +87,7 @@
                 contentsPage.push(contentOrigin)
               }
             })
-            
+          
             return false
           }
         })
