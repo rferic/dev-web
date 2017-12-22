@@ -32,7 +32,7 @@ class MenuItem extends Model
 
     public function pageLocale ()
     {
-        return $this->belongsTo(PageLocale::class);
+        return $this->belongsTo(PageLocale::class, 'page_locale_id');
     }
 
     public function author ()

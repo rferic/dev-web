@@ -6,6 +6,7 @@
       :sync="true"
       :labels="true"
       @change="onSwitchChangeEventHandler"
+      class="pull-right"
     />
     <form autocomplete="off" @submit.prevent="validateBeforeSubmit" class="form-horizontal" v-if="pageLocale.status">
       <div class="col-sm-12">
@@ -172,9 +173,13 @@
     
     <div class="col-sm-12" v-if="isTrash">
       <p class="clearfix"></p>
-      <button class="btn btn-danger btn-xl">
-        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{ $t('Confirm disable', { locale: locale }) }}
-      </button>
+      <div class="callout callout-warning">
+        <h4>{{ $t('This change require your confirm', { locale: locale }) }}</h4>
+        <p>{{ $t('If there is no translation of the page it will be deleted to avoid trash', { locale: locale }) }}</p>
+        <button class="btn btn-danger btn-xl" @click="$emit('removePageLocaleEvent', item.lang_iso)">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{ $t('Confirm disable', { locale: locale }) }}
+        </button>
+      </div>
     </div>
     
     <p class="clearfix"></p>

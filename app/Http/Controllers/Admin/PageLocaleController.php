@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Controller;
+
+use App\Http\Controllers\Admin\ContentController;
+use App\Http\Controllers\Admin\MenuItemController;
 
 use App\PageLocale;
 
 class PageLocaleController extends Controller
 {
-    public static function store ($page_id, $data, $locale) {
+    static function store ($page_id, $data, $locale) {
         $params = [
             'user_id' => auth()->user()->id,
             'page_id' => $page_id,
@@ -29,7 +29,17 @@ class PageLocaleController extends Controller
         PageLocale::create($params);
     }
     
-    public static function save ($page_id, $data, $locale) {
+    static function save ($data, $locale) {
+        $pagelocale = PageLocale::find($data['id']);
         
+        $pagelocale->slug = $data['slug'];
+        $pagelocale->title = $data['title'];
+        $pagelocale->description = $data['description'];
+        $pagelocale->layout = $data['layout'];
+        $pagelocale->seo_title = $data['seo_title'];
+        $pagelocale->seo_description = !is_null($data['seo_description']) ? $data['seo_description'] : '';
+        $pagelocale->seo_keywords = json_encode(!empty($data['seo_keywords']) ? $data['seo_keywords'] : []);
+        
+        $pagelocale->save();
     }
 }

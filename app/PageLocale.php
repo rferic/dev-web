@@ -33,6 +33,15 @@ class PageLocale extends Model
 
         static::deleting (function ($page_locale) {
             $page_locale->contents()->forceDelete();
+            $page_locale->menuItems()->forceDelete();
+        });
+        
+        static::deleted (function ($page_locale) {
+            $page = $page_locale->page();
+            
+            if (PageLocale::where('page_id', $page_locale->page_id)->get()->count() < 1) {
+                $page->forceDelete();
+            }
         });
     }
 
@@ -54,5 +63,10 @@ class PageLocale extends Model
     public function isAuthor ()
     {
         return $this->owner->id === auth()->id();
+    }
+    
+    public function menuItems ()
+    {
+        return $this->hasMany(MenuItem::class);
     }
 }

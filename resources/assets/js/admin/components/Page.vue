@@ -1,5 +1,13 @@
 <template>
+  
   <div v-if="localesExists" class="nav-tabs-custom">
+    <div id="confirmSave" v-show="confirmSave" class="alert alert-success alert-dismissible">
+      <button type="button" class="close" aria-hidden="true" @click="hideConfirmSave">×</button>
+      <p><i class="icon fa fa-check"></i> {{ $t('This page has been saved', { locale: locale }) }}</p>
+    </div>
+
+    <p class="clearfix"></p>
+  
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
         <li v-for="(pageLocale, index) in pagesLocales" :key="index" :class="{ active: pageLocale.current }">
@@ -12,6 +20,7 @@
               :pageLocale="pageLocale"
               :locale="locale"
               @savePageLocaleEvent="savePageLocale"
+              @removePageLocaleEvent="removePageLocale"
             />
         </div>
       </div>
@@ -22,6 +31,7 @@
 <script>
   import PageLocale from './PageLocale'
   import pageLocaleVoidStructure from '../structures/pageLocaleVoidStructure'
+  import VueScrollTo from 'vue-scrollto'
   
   export default {
     name: 'PageForm',
@@ -31,7 +41,9 @@
       'page_locales_json',
       'contents_json',
       'locale',
-      'routepageupdate'
+      'routepages',
+      'routepageupdate',
+      'routepagelocaledestroy'
     ],
     components: {
       PageLocale
@@ -41,7 +53,8 @@
       return {
         loading: false,
         pagesLocales: [],
-        pageLocaleCurrent: null
+        pageLocaleCurrent: null,
+        confirmSave: false
       }
     },
     
@@ -65,15 +78,69 @@
       },
       
       savePageLocale (pageLocale) {
+        let context = this
+        
         axios.post(`${this.routepageupdate}`, {
           pageLocale: pageLocale,
           locale: pageLocale.lang_iso
         }).then(function (response) {
-          console.log(response)
+          context.showConfirmSave()
         }).catch(function (error) {
           console.log(error)
-          context.serverError();
         })
+      },
+      
+      removePageLocale (locale) {
+        let context = this
+          
+        axios.post(`${this.routepagelocaledestroy}`, {
+          locale: locale
+        }).then(function (response) {
+          if (response.data) {
+            window.location.href = context.routepages
+          } else {
+            location.reload()
+          }          
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      
+      showConfirmSave () {
+        this.confirmSave = true
+        
+        VueScrollTo.scrollTo('#confirmSave', 500, {
+          container: "body",
+          duration: 500,
+          easing: "ease",
+          offset: 0,
+          cancelable: true,
+          onDone: false,
+          onCancel: false,
+          x: false,
+          y: true
+        })
+      },
+      
+      hideConfirmSave () {
+        this.confirmSave = false
+      },
+      
+      mountPageLocaleVoid (item) {
+        item.exist = pageLocaleVoidStructure.exist;
+        item.status = pageLocaleVoidStructure.status;
+        item.id = pageLocaleVoidStructure.id;
+        item.slug = pageLocaleVoidStructure.slug;
+        item.title = pageLocaleVoidStructure.title;
+        item.description = pageLocaleVoidStructure.description;
+        item.layout = pageLocaleVoidStructure.layout;
+        item.options = pageLocaleVoidStructure.options;
+        item.seo_title = pageLocaleVoidStructure.seo_title;
+        item.seo_description = pageLocaleVoidStructure.seo_description;
+        item.seo_keywords = pageLocaleVoidStructure.seo_keywords;
+        item.contents = [];
+        
+        return item
       }
     },
     

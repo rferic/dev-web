@@ -16,13 +16,6 @@ use App\Http\Controllers\Admin\PageLocaleController;
 
 class PageController extends Controller
 {
-    public function listing (Request $request)
-    {
-        $locale = Input::get('locale');
-        $pages = PageLocale::where('lang', $locale);
-        return Response::json($pages->get());
-    }
-
     public function index ()
     {
         $pages = PageHelper::prepareList(Page::with(['locales', 'author'])->get());
@@ -70,9 +63,17 @@ class PageController extends Controller
         if (is_null($pageLocaleData['id']))
             PageLocaleController::store($page->id, $pageLocaleData, $locale);
         else
-            PageLocaleController::save($page->id, $pageLocaleData, $locale);
+            PageLocaleController::save($pageLocaleData, $locale);
         
-        return Response::json($request->input('pageLocale'));
-        return Response::json($page);
+        return Response::json(true);
+    }
+    
+    public function destroyPageLocale (Request $request, Page $page)
+    {
+        $locale = Input::get('locale');
+        $pagelocale = $page->locales()->where('lang', $locale)->first();
+        $pagelocale->forceDelete();
+        
+        return Response::json($page->locales()->count() < 1);
     }
 }

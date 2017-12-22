@@ -17,7 +17,9 @@
             supported_locales_json="{{ json_encode(LaravelLocalization::getSupportedLocales()) }}"
             page_locales_json="{{ isset($page) ? json_encode($page->locales()->get()) : '[]'  }}"
             contents_json="{{ isset($page) ? json_encode($page->contents()->get()) : '[]'  }}"
+            routepages="{{ route('admin.pages') }}"
             routepageupdate="{{ route('admin.page.update', $page->id) }}"
+            routepagelocaledestroy="{{ route('admin.pagelocale.destroyPageLocale', $page->id) }}"
         ></page-form>
     </div>
 @endsection
