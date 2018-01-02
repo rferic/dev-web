@@ -49,6 +49,7 @@ Route::group(
         Route::get('/pages/{page}/restore', 'Admin\PageController@restore')->name('admin.page.restore');
         Route::get('/pages/{page}/destroy', 'Admin\PageController@destroy')->name('admin.page.destroy');
         Route::post('/pages/listing', 'Admin\PageController@listing')->name('admin.pages.list');
+        Route::post('/pages/store', 'Admin\PageController@store')->name('admin.page.store');
         Route::post('/pages/{page}/update', 'Admin\PageController@update')->name('admin.page.update');
         Route::post('/pages/{page}/destroy-pagelocale', 'Admin\PageController@destroyPageLocale')->name('admin.pagelocale.destroyPageLocale');
 

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Controller;
 
 use App\Page;
-use App\PageLocale;
 
 use App\Http\Helpers\PageHelper;
 use App\Http\Controllers\Admin\PageLocaleController;
@@ -27,6 +26,11 @@ class PageController extends Controller
     public function detail (Page $page)
     {
         return view('admin.page.form', compact('page'));
+    }
+    
+    public function create ()
+    {
+        return view('admin.page.form');
     }
 
     public function trash (Page $page)
@@ -66,6 +70,18 @@ class PageController extends Controller
             PageLocaleController::save($pageLocaleData, $locale);
         
         return Response::json(true);
+    }
+    
+    public function store (Request $request)
+    {
+        $pageLocaleData = Input::get('pageLocale');
+        $locale = Input::get('locale');
+        $request->request->add(['user_id' => auth()->user()->id]);
+        $page = Page::create($request->input());
+        
+        PageLocaleController::store($page->id, $pageLocaleData, $locale);
+        
+        return Response::json(route('admin.page.detail', $page->id));
     }
     
     public function destroyPageLocale (Request $request, Page $page)

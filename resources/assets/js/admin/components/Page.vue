@@ -19,6 +19,8 @@
             <page-locale
               :pageLocale="pageLocale"
               :locale="locale"
+              :isNewPage="isNew"
+              :isLoading="isLoading"
               @savePageLocaleEvent="savePageLocale"
               @removePageLocaleEvent="removePageLocale"
             />
@@ -54,7 +56,8 @@
         loading: false,
         pagesLocales: [],
         pageLocaleCurrent: null,
-        confirmSave: false
+        confirmSave: false,
+        isLoading: false
       }
     },
     
@@ -67,6 +70,9 @@
       },
       page_locales () {
         return JSON.parse(this.page_locales_json)
+      },
+      isNew () {
+        return this.page === ''
       }
     },
     
@@ -79,12 +85,19 @@
       
       savePageLocale (pageLocale) {
         let context = this
+        context.isLoading = true
         
         axios.post(`${this.routepageupdate}`, {
           pageLocale: pageLocale,
           locale: pageLocale.lang_iso
         }).then(function (response) {
-          context.showConfirmSave()
+          context.isLoading = false
+  
+          if (context.isNew)
+            window.location.href = response.data
+          else
+            context.showConfirmSave()
+        
         }).catch(function (error) {
           console.log(error)
         })

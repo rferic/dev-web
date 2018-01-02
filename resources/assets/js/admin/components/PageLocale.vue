@@ -86,11 +86,11 @@
         </div>
       </div>
       
-      <div class="col-sm-12">
+      <div class="col-sm-12" v-if="!isNewPage">
         <h3>{{ $t('Contents')}}</h3>
       </div>
       
-      <div class="col-sm-12">
+      <div class="col-sm-12" v-if="!isNewPage">
         <draggable v-if="showList" :list="this.item.contents" @end="eventMove">
           <transition-group name="list-complete">
             <div v-for="(content, index) in this.item.contents" :key="index" class="list-complete-item well well-sm">
@@ -162,9 +162,12 @@
 
       <div class="col-sm-12">
         <div class="col-sm-12">
-          <button class="btn btn-success btn-xl pull-right" type="submit">
+          <button class="btn btn-success btn-xl pull-right" type="submit" v-if="!isLoading">
             <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save language', { locale: locale }) }}
           </button>
+          <div v-else class="alert alert-warning">
+            {{ $t('Loading', { locale: locale }) }}...
+          </div>
         </div>
       </div>
       <p class="clearfix"></p>
@@ -200,7 +203,9 @@
     name: 'PageLocale',
     props: [
       'locale',
-      'pageLocale'
+      'pageLocale',
+      'isNewPage',
+      'isLoading'
     ],
     components: {
       draggable,
