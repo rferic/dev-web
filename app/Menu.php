@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
 
 use App\User;
@@ -21,7 +22,7 @@ class Menu extends Model
         parent::boot();
 
         static::deleting (function ($menu) {
-            if ($menu->forceDeleting) {
+            if ($menu->forceDeleting && !App::runningInConsole()) {
                 $menu->items()->forceDelete();
             }
         });

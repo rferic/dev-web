@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Illuminate\Support\Facades\App;
+
 use App\User;
 use App\PageLocale;
 use App\Content;
@@ -21,7 +23,7 @@ class Page extends Model
         parent::boot();
 
         static::deleting (function ($page) {
-            if ($page->forceDeleting) {
+            if ($page->forceDeleting && !App::runningInConsole()) {
                 $page->contents()->forceDelete();
                 $page->menuItems()->forceDelete();
                 $page->locales()->forceDelete();

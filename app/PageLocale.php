@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Illuminate\Support\Facades\App;
+
 use App\User;
 use App\Page;
 use App\Content;
@@ -32,15 +34,19 @@ class PageLocale extends Model
         parent::boot();
 
         static::deleting (function ($page_locale) {
-            $page_locale->contents()->forceDelete();
-            $page_locale->menuItems()->forceDelete();
+            if (!App::runningInConsole()) {
+                $page_locale->contents()->forceDelete();
+                $page_locale->menuItems()->forceDelete();
+            }
         });
         
         static::deleted (function ($page_locale) {
-            $page = $page_locale->page();
-            
-            if (PageLocale::where('page_id', $page_locale->page_id)->get()->count() < 1) {
-                $page->forceDelete();
+            if (!App::runningInConsole()) {
+                $page = $page_locale->page();
+
+                if (PageLocale::where('page_id', $page_locale->page_id)->get()->count() < 1) {
+                    $page->forceDelete();
+                }
             }
         });
     }

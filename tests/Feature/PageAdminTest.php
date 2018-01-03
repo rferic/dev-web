@@ -17,7 +17,7 @@ class PageAdminTest extends TestCase
 {
     use DatabaseMigrations;
     
-    protected $page, $locale1, $locale2, $contents;
+    protected $page, $locale1, $locale2, $contents, $urlOriginFake = '/fake';
     
     protected function setUp ()
     {
@@ -48,7 +48,7 @@ class PageAdminTest extends TestCase
         });
     }
     
-    public function testSeeViewList ()
+    public function testSeeViewIndex ()
     {
         $this->withExceptionHandling();
         
@@ -97,5 +97,51 @@ class PageAdminTest extends TestCase
                     ->assertSee($content->id_html)
                     ->assertSee($content->class_html);
         }
+    }
+    
+    public function testTrashItem ()
+    {
+        $this->withExceptionHandling();
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->get(route('admin.page.trash', $this->page->id), ['HTTP_REFERER' => $this->urlOriginFake]);
+        
+        $response
+                ->assertStatus(302)
+                ->assertRedirect($this->urlOriginFake)
+                ->assertSessionHas('message', ['class' => 'alert-success', 'content' => __('Page has been moved to trash')])
+                ->assertSessionHas('currentPanel', 'trash');
+    }
+    
+    public function testRestoreItem ()
+    {
+        $this->withExceptionHandling();
+                
+        $response = $this
+                ->actingAs($this->user)
+                ->get(route('admin.page.restore', $this->page->id), ['HTTP_REFERER' => $this->urlOriginFake]);
+        
+        $response
+                ->assertStatus(302)
+                ->assertRedirect($this->urlOriginFake)
+                ->assertSessionHas('message', ['class' => 'alert-success', 'content' => __('Page has been restored')])
+                ->assertSessionMissing('currentPanel');
+    }
+    
+    public function testDestroyItem ()
+    {
+        $this->withExceptionHandling();
+        
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->get(route('admin.page.destroy', $this->page->id), ['HTTP_REFERER' => $this->urlOriginFake]);
+        
+        $response
+                ->assertStatus(302)
+                ->assertRedirect($this->urlOriginFake)
+                ->assertSessionHas('message', ['class' => 'alert-success', 'content' => __('Page has been removed')])
+                ->assertSessionHas('currentPanel', 'trash');
     }
 }
