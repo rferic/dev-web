@@ -99,7 +99,7 @@ class PageAdminTest extends TestCase
         }
     }
     
-    public function testTrashItem ()
+    public function testSeeViewTrashItem ()
     {
         $this->withExceptionHandling();
         
@@ -114,7 +114,7 @@ class PageAdminTest extends TestCase
                 ->assertSessionHas('currentPanel', 'trash');
     }
     
-    public function testRestoreItem ()
+    public function testSeeViewRestoreItem ()
     {
         $this->withExceptionHandling();
                 
@@ -129,7 +129,7 @@ class PageAdminTest extends TestCase
                 ->assertSessionMissing('currentPanel');
     }
     
-    public function testDestroyItem ()
+    public function testSeeViewDestroyItem ()
     {
         $this->withExceptionHandling();
         
@@ -143,5 +143,33 @@ class PageAdminTest extends TestCase
                 ->assertRedirect($this->urlOriginFake)
                 ->assertSessionHas('message', ['class' => 'alert-success', 'content' => __('Page has been removed')])
                 ->assertSessionHas('currentPanel', 'trash');
+    }
+    
+    public function testSeePostStoreItem ()
+    {
+        $this->withExceptionHandling();
+        $locale = 'en';
+        
+        /******* ERRORS *******/
+        
+        $response1 = $this
+                ->actingAs($this->user)
+                ->post(route('admin.page.store'), []);
+        
+        $response1
+                ->assertStatus(500);
+        
+        /******* SUCCESS *******/
+        
+        $response2 = $this
+                ->actingAs($this->user)
+                ->post(route('admin.page.store'), ['pageLocale' => $this->locale1, 'locale' => $locale]);
+        
+        $lastPage = Page::orderBy('id', 'desc')->first();
+        
+        $response2
+                ->assertSuccessful()
+                ->assertStatus(200)
+                ->assertExactJson([route('admin.page.detail', $lastPage->id)]);
     }
 }
