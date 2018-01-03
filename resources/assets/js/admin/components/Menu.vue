@@ -45,7 +45,6 @@
   <div v-else>
     <menu-item-form
       :locale="locale"
-      :routepageslist="routepageslist"
       :itemEdit="itemEdit"
       @showListEvent="showList"
       @addItemEvent="addItem"
@@ -67,7 +66,6 @@ export default {
     'locale',
     'routemenuget',
     'routemenusave',
-    'routepageslist',
     'routepage'
   ],
   components: {

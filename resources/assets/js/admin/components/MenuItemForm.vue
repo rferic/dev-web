@@ -142,18 +142,6 @@
         this.item.url_external = this.sluglify(this.item.url_external)
       },
 
-      getPages () {
-        let context = this
-
-        axios.post(`${this.routepageslist}`, {
-          locale: this.locale
-        }).then(function (response) {
-          context.pages_locales = response.data
-        }).catch(function (error) {
-          console.log(error)
-        })
-      },
-
       validateBeforeSubmit () {
         this.$validator.validateAll().then(result => {
           if (!result) {
@@ -183,8 +171,6 @@
         this.item.url_external = this.itemEdit.url_external
         this.item.priority = this.itemEdit.priority
       }
-
-      this.getPages()
     }
   }
 </script>

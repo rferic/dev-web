@@ -16,7 +16,6 @@
                         locale="{{ $locale }}"
                         routemenuget="{{ route('admin.menu.getItemsLocale', $menu->id) }}"
                         routemenusave="{{ route('admin.menu.save', $menu->id) }}"
-                        routepageslist="{{ route('admin.pages.list') }}"
                         routepage="{{ url('/dev/pages/') }}"
                     ></menu-drag-and-drop>
                 </div>
