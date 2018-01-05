@@ -132,8 +132,7 @@ class PageAdminTest extends TestCase
     public function testSeeViewDestroyItem ()
     {
         $this->withExceptionHandling();
-        
-        
+                
         $response = $this
                 ->actingAs($this->user)
                 ->get(route('admin.page.destroy', $this->page->id), ['HTTP_REFERER' => $this->urlOriginFake]);
@@ -150,26 +149,71 @@ class PageAdminTest extends TestCase
         $this->withExceptionHandling();
         $locale = 'en';
         
-        /******* ERRORS *******/
-        
-        $response1 = $this
+        /******* ERRORS *******/        
+        $response = $this
                 ->actingAs($this->user)
                 ->post(route('admin.page.store'), []);
         
-        $response1
+        $response
                 ->assertStatus(500);
         
-        /******* SUCCESS *******/
-        
-        $response2 = $this
+        /******* SUCCESS *******/        
+        $response = $this
                 ->actingAs($this->user)
                 ->post(route('admin.page.store'), ['pageLocale' => $this->locale1, 'locale' => $locale]);
         
         $lastPage = Page::orderBy('id', 'desc')->first();
         
-        $response2
+        $response
                 ->assertSuccessful()
-                ->assertStatus(200)
                 ->assertExactJson([route('admin.page.detail', $lastPage->id)]);
+    }
+    
+    public function testSeePostUpdateItemError ()
+    {
+        $this->withExceptionHandling();
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.page.update', $this->page->id), []);
+        
+        $response
+                ->assertStatus(500);
+    }
+    
+    public function testSeePostCreateItemLocale ()
+    {
+        $this->withExceptionHandling();
+        
+        $locale = 'en';
+        $this->locale1->forceDelete();
+        $params = $this->locale1->toArray();
+        $params['id'] = null;
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.page.update', $this->page->id), ['pageLocale' => $params, 'locale' => $locale]);
+        
+        $response
+                ->assertSuccessful()
+                ->assertExactJson([true]);
+    }
+    
+    public function testSeePostUpdateItemLocale ()
+    {
+        $this->withExceptionHandling();
+        
+        $locale = 'en';
+        $params = $this->locale1->toArray();
+        $params['id'] = $this->page->id;
+        $params['lang'] = $locale;
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.page.update', $this->page->id), ['pageLocale' => $params, 'locale' => $locale]);
+        
+        $response
+                ->assertSuccessful()
+                ->assertExactJson([true]);
     }
 }

@@ -67,7 +67,7 @@ class PageController extends Controller
         if (is_null($pageLocaleData['id']))
             PageLocaleController::store($page->id, $pageLocaleData, $locale);
         else
-            PageLocaleController::save($pageLocaleData, $locale);
+            PageLocaleController::save($pageLocaleData);
         
         return Response::json(true);
     }

@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\Admin\ContentController;
-use App\Http\Controllers\Admin\MenuItemController;
-
 use App\PageLocale;
 
 class PageLocaleController extends Controller
 {
-    static function store ($page_id, $data, $locale) {
+    static function store ($page_id, $data, $locale)
+    {
         $params = [
             'user_id' => auth()->user()->id,
             'page_id' => $page_id,
@@ -29,7 +27,8 @@ class PageLocaleController extends Controller
         PageLocale::create($params);
     }
     
-    static function save ($data, $locale) {
+    static function save ($data)
+    {
         $pagelocale = PageLocale::find($data['id']);
         
         $pagelocale->slug = $data['slug'];
