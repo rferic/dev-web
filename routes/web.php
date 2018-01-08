@@ -51,11 +51,6 @@ Route::group(
         Route::post('/pages/store', 'Admin\PageController@store')->name('admin.page.store');
         Route::post('/pages/{page}/update', 'Admin\PageController@update')->name('admin.page.update');
         Route::post('/pages/{page}/destroy-pagelocale', 'Admin\PageController@destroyPageLocale')->name('admin.pagelocale.destroyPageLocale');
-
-        /*
-         * Admin Pages Locale Routes
-         */
-        Route::post('/pagelocales/{pagelocale}/destroy', 'Admin\PageController@destroy')->name('admin.pagelocale.destroy');
         
         /*
          * Admin Users Routes
