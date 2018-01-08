@@ -216,4 +216,22 @@ class PageAdminTest extends TestCase
                 ->assertSuccessful()
                 ->assertExactJson([true]);
     }
+    
+    public function testSeePostDestroyPageLocale ()
+    {
+        $this->withExceptionHandling();
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.pagelocale.destroyPageLocale', $this->page->id), ['locale' => 'en'])
+                ->assertSuccessful();
+        
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.pagelocale.destroyPageLocale', $this->page->id), ['locale' => 'es']);
+        
+        $response
+                ->assertSuccessful()
+                ->assertExactJson([true]);
+    }
 }
