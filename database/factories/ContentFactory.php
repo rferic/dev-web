@@ -5,6 +5,7 @@ use Faker\Provider\HtmlLorem;
 
 $factory->define(App\Content::class, function (Faker $faker) {
     return [
+        'page_locale_id' => App\PageLocale::all()->random()->id,
         'key' => $faker->word,
         'id_html' => $faker->word,
         'class_html' => $faker->word,
