@@ -221,7 +221,7 @@ class PageAdminTest extends TestCase
     {
         $this->withExceptionHandling();
         
-        $response = $this
+        $this
                 ->actingAs($this->user)
                 ->post(route('admin.pagelocale.destroyPageLocale', $this->page->id), ['locale' => 'en'])
                 ->assertSuccessful();

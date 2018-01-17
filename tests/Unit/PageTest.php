@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 class PageTest extends TestCase
 {
     use DatabaseMigrations;
+    
+    protected function setUp ()
+    {
+        
+    }
 }

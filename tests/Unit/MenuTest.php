@@ -40,12 +40,20 @@ class MenuTest extends TestCase
                 'page_id' => $page->id
             ]);
         });
-        $this->menu = factory(Menu::class)->create();
+        $this->menu = factory(Menu::class)->create([
+            'user_id' => $this->user->id
+        ]);
     }
     
     public function testMenuBelongsToAuthor ()
     {
         $this->assertInstanceOf(User::class, $this->menu->author);
+    }
+    
+    public function testMenuIsAuthor ()
+    {
+        dd($this->menu->isAuthor);
+        $this->assertTrue($this->menu->isAuthor);
     }
     
     public function testMenuHasMenuItems ()
