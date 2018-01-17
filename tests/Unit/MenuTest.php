@@ -52,8 +52,8 @@ class MenuTest extends TestCase
     
     public function testMenuIsAuthor ()
     {
-        dd($this->menu->isAuthor);
-        $this->assertTrue($this->menu->isAuthor);
+        $this->assertFalse($this->menu->isAuthor());
+        $this->signIn($this->user)->assertTrue($this->menu->isAuthor());
     }
     
     public function testMenuHasMenuItems ()
