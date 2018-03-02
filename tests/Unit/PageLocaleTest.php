@@ -37,9 +37,7 @@ class PageLocaleTest extends TestCase
             'page_id' => $this->page->id 
         ]);
         
-        factory(Content::class, 2)->create([
-            'page_locale_id' => $this->locale->id
-        ]);
+        factory(Content::class, 2)->create([ 'page_locale_id' => $this->locale->id ]);
         
         factory(MenuItem::class, 3)->create([
             'type' => 'internal',
