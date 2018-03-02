@@ -68,7 +68,7 @@ class PageLocale extends Model
 
     public function isAuthor ()
     {
-        return $this->owner->id === auth()->id();
+        return $this->author->id === auth()->id();
     }
     
     public function menuItems ()
