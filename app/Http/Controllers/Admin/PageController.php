@@ -96,8 +96,7 @@ class PageController extends Controller
 
     public function storeContent (Request $request, Page $page)
     {
-        ContentController::store($request->content);
-        return Response::json(true);
+        return Response::json(ContentController::store($request->content));
     }
 
     public function updateContent (Request $request, Page $page)

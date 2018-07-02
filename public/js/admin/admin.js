@@ -55115,7 +55115,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.post(context.routecontentdestroy, {
         content: item
       }).then(function (response) {
-        if (response) {
+        if (response.data) {
           context.pageLocale.contents.forEach(function (content, key) {
             if (item !== content.id) {
               contents.push(content);
@@ -55156,8 +55156,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.post(route, {
         content: content
       }).then(function (response) {
-        if (response) {
+        if (!isNaN(response.data)) {
           if (content.id === null) {
+            content.id = response.data;
             context.item.contents.push(content);
             context.reorder();
           }

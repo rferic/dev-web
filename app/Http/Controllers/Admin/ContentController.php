@@ -22,7 +22,7 @@ class ContentController extends Controller
             'priority' => $data['priority']
         ];
         
-        Content::create($params);
+        return Content::create($params)->id;
     }
 
     static function save($data, $id)

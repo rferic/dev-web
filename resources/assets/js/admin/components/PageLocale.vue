@@ -274,7 +274,7 @@
         axios.post(context.routecontentdestroy, {
           content: item
         }).then(function (response) {
-          if (response) {
+          if (response.data) {
             context.pageLocale.contents.forEach((content, key) => {
               if (item !== content.id) {
                 contents.push(content)
@@ -319,8 +319,9 @@
         axios.post(route, {
           content: content
         }).then(function (response) {
-          if (response) {
+          if (!isNaN(response.data)) {
             if (content.id === null) {
+              content.id = response.data
               context.item.contents.push(content)
               context.reorder()
             }
