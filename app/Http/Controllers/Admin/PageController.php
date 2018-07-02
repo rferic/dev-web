@@ -12,6 +12,7 @@ use App\Page;
 
 use App\Http\Helpers\PageHelper;
 use App\Http\Controllers\Admin\PageLocaleController;
+use App\Http\Controllers\Admin\ContentController;
 
 class PageController extends Controller
 {
@@ -91,5 +92,23 @@ class PageController extends Controller
         $pagelocale->forceDelete();
         
         return Response::json($page->locales()->count() < 1);
+    }
+
+    public function storeContent (Request $request, Page $page)
+    {
+        ContentController::store($request->content);
+        return Response::json(true);
+    }
+
+    public function updateContent (Request $request, Page $page)
+    {
+        ContentController::save($request->content, $request->content['id']);
+        return Response::json(true);
+    }
+
+    public function destroyContent (Request $request, $page)
+    {
+        ContentController::destroy($request->content);
+        return Response::json(true);
     }
 }

@@ -51,6 +51,9 @@ Route::group(
         Route::post('/pages/store', 'Admin\PageController@store')->name('admin.page.store');
         Route::post('/pages/{page}/update', 'Admin\PageController@update')->name('admin.page.update');
         Route::post('/pages/{page}/destroy-pagelocale', 'Admin\PageController@destroyPageLocale')->name('admin.pagelocale.destroyPageLocale');
+        Route::post('/pages/{page}/store-content', 'Admin\PageController@storeContent')->name('admin.content.store');
+        Route::post('/pages/{page}/update-content', 'Admin\PageController@updateContent')->name('admin.content.update');
+        Route::post('/pages/{page}/destroy-content', 'Admin\PageController@destroyContent')->name('admin.content.destroy');
         
         /*
          * Admin Users Routes

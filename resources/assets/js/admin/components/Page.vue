@@ -21,6 +21,9 @@
               :locale="locale"
               :isNewPage="isNew"
               :isLoading="isLoading"
+              :routecontentstore="routecontentstore"
+              :routecontentupdate="routecontentupdate"
+              :routecontentdestroy="routecontentdestroy"
               @savePageLocaleEvent="savePageLocale"
               @removePageLocaleEvent="removePageLocale"
             />
@@ -45,7 +48,10 @@
       'locale',
       'routepages',
       'routepageupdate',
-      'routepagelocaledestroy'
+      'routepagelocaledestroy',
+      'routecontentstore',
+      'routecontentupdate',
+      'routecontentdestroy'
     ],
     components: {
       PageLocale

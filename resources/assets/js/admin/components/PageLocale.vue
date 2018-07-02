@@ -85,6 +85,8 @@
           </div>
         </div>
       </div>
+
+      <div class="col-md-12 colFormBottomSeparator"></div>
       
       <div class="col-sm-12" v-if="!isNewPage">
         <h3>{{ $t('Contents')}}</h3>
@@ -108,14 +110,16 @@
           :locale="locale"
           :content="contentEdit.content"
           />
-        <button type="button" class="btn btn-app btn-block" @click="showEditContent(null)"><i class="fa fa-plus"></i>{{ $t('New content', { locale: locale }) }}</button>
+        <button v-if="buttonNewContent" type="button" class="btn btn-primary btn-block" @click="showEditContent(null)"><i class="fa fa-plus"></i> {{ $t('New content', { locale: locale }) }}</button>
       </div>
+
+      <div class="col-md-12 colFormBottomSeparator"></div>
       
       <div class="col-sm-12">
         <h3>{{ $t('SEO')}}</h3>
       </div>
       
-      <div class="row">
+      <div id="sectionFormSEO" class="row">
         <!-- SEO Title Locale -->
         <div class="form-group col-md-6 col-sm-12">
           <label class="control-label col-lg-2 col-md-4 col-sm-6" for="seo_title">{{ $t('SEO Title', { locale: locale }) }}*</label>
@@ -205,7 +209,10 @@
       'locale',
       'pageLocale',
       'isNewPage',
-      'isLoading'
+      'isLoading',
+      'routecontentstore',
+      'routecontentupdate',
+      'routecontentdestroy'
     ],
     components: {
       draggable,
@@ -218,6 +225,7 @@
       return {
         item: this.pageLocale,
         layoutsArray: layoutsArray,
+        buttonNewContent: true,
         contentEdit: {
           content: {
             key: ''
@@ -260,26 +268,40 @@
       },
       
       removeContent (item) {
+        let context = this
         let contents = []
-        
-        this.pageLocale.contents.forEach((content, key) => {
-          if (item !== content.id) {
-            contents.push(content)
+
+        axios.post(context.routecontentdestroy, {
+          content: item
+        }).then(function (response) {
+          if (response) {
+            context.pageLocale.contents.forEach((content, key) => {
+              if (item !== content.id) {
+                contents.push(content)
+              }
+            });
+            
+            context.pageLocale.contents = contents
+            context.reorder()      
           }
-        });
-        
-        this.pageLocale.contents = contents
-        this.reorder()
+        }).catch(function (error) {
+          console.log(error)
+        })
       },
       
       showEditContent (item) {
+        contentVoidStructure.page_locale_id = this.item.id
+        contentVoidStructure.priority = this.item.contents.length
+        
+        this.buttonNewContent = false
         this.contentEdit = {
           state: true,
-          content: item === null ? Object.assign({}, contentVoidStructure) : item
+          content: item === null ? Object.assign({}, contentVoidStructure) : item,
         }
       },
       
       showListContents () {
+        this.buttonNewContent = true
         this.contentEdit = {
           state: false,
           content: contentVoidStructure
@@ -291,12 +313,23 @@
       },
       
       saveEditContent (content) {
-        if (content.page_id === null) {
-          this.item.contents.push(content)
-          this.reorder()
-        }
-        
-        this.showListContents()
+        let context = this
+        let route = content.id === null ? this.routecontentstore : this.routecontentupdate
+
+        axios.post(route, {
+          content: content
+        }).then(function (response) {
+          if (response) {
+            if (content.id === null) {
+              context.item.contents.push(content)
+              context.reorder()
+            }
+            
+            context.showListContents()
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       },
       
       validateBeforeSubmit () {
@@ -335,5 +368,11 @@
   
   .vue-input-tag-wrapper {
     padding-bottom: 34px;
+  }
+
+  .colFormBottomSeparator {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ecf0f5;
   }
 </style>

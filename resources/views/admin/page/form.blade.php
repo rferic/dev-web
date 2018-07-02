@@ -24,6 +24,9 @@
             routepages="{{ route('admin.pages') }}"
             routepageupdate="{{ isset($page) ? route('admin.page.update', $page->id) : route('admin.page.store') }}"
             routepagelocaledestroy="{{ isset($page) ? route('admin.pagelocale.destroyPageLocale', $page->id) : '' }}"
+            routecontentstore="{{ isset($page) ? route('admin.content.store', $page->id) : '' }}"
+            routecontentupdate="{{ isset($page) ? route('admin.content.update', $page->id) : '' }}"
+            routecontentdestroy="{{ isset($page) ? route('admin.content.destroy', $page->id) : '' }}"
         ></page-form>
     </div>
 @endsection

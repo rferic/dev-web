@@ -158,6 +158,7 @@
     
     mounted () {
       this.dataOrigin = {
+        page_locale_id: this.content.page_locale_id,
         key: this.content.key,
         id_html: this.content.id_html,
         class_html: this.content.class_html,

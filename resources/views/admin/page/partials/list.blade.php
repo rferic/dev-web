@@ -55,6 +55,6 @@
     </div>
 @else
     <div class="callout callout-warning">
-        <p>{{ __('Menus not found') }}</p>
+        <p>{{ __('Pages not found') }}</p>
     </div>
 @endif
