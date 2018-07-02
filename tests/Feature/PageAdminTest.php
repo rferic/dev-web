@@ -221,16 +221,72 @@ class PageAdminTest extends TestCase
     {
         $this->withExceptionHandling();
         
-        $this
+        $response = $this
                 ->actingAs($this->user)
                 ->post(route('admin.pagelocale.destroyPageLocale', $this->page->id), ['locale' => 'en'])
                 ->assertSuccessful();
         
         $response = $this
                 ->actingAs($this->user)
-                ->post(route('admin.pagelocale.destroyPageLocale', $this->page->id), ['locale' => 'es']);
+                ->post(route('admin.pagelocale.destroyPageLocale', $this->page->id), ['locale' => 'es'])
+                ->assertSuccessful()
+                ->assertExactJson([true]);
+    }
+
+    public function testSeePostStoreContent ()
+    {
+        $this->withExceptionHandling();
+
+        $params = $this->contents[0]->toArray();
+
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.content.store', $this->page->id), [])
+                ->assertStatus(500);
+
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.content.store', $this->page->id), ['content' => $params])
+                ->assertSuccessful();
+    }
+
+    public function testSeePostUpdateContent ()
+    {
+        $this->withExceptionHandling();
+
+        $params = $this->contents[0]->toArray();
+        $paramsOverride = $this->contents[1]->toArray();
+
+        foreach ($params AS $key => $param) {
+            if ($key !== 'id' && $key !== 'page_locale_id' && $key !== 'created_at' && $key !== 'updated_at' && $key !== 'deleted_at') {
+                $params[$key] = $paramsOverride[$key];                
+            }
+        }
+
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.content.update', $this->page->id), [])
+                ->assertStatus(500);
+
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.content.update', $this->page->id), ['content' => $params])
+                ->assertSuccessful()
+                ->assertExactJson([true]);
+    }
+
+    public function testSeePostDestroyContent ()
+    {
+        $this->withExceptionHandling();
+
+         $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.content.destroy', $this->page->id), [])
+                ->assertStatus(404);
         
-        $response
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.content.destroy', $this->page->id), ['content' => $this->contents[1]->id])
                 ->assertSuccessful()
                 ->assertExactJson([true]);
     }
