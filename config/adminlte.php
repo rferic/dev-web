@@ -110,19 +110,41 @@ return [
     'menu' => [
         'CONTENT',
         [
-            'text'        => 'Pages',
-            'url'         => 'dev/pages',
-            'icon'        => 'file'
+            'text'  => 'Pages',
+            'url'   => 'dev/pages',
+            'icon'  => 'file'
         ],
         [
-            'text'        => 'Menus',
-            'url'         => 'dev/menus',
-            'icon'        => 'bars'
+            'text'  => 'Menus',
+            'url'   => 'dev/menus',
+            'icon'  => 'bars'
         ],
         [
-            'text' => 'Users',
-            'url'  => 'dev/users',
-            'icon' => 'user',
+            'text' => 'Apps',
+            'url'  => 'dev/apps',
+            'icon' => 'rocket',
+        ],
+        [
+            'text' => 'Messages',
+            'url'  => 'dev/messages',
+            'icon' => 'comment',
+        ],
+        [
+            'text'      => 'Users',
+            'url'       => 'dev/users',
+            'icon'      => 'user',
+            'submenu'   =>  [
+                [
+                    'text'  => 'Valids',
+                    'url'   => 'dev/users',
+                    'icon'  => 'check-circle'
+                ],
+                [
+                    'text'  => 'Banned',
+                    'url'   => 'dev/users-banned',
+                    'icon'  => 'ban'
+                ]
+            ]
         ],
         'ACCOUNT SETTINGS',
         [

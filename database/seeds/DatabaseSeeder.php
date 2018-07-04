@@ -10,6 +10,8 @@ use App\PageLocale;
 use App\Page;
 use App\Menu;
 use App\Content;
+use App\Comment;
+use App\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +23,13 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'public']);
         Role::create(['name' => 'admin']);
 
-        factory(User::class, 1)->create()->first()->assignRole('public');
+        $userPublic = factory(User::class, 1)->create()->first()->assignRole('public');
+        $userPublic->each(function ($user) {
+            /******** COMMENTS ********/
+            factory(Comment::class, 5)->create()->each(function ($comment) use ($user) {
+                $user->comments()->save($comment);
+            });
+        });
         factory(User::class, 1)->create([
             'email' => config('mail.from')['address'],
             'password' => Hash::make('secret')
@@ -57,6 +65,11 @@ class DatabaseSeeder extends Seeder
         /******** MENUS ********/
         factory(Menu::class, 2)->create();
         factory(MenuItem::class, 10)->create();
+
+
+        /******** APPS ********/
+        $apps = factory(App::class, 5)->create();
+        $userPublic->apps()->sync($apps);
     }
 
 }
