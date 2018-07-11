@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 2',
+    'title' => 'CoffeCode',
 
     'title_prefix' => '',
 
@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'skin' => 'blue-light',
+    'skin' => 'black',
 
     /*
     |--------------------------------------------------------------------------
@@ -58,7 +58,7 @@ return [
     |
     */
 
-    'layout' => null,
+    'layout' => 'top-nav',
 
     /*
     |--------------------------------------------------------------------------
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'collapse_sidebar' => true,
+    'collapse_sidebar' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -132,17 +132,17 @@ return [
         [
             'text'      => 'Users',
             'url'       => 'dev/users',
-            'icon'      => 'user',
+            'icon'      => 'users',
             'submenu'   =>  [
                 [
-                    'text'  => 'Valids',
+                    'text'  => 'Users',
                     'url'   => 'dev/users',
-                    'icon'  => 'check-circle'
+                    'icon'  => 'user'
                 ],
                 [
-                    'text'  => 'Banned',
-                    'url'   => 'dev/users-banned',
-                    'icon'  => 'ban'
+                    'text'  => 'Admins',
+                    'url'   => 'dev/admins',
+                    'icon'  => 'user-secret'
                 ]
             ]
         ],

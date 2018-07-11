@@ -22,11 +22,13 @@ Vue.use(ToggleButton)
 
 import MenuDragAndDrop from './admin/components/Menu.vue'
 import PageForm from './admin/components/Page.vue'
+import AppsList from './admin/components/AppsList.vue'
 
 const app = new Vue({
     el: '#app',
     components: {
         MenuDragAndDrop,
-        PageForm
+        PageForm,
+        AppsList
     }
 });

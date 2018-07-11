@@ -12,6 +12,7 @@ use App\Menu;
 use App\Content;
 use App\Comment;
 use App\App;
+use App\AppImage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -68,7 +69,11 @@ class DatabaseSeeder extends Seeder
 
 
         /******** APPS ********/
-        $apps = factory(App::class, 5)->create();
+        $apps = factory(App::class, 5)->create()->each(function ($app) {
+            factory(AppImage::class, 3)->create([
+                'app_id' => $app->id
+            ]);
+        });
         $userPublic->apps()->sync($apps);
     }
 

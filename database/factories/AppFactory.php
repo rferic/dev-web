@@ -1,14 +1,18 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\Http\Helpers\AppHelper AS AppHelper;
 
 $factory->define(App\App::class, function (Faker $faker) {
-    return [
-        'is_public' => $faker->boolean,
-        'status' => $faker->numberBetween(0, 3),
+	$type = AppHelper::getTypes();
+	$status = AppHelper::getStatus();
+
+	return [
         'title' => $faker->word,
         'description' => $faker->paragraph,
         'version' => $faker->word,
-        'vue_component' => $faker->word
+        'vue_component' => $faker->word,
+        'type' => $type[$faker->numberBetween(0, COUNT($type) - 1)]['key'],
+        'status' => $status[$faker->numberBetween(0, COUNT($status) - 1)]['key']
     ];
 });

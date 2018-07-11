@@ -54,17 +54,27 @@ Route::group(
         Route::post('/pages/{page}/store-content', 'Admin\PageController@storeContent')->name('admin.content.store');
         Route::post('/pages/{page}/update-content', 'Admin\PageController@updateContent')->name('admin.content.update');
         Route::post('/pages/{page}/destroy-content', 'Admin\PageController@destroyContent')->name('admin.content.destroy');
+
+        /*
+         * Admin Apps Routes
+         */
+        Route::get('apps', 'Admin\AppController@index')->name('admin.apps');
+        Route::post('/apps/store', 'Admin\AppController@store')->name('admin.app.store');
+        Route::post('/apps/{app}/update', 'Admin\AppController@store')->name('admin.app.update');
+        Route::post('/apps/{app}/destroy', 'Admin\AppController@destroy')->name('admin.app.destroy');
         
         /*
          * Admin Users Routes
          */
         Route::get('/users', 'Admin\UserController@index')->name('admin.users');
+        Route::get('/users/create', 'Admin\UserController@create')->name('admin.user.create');
         Route::get('/users/{user}', 'Admin\UserController@detail')->name('admin.user');
 
         /*
          * Admin Admins Routes
          */
         Route::get('/admins', 'Admin\AdminController@index')->name('admin.admins');
+        Route::get('/admins/create', 'Admin\AdminController@create')->name('admin.admin.create');
         Route::get('/admins/{user}', 'Admin\AdminController@detail')->name('admin.admin');
     }
 );

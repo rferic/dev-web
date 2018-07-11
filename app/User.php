@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->id === auth()->id();
     }
 
+    public function isBanned ()
+    {
+        return $this->trashed();
+    }
+
     public function apps ()
     {
         return $this->belongsToMany(App::class)->withTimestamps();

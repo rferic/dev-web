@@ -4,15 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 use App\User;
+use App\AppImage;
 
 class App extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-    protected $fillable = [ 'is_public', 'status', 'title', 'description', 'version', 'vue_component' ];
+    protected $fillable = [ 'status', 'title', 'description', 'version', 'vue_component', 'type', 'status' ];
 
     protected static function boot ()
     {
@@ -23,6 +25,11 @@ class App extends Model
                 $user->users()->detach();
             }
         });
+    }
+
+    public function images ()
+    {
+        return $this->hasMany(AppImage::class)->orderBy('priority', 'asc');
     }
 
     public function users ()

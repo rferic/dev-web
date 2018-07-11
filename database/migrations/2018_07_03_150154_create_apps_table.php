@@ -15,16 +15,29 @@ class CreateAppsTable extends Migration
     {
         Schema::create('apps', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('is_public');
-            $table->unsignedInteger('status');
             $table->string('title');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->string('version');
             $table->string('vue_component');
+            $table->string('type');
+            $table->string('status');
             $table->timestamps();
             $table->softDeletes();
             
             $table->index('id');
+        });
+
+        Schema::create('app_images', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('app_id');
+            $table->string('src');
+            $table->string('title');
+            $table->longText('description')->nullable();
+            $table->unsignedInteger('priority');
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('app_id')->references('id')->on('apps');
         });
 
         Schema::create('app_user', function (Blueprint $table) {
@@ -46,6 +59,7 @@ class CreateAppsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('app_user');
+        Schema::dropIfExists('app_images');
         Schema::dropIfExists('apps');
     }
 }

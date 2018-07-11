@@ -9,25 +9,24 @@ use App\User;
 
 class UserController extends Controller
 {
+    private $role = 'public';
+
     public function index ()
     {
-    	$users = User::with('comments')->get();
-    	$banned = false;
+    	$role = $this->role;
+        $users = User::role($role)->with('comments')->get();
 
-        return view('admin.user.index', compact('users', 'banned'));
-    }
-
-    public function indexBanned ()
-    {
-    	$users = User::onlyTrashed()->with('comments')->get();
-    	$banned = true;
-    	
-        return view('admin.user.index', compact('users', 'banned'));
+        return view('admin.user.index', compact('users', 'role'));
     }
 
     public function detail (User $user)
     {
     	return view('admin.user.form', compact('user'));
+    }
+
+    public function create ()
+    {
+
     }
 
     public function store ()
