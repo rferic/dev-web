@@ -1,13 +1,12 @@
-const appLocaleVoidStructure = {
-    description: '',
+const AppVoidStructure = {
     id: null,
     images: [],
     status: '',
-    title: '',
     type: '',
     users: [],
     version: '',
-    vue_component: ''
+    vue_component: '',
+    locales: []
 }
 
-export default appLocaleVoidStructure
+export default AppVoidStructure

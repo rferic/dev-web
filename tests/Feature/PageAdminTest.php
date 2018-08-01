@@ -12,6 +12,7 @@ use App\User;
 use App\Page;
 use App\PageLocale;
 use App\Content;
+use App\Http\Helpers\PageHelper;
 
 class PageAdminTest extends TestCase
 {
@@ -289,5 +290,19 @@ class PageAdminTest extends TestCase
                 ->post(route('admin.content.destroy', $this->page->id), ['content' => $this->contents[1]->id])
                 ->assertSuccessful()
                 ->assertExactJson([true]);
+    }
+
+    public function testGetterPages ()
+    {
+        $this->withExceptionHandling();        
+
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.pages.getter'), [])
+                ->assertSuccessful()
+                ->assertJsonFragment([
+                    'id' => $this->page->id,
+                    'title' => $this->locale1->title
+                ]);
     }
 }

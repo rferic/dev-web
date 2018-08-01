@@ -3,7 +3,7 @@
   <div v-if="localesExists" class="nav-tabs-custom">
     <div id="confirmSave" v-show="confirmSave" class="alert alert-success alert-dismissible">
       <button type="button" class="close" aria-hidden="true" @click="hideConfirmSave">×</button>
-      <p><i class="icon fa fa-check"></i> {{ $t('This page has been saved', { locale: locale }) }}</p>
+      <p><i class="icon fa fa-check"></i> {{ $t('This page has been saved', { locale: this.locale }) }}</p>
     </div>
 
     <p class="clearfix"></p>
@@ -18,12 +18,8 @@
         <div class="tab-pane" id="`#locale-${pageLocale.lang_iso}`" v-for="(pageLocale, index) in pagesLocales" :key="index" :class="{ active: pageLocale.current }">
             <page-locale
               :pageLocale="pageLocale"
-              :locale="locale"
               :isNewPage="isNew"
               :isLoading="isLoading"
-              :routecontentstore="routecontentstore"
-              :routecontentupdate="routecontentupdate"
-              :routecontentdestroy="routecontentdestroy"
               @savePageLocaleEvent="savePageLocale"
               @removePageLocaleEvent="removePageLocale"
             />
@@ -37,21 +33,14 @@
   import PageLocale from './PageLocale'
   import pageLocaleVoidStructure from '../structures/pageLocaleVoidStructure'
   import VueScrollTo from 'vue-scrollto'
+  import { mapState } from 'vuex'
   
   export default {
     name: 'PageForm',
     props: [
       'page',
-      'supported_locales_json',
       'page_locales_json',
-      'contents_json',
-      'locale',
-      'routepages',
-      'routepageupdate',
-      'routepagelocaledestroy',
-      'routecontentstore',
-      'routecontentupdate',
-      'routecontentdestroy'
+      'contents_json'
     ],
     components: {
       PageLocale
@@ -68,11 +57,9 @@
     },
     
     computed: {
+      ...mapState([ 'locale', 'supportedLocales', 'routes' ]),
       localesExists () {
         return this.pagesLocales.length > 0
-      },
-      supportedLocales () {
-        return JSON.parse(this.supported_locales_json)
       },
       page_locales () {
         return JSON.parse(this.page_locales_json)
@@ -93,7 +80,7 @@
         let context = this
         context.isLoading = true
         
-        axios.post(`${this.routepageupdate}`, {
+        axios.post(`${this.routes.routepageupdate}`, {
           pageLocale: pageLocale,
           locale: pageLocale.lang_iso
         }).then(function (response) {
@@ -112,11 +99,11 @@
       removePageLocale (locale) {
         let context = this
           
-        axios.post(`${this.routepagelocaledestroy}`, {
-          locale: locale
+        axios.post(`${this.routes.routepagelocaledestroy}`, {
+          locale: this.locale
         }).then(function (response) {
           if (response.data) {
-            window.location.href = context.routepages
+            window.location.href = context.routes.routepages
           } else {
             location.reload()
           }          

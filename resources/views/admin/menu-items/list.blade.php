@@ -13,10 +13,6 @@
                 <div class="tab-pane {{ $locale === LaravelLocalization::getCurrentLocale() ? 'active' : '' }}" id="{{ $locale }}">
                     <menu-drag-and-drop
                         menu="{{ $menu->id }}"
-                        locale="{{ $locale }}"
-                        routemenuget="{{ route('admin.menu.getItemsLocale', $menu->id) }}"
-                        routemenusave="{{ route('admin.menu.save', $menu->id) }}"
-                        routepage="{{ url('/dev/pages/') }}"
                     ></menu-drag-and-drop>
                 </div>
             @endforeach

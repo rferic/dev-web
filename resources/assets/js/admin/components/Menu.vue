@@ -3,14 +3,14 @@
     <div v-if="show">
       <div v-if="hasItems" class="text-right">
         <button class="btn btn-primary" @click="showForm">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ $t('Add', { locale: locale }) }}
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ $t('Add', { locale: this.locale }) }}
         </button>
         <button class="btn btn-success" @click="save">
-          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save', { locale: locale }) }}
+          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save', { locale: this.locale }) }}
         </button>
         <hr v-show="requireSave" />
         <div v-show="requireSave" class="alert alert-warning text-left">
-          {{ $t('Remember, Your changes only apply when you save.', { locale: locale }) }}
+          {{ $t('Remember, Your changes only apply when you save.', { locale: this.locale }) }}
         </div>
       </div>
       <hr />
@@ -19,7 +19,6 @@
           <div v-for="(item, index) in items" :key="index" class="list-complete-item well well-sm">
             <menu-item-drag-and-drop
               :item="item"
-              :routepage="routepage"
               @serverLoadingEvent="serverLoading"
               @serverErrorEvent="serverError"
               @serverOkEvent="serverOk"
@@ -30,22 +29,22 @@
         </transition-group>
       </draggable>
       <div v-else class="alert alert-warning">
-        {{ $t('Items not found', { locale: locale }) }}
+        {{ $t('Items not found', { locale: this.locale }) }}
       </div>
     </div>
     <div v-else>
       <div v-if="!error" class="alert alert-warning">
-        {{ $t('Loading', { locale: locale }) }}...
+        {{ $t('Loading', { locale: this.locale }) }}...
       </div>
       <div v-if="error" class="alert alert-danger">
-        {{ $t('Error on request. Please, reload page', { locale: locale }) }}
+        {{ $t('Error on request. Please, reload page', { locale: this.locale }) }}
       </div>
     </div>
   </div>
   <div v-else>
     <menu-item-form
-      :locale="locale"
       :itemEdit="itemEdit"
+      :pages="pages"
       @showListEvent="showList"
       @addItemEvent="addItem"
       @updateItemEvent="updateItem"
@@ -58,15 +57,12 @@
 import draggable from 'vuedraggable'
 import MenuItemDragAndDrop from './MenuItem'
 import MenuItemForm from './MenuItemForm'
+import { mapState } from 'vuex'
 
 export default {
   name: 'MenuDragAndDrop',
   props: [
-    'menu',
-    'locale',
-    'routemenuget',
-    'routemenusave',
-    'routepage'
+    'menu'
   ],
   components: {
     draggable,
@@ -81,10 +77,12 @@ export default {
       viewList: true,
       items: [],
       itemsForRemove: [],
-      itemEdit: null
+      itemEdit: null,
+      pages: []
     }
   },
   computed: {
+    ...mapState([ 'locale', 'routes' ]),
     show () {
       return !this.loading && !this.error
     },
@@ -97,11 +95,24 @@ export default {
       let context = this
       this.serverLoading()
 
-      axios.post(`${this.routemenuget}`, {
+      axios.post(`${this.routes.routemenuget}`, {
         locale: this.locale
       }).then(function (response) {
         context.serverOk();
         context.items = response.data
+      }).catch(function (error) {
+        console.log(error)
+        context.serverError();
+      })
+    },
+
+    getPages () {
+      let context = this
+      this.serverLoading()
+
+      axios.post(`${this.routes.routepagesgetter}`, {}).then(function (response) {
+        context.serverOk();
+        context.pages = response.data
       }).catch(function (error) {
         console.log(error)
         context.serverError();
@@ -121,7 +132,7 @@ export default {
     },
 
     getUrlPage (item) {
-      return `${this.routepage}/${item.page_locale.slug}`
+      return `${this.routes.routepage}/${item.page_locale.slug}`
     },
 
     removeItem (item_id) {
@@ -169,16 +180,16 @@ export default {
       this.serverLoading()
       this.reorder()
 
-      axios.post(`${this.routemenusave}`, {
+      axios.post(`${this.routes.routemenusave}`, {
         items: this.items,
         itemsForRemove: this.itemsForRemove,
-        locale: this.locale
+        locale: this.this.locale
       }).then(function (response) {
         context.requireSave = false
         context.serverOk();
       }).catch(function (error) {
         console.log(error)
-        context.serverError();
+        context.serverError()
       })
     },
 
@@ -212,7 +223,8 @@ export default {
     }
   },
   mounted () {
-    this.getItems();
+    this.getItems()
+    this.getPages()
   }
 }
 </script>

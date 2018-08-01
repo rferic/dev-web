@@ -18,19 +18,22 @@
         <page-form
             page="{{ isset($page) ? $page->id : '' }}"
             locale="{{ LaravelLocalization::getCurrentLocale() }}"
-            supported_locales_json="{{ json_encode(LaravelLocalization::getSupportedLocales()) }}"
             page_locales_json="{{ isset($page) ? json_encode($page->locales()->get()) : '[]'  }}"
             contents_json="{{ isset($page) ? json_encode($page->contents()->get()) : '[]'  }}"
-            routepages="{{ route('admin.pages') }}"
-            routepageupdate="{{ isset($page) ? route('admin.page.update', $page->id) : route('admin.page.store') }}"
-            routepagelocaledestroy="{{ isset($page) ? route('admin.pagelocale.destroyPageLocale', $page->id) : '' }}"
-            routecontentstore="{{ isset($page) ? route('admin.content.store', $page->id) : '' }}"
-            routecontentupdate="{{ isset($page) ? route('admin.content.update', $page->id) : '' }}"
-            routecontentdestroy="{{ isset($page) ? route('admin.content.destroy', $page->id) : '' }}"
         ></page-form>
     </div>
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/admin/admin.js') }}"></script>
+    <script>
+        const routes = {
+            routepages: "{{ route('admin.pages') }}",
+            routepageupdate: "{{ isset($page) ? route('admin.page.update', $page->id) : route('admin.page.store') }}",
+            routepagelocaledestroy: "{{ isset($page) ? route('admin.pagelocale.destroyPageLocale', $page->id) : '' }}",
+            routecontentstore: "{{ isset($page) ? route('admin.content.store', $page->id) : '' }}",
+            routecontentupdate: "{{ isset($page) ? route('admin.content.update', $page->id) : '' }}",
+            routecontentdestroy: "{{ isset($page) ? route('admin.content.destroy', $page->id) : '' }}"
+        }
+    </script>
+    <script src="{{ asset('js/admin/index.js') }}"></script>
 @endsection

@@ -16,7 +16,7 @@
       <div class="row">
         <!-- Title Locale -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="title">{{ $t('Title', { locale: locale }) }}*</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="title">{{ $t('Title', { locale: $store.locale }) }}*</label>
           <div class="col-lg-10 col-md-8 col-sm-6" :class="{ 'has-error' : errors.has('title')}">
             <input
               type="text"
@@ -32,7 +32,7 @@
 
         <!-- Slug Locale -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="slug">{{ $t('Slug', { locale: locale }) }}*</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="slug">{{ $t('Slug', { locale: $store.locale }) }}*</label>
           <div class="col-lg-10 col-md-8 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('slug')}">
             <input
               type="text"
@@ -51,7 +51,7 @@
       <div class="row">
         <!-- Layout Locale -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="layout">{{ $t('Layout', { locale: locale }) }}*</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="layout">{{ $t('Layout', { locale: $store.locale }) }}*</label>
           <div class="col-lg-10 col-md-8 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('layout')}">
             <select
               name="layout"
@@ -59,7 +59,7 @@
               v-validate
               data-vv-rules="required"
               class="form-control"
-              :class="{ 'has-error' : errors.has('page_locale_id')}">
+              :class="{ 'has-error' : errors.has('layout')}">
 
               <option v-for="(layout, index) in this.layoutsArray" :value="layout.code">
                 {{ layout.name }}
@@ -72,7 +72,7 @@
 
         <!-- Description Locale -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="description">{{ $t('Description', { locale: locale }) }}*</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="description">{{ $t('Description', { locale: $store.locale }) }}*</label>
           <div class="col-lg-10 col-md-8 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('description')}">
             <textarea
               name="description"
@@ -107,10 +107,9 @@
         <content-form v-else
           @cancelEditContentEvent="cancelEditContent"
           @saveEditContentEvent="saveEditContent"
-          :locale="locale"
           :content="contentEdit.content"
           />
-        <button v-if="buttonNewContent" type="button" class="btn btn-primary btn-block" @click="showEditContent(null)"><i class="fa fa-plus"></i> {{ $t('New content', { locale: locale }) }}</button>
+        <button v-if="buttonNewContent" type="button" class="btn btn-primary btn-block" @click="showEditContent(null)"><i class="fa fa-plus"></i> {{ $t('New content', { locale: $store.locale }) }}</button>
       </div>
 
       <div class="col-md-12 colFormBottomSeparator"></div>
@@ -122,7 +121,7 @@
       <div id="sectionFormSEO" class="row">
         <!-- SEO Title Locale -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="seo_title">{{ $t('SEO Title', { locale: locale }) }}*</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="seo_title">{{ $t('SEO Title', { locale: $store.locale }) }}*</label>
           <div class="col-lg-10 col-md-8 col-sm-6" :class="{ 'has-error' : errors.has('seo_title')}">
             <input
               type="text"
@@ -138,7 +137,7 @@
         
         <!-- SEO Keywords Locale -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="seo_title">{{ $t('SEO Keywords', { locale: locale }) }}</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="seo_title">{{ $t('SEO Keywords', { locale: $store.locale }) }}</label>
           <div class="col-lg-10 col-md-8 col-sm-6">
             <input-tag class="form-control" :tags="item.seo_keywords"></input-tag>
           </div>
@@ -148,7 +147,7 @@
       <div class="row">
         <!-- SEO Description Locale -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="description">{{ $t('SEO Description', { locale: locale }) }}</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="description">{{ $t('SEO Description', { locale: $store.locale }) }}</label>
           <div class="col-lg-10 col-md-8 col-sm-6 col-md-8" :class="{ 'has-error' : errors.has('seo_description')}">
             <textarea
               name="seo_description"
@@ -167,10 +166,10 @@
       <div class="col-sm-12">
         <div class="col-sm-12">
           <button class="btn btn-success btn-xl pull-right" type="submit" v-if="!isLoading">
-            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save language', { locale: locale }) }}
+            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save language', { locale: $store.locale }) }}
           </button>
           <div v-else class="alert alert-warning">
-            {{ $t('Loading', { locale: locale }) }}...
+            {{ $t('Loading', { locale: $store.locale }) }}...
           </div>
         </div>
       </div>
@@ -181,10 +180,10 @@
     <div class="col-sm-12" v-if="isTrash">
       <p class="clearfix"></p>
       <div class="callout callout-warning">
-        <h4>{{ $t('This change require your confirm', { locale: locale }) }}</h4>
-        <p>{{ $t('If there is no translation of the page it will be deleted to avoid trash', { locale: locale }) }}</p>
+        <h4>{{ $t('This change require your confirm', { locale: $store.locale }) }}</h4>
+        <p>{{ $t('If there is no translation of the page it will be deleted to avoid trash', { locale: $store.locale }) }}</p>
         <button class="btn btn-danger btn-xl" @click="$emit('removePageLocaleEvent', item.lang_iso)">
-          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{ $t('Confirm disable', { locale: locale }) }}
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{ $t('Confirm disable', { locale: $store.locale }) }}
         </button>
       </div>
     </div>
@@ -195,24 +194,21 @@
 
 <script>
   import draggable from 'vuedraggable'
-  import slugMixin from '../includes/slugMixin'
-  import layoutsArray from '../includes/layoutsArray'
+  import slugMixin from '../includes/mixins/slugMixin'
+  import layoutsMixin from '../includes/mixins/layoutsMixin'
   import contentVoidStructure from '../structures/contentVoidStructure'
   import ContentItem from './ContentItem'
   import ContentForm from './ContentForm'
   import InputTag from 'vue-input-tag'
+  import { mapState } from 'vuex'
   
   export default {
-    mixins: [slugMixin],
+    mixins: [ slugMixin, layoutsMixin ],
     name: 'PageLocale',
     props: [
-      'locale',
       'pageLocale',
       'isNewPage',
-      'isLoading',
-      'routecontentstore',
-      'routecontentupdate',
-      'routecontentdestroy'
+      'isLoading'
     ],
     components: {
       draggable,
@@ -224,7 +220,6 @@
     data () {
       return {
         item: this.pageLocale,
-        layoutsArray: layoutsArray,
         buttonNewContent: true,
         contentEdit: {
           content: {
@@ -235,6 +230,7 @@
     },
     
     computed: {
+      ...mapState([ 'routes' ]),
       showList() {
         return !this.contentEdit.state && this.hasContents
       },
@@ -271,7 +267,7 @@
         let context = this
         let contents = []
 
-        axios.post(context.routecontentdestroy, {
+        axios.post(context.routes.routecontentdestroy, {
           content: item
         }).then(function (response) {
           if (response.data) {
@@ -314,7 +310,7 @@
       
       saveEditContent (content) {
         let context = this
-        let route = content.id === null ? this.routecontentstore : this.routecontentupdate
+        let route = content.id === null ? this.routes.routecontentstore : this.routes.routecontentupdate
 
         axios.post(route, {
           content: content

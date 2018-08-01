@@ -26,6 +26,8 @@ class PageHelper
 
                 $defaultLocale['layouts'][$locale->lang] = $locale->layout;
                 $defaultLocale['slugs'][$locale->lang] = $locale->slug;
+
+                array_push($defaultLocale['locales'], $locale);
             }
 
             array_push($pagesList, $defaultLocale);

@@ -38,6 +38,14 @@
 
 @section('script')
     @if (isset($menu))
-        <script src="{{ asset('js/admin/admin.js') }}"></script>
+        <script>
+            const routes = {
+                routemenuget: "{{ route('admin.menu.getItemsLocale', $menu->id) }}",
+                routemenusave: "{{ route('admin.menu.save', $menu->id) }}",
+                routepage: "{{ url('/dev/pages/') }}",
+                routepagesgetter: "{{ route('admin.pages.getter') }}",
+            }
+        </script>
+        <script src="{{ asset('js/admin/index.js') }}"></script>
     @endif
 @endsection

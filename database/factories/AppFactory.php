@@ -8,8 +8,6 @@ $factory->define(App\App::class, function (Faker $faker) {
 	$status = AppHelper::getStatus();
 
 	return [
-        'title' => $faker->word,
-        'description' => $faker->paragraph,
         'version' => $faker->word,
         'vue_component' => $faker->word,
         'type' => $type[$faker->numberBetween(0, COUNT($type) - 1)]['key'],

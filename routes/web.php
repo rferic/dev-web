@@ -48,6 +48,7 @@ Route::group(
         Route::get('/pages/{page}/trash', 'Admin\PageController@trash')->name('admin.page.trash');
         Route::get('/pages/{page}/restore', 'Admin\PageController@restore')->name('admin.page.restore');
         Route::get('/pages/{page}/destroy', 'Admin\PageController@destroy')->name('admin.page.destroy');
+        Route::post('/pages/getter', 'Admin\PageController@getter')->name('admin.pages.getter');
         Route::post('/pages/store', 'Admin\PageController@store')->name('admin.page.store');
         Route::post('/pages/{page}/update', 'Admin\PageController@update')->name('admin.page.update');
         Route::post('/pages/{page}/destroy-pagelocale', 'Admin\PageController@destroyPageLocale')->name('admin.pagelocale.destroyPageLocale');
@@ -60,8 +61,14 @@ Route::group(
          */
         Route::get('apps', 'Admin\AppController@index')->name('admin.apps');
         Route::post('/apps/store', 'Admin\AppController@store')->name('admin.app.store');
-        Route::post('/apps/{app}/update', 'Admin\AppController@store')->name('admin.app.update');
+        Route::post('/apps/{app}/update', 'Admin\AppController@update')->name('admin.app.update');
         Route::post('/apps/{app}/destroy', 'Admin\AppController@destroy')->name('admin.app.destroy');
+
+         /*
+         * Admin Images App Routes
+         */
+        Route::post('/app-images/upload', 'Admin\AppImageController@upload')->name('admin.app-images.upload');
+        Route::post('/app-images/destroy', 'Admin\AppImageController@destroy')->name('admin.app-images.destroy');
         
         /*
          * Admin Users Routes

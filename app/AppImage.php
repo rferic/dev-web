@@ -6,13 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use App\App;
+use Storage;
+
+use App\Http\Controllers\Admin\AppImageController;
 
 class AppImage extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-    protected $fillable = [ 'app_id', 'src', 'title', 'description', 'priority' ];
+    protected $fillable = [ 'app_id', 'src', 'title', 'priority' ];
+
+    protected static function boot ()
+    {
+        parent::boot();
+
+        static::deleted (function ($appImage) {
+            if ( $appImage->forceDeleting ) {
+                AppImageController::destroy($appImage);
+            }
+        });
+    }
 
     public function app ()
     {

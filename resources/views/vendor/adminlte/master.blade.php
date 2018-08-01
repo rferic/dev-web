@@ -26,7 +26,7 @@
 
         <!-- Theme styles -->
         <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin/app.css') }}">
 
         @if(config('adminlte.plugins.datatables'))
             <!-- DataTables -->
@@ -46,6 +46,7 @@
         </div>
 
         <script src="{{ asset('vendor/adminlte/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+        <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.slimscroll.min.js') }}"></script>
         <script src="{{ asset('vendor/adminlte/bootstrap/js/bootstrap.min.js') }}"></script>
 
         @if(config('adminlte.plugins.select2'))
@@ -58,8 +59,13 @@
             <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
         @endif
 
+        <script>
+            const csrfToken = "{{ csrf_token() }}"
+            const locale = "{{ LaravelLocalization::getCurrentLocale() }}"
+            const supportedLocales = {!! json_encode(LaravelLocalization::getSupportedLocales()) !!}            
+        </script>
         @yield('script')
         @yield('adminlte_js')
 
     </body>
-    </html>
+</html>

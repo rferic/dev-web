@@ -1,13 +1,13 @@
 <template>
   <div>
     <button class="btn btn-primary pull-right" @click="$emit('showListEvent')">
-      <span class="glyphicon glyphicon-back" aria-hidden="true"></span> {{ $t('Return to list', { locale: locale }) }}
+      <span class="glyphicon glyphicon-back" aria-hidden="true"></span> {{ $t('Return to list', { locale: this.locale }) }}
     </button>
     <p class="clearfix"></p>
     <hr />
     <form autocomplete="off" @submit.prevent="validateBeforeSubmit" class="form-horizontal">
       <div class="form-group">
-        <label class="control-label col-md-4" for="label">{{ $t('Title', { locale: locale }) }}</label>
+        <label class="control-label col-md-4" for="label">{{ $t('Title', { locale: this.locale }) }}</label>
         <div class="col-md-8" :class="{ 'has-error' : errors.has('label')}">
           <input
             type="text"
@@ -22,7 +22,7 @@
       </div>
 
       <div class="form-group">
-        <label class="control-label col-md-4" for="type">{{ $t('Type link', { locale: locale }) }}</label>
+        <label class="control-label col-md-4" for="type">{{ $t('Type link', { locale: this.locale }) }}</label>
         <div class="col-md-8" :class="{ 'has-error' : errors.has('type')}">
           <select
             name="type"
@@ -33,10 +33,10 @@
             :class="{ 'has-error' : errors.has('type')}"
           >
             <option value="internal">
-              {{ $t('Internal', { locale: locale }) }}
+              {{ $t('Internal', { locale: this.locale }) }}
             </option>
             <option value="external">
-              {{ $t('External', { locale: locale }) }}
+              {{ $t('External', { locale: this.locale }) }}
             </option>
           </select>
           <span v-show="errors.has('type')" class="text-danger">{{ errors.first('type') }}</span>
@@ -44,7 +44,7 @@
       </div>
 
       <div v-if="isInternal" class="form-group">
-        <label class="control-label col-md-4" for="page_locale_id">{{ $t('Page', { locale: locale }) }}</label>
+        <label class="control-label col-md-4" for="page_locale_id">{{ $t('Page', { locale: this.locale }) }}</label>
         <div class="col-md-8" :class="{ 'has-error' : errors.has('page_locale_id')}">
           <select
             name="page_locale_id"
@@ -64,7 +64,7 @@
       </div>
 
       <div v-if="isExternal" class="form-group">
-        <label class="control-label col-md-4" for="url_external">{{ $t('URL', { locale: locale }) }}</label>
+        <label class="control-label col-md-4" for="url_external">{{ $t('URL', { locale: this.locale }) }}</label>
         <div class="col-md-8" :class="{ 'has-error' : errors.has('url_external')}">
           <input
             type="text"
@@ -89,14 +89,14 @@
 </template>
 
 <script>
-  import slugMixin from '../includes/slugMixin'
+  import slugMixin from '../includes/mixins/slugMixin'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'MenuItemForm',
     props: [
-      'locale',
-      'routepageslist',
-      'itemEdit'
+      'itemEdit',
+      'pages'
     ],
     data () {
       return {
@@ -113,6 +113,7 @@
       }
     },
     computed: {
+      ...mapState([ 'locale' ]),
       textSubmit () {
         if (this.item.id === null) {
           return this.$t('Add', { locale: this.locale })
@@ -163,13 +164,27 @@
       }
     },
     mounted () {
-      if (this.itemEdit !== null) {
-        this.item.id = this.itemEdit.id
-        this.item.label = this.itemEdit.label
-        this.item.type = this.itemEdit.type
-        this.item.page_locale_id = this.itemEdit.page_locale_id
-        this.item.url_external = this.itemEdit.url_external
-        this.item.priority = this.itemEdit.priority
+      let context = this
+
+      if (context.itemEdit !== null) {
+        context.item.id = context.itemEdit.id
+        context.item.label = context.itemEdit.label
+        context.item.type = context.itemEdit.type
+        context.item.page_locale_id = context.itemEdit.page_locale_id
+        context.item.url_external = context.itemEdit.url_external
+        context.item.priority = context.itemEdit.priority
+      }
+
+      if ( context.pages.length > 0 ) {
+        context.pages.forEach((page, key) => {
+          if ( page.locales.length > 0 ) {
+            page.locales.forEach((locale, key) => {
+              if ( locale.lang === context.locale ) {
+                context.pages_locales.push(locale)
+              }
+            })
+          }
+        });
       }
     }
   }

@@ -23,6 +23,12 @@ class PageController extends Controller
 
         return view('admin.page.index', compact('pages', 'pagesTrashed'));
     }
+
+    public function getter ()
+    {
+        $pages =  PageHelper::prepareList(Page::with(['locales', 'author'])->get());
+        return Response::json($pages);
+    }
     
     public function detail (Page $page)
     {

@@ -8,15 +8,33 @@
 
 @section('content')
     @if (COUNT($apps) > 0)
+        <modal-dynamic component=""></modal-dynamic>
         <apps-list
     		locale="{{ LaravelLocalization::getCurrentLocale() }}"
     		apps_json="{{ json_encode($apps) }}"
     		types_json="{{ json_encode($types) }}"
     		status_json="{{ json_encode($status) }}"
-        ></apps-list>
+        />
     @endif
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/admin/admin.js') }}"></script>
+    <script>
+        const routes = {
+            routeAppStore: "{{ route('admin.app.store') }}",
+            routesAppUpdate: {
+                @foreach ($apps as $app)
+                    "{{ $app->id }}": "{{ route('admin.app.update', $app->id) }}",
+                @endforeach
+            },
+            routesAppDestroy: {
+                @foreach ($apps as $app)
+                    "{{ $app->id }}": "{{ route('admin.app.destroy', $app->id) }}",
+                @endforeach
+            },
+            routeAppImagesUpload: "{{ route('admin.app-images.upload') }}",
+            routeAppImagesDestroy: "{{ route('admin.app-images.destroy') }}"
+        }
+    </script>
+    <script src="{{ asset('js/admin/index.js') }}"></script>
 @endsection

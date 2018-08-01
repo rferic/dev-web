@@ -8,23 +8,36 @@ use Carbon\Carbon;
 
 use App\User;
 use App\AppImage;
+use App\AppLocale;
+
+use App\Http\Controllers\Admin\AppImageController;
 
 class App extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-    protected $fillable = [ 'status', 'title', 'description', 'version', 'vue_component', 'type', 'status' ];
+    protected $fillable = [ 'status', 'version', 'vue_component', 'type', 'status' ];
 
     protected static function boot ()
     {
         parent::boot();
 
-        static::deleting (function ($user) {
-            if ($user->forceDeleting && !App::runningInConsole()) {
-                $user->users()->detach();
+        static::deleting (function ($app) {
+            if ( $app->forceDeleting ) {
+                AppImageController::destroyDirectory($app->id);
+
+                $app->images()->forceDelete();
+                $app->locales()->forceDelete();
+
+                $app->users()->detach();
             }
         });
+    }
+
+    public function locales ()
+    {
+        return $this->hasMany(AppLocale::class);
     }
 
     public function images ()

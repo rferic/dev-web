@@ -13,15 +13,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'MenuItemDragAndDrop',
-  props: ['item', 'routepage'],
+  props: ['item'],
   computed: {
+    ...mapState([ 'routes' ]),
     isInternal () {
       return this.item.type === 'internal'
     },
     urlPage () {
-      return this.isInternal ? `${this.routepage}/${this.item.page_locale.slug}` : this.item.url_external
+      return this.isInternal ? `${this.routes.routepage}/${this.item.page_locale.slug}` : this.item.url_external
     }
   }
 }

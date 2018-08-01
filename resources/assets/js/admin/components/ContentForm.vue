@@ -8,7 +8,7 @@
       <div class="row">
         <!-- Key Content -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="key">{{ $t('Key', { locale: locale }) }}*</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="key">{{ $t('Key', { locale: this.locale }) }}*</label>
           <div class="col-lg-10 col-md-8 col-sm-6" :class="{ 'has-error' : errors.has('key')}">
             <input
               type="text"
@@ -26,7 +26,7 @@
       <div class="row">
         <!-- ID Content -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="id_html">{{ $t('ID', { locale: locale }) }}</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="id_html">{{ $t('ID', { locale: this.locale }) }}</label>
           <div class="col-lg-10 col-md-8 col-sm-6" :class="{ 'has-error' : errors.has('id_html')}">
             <input
               type="text"
@@ -41,7 +41,7 @@
         </div>
         <!-- Class Content -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="class_html">{{ $t('Class', { locale: locale }) }}</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6" for="class_html">{{ $t('Class', { locale: this.locale }) }}</label>
           <div class="col-lg-10 col-md-8 col-sm-6" :class="{ 'has-error' : errors.has('class_html')}">
             <input
               type="text"
@@ -57,7 +57,7 @@
         
         <!-- HTML Content -->
         <div class="form-group col-md-12 col-sm-12">
-          <label class="control-label col-lg-1 col-md-2 col-sm-6">{{ $t('HTML', { locale: locale }) }}</label>
+          <label class="control-label col-lg-1 col-md-2 col-sm-6">{{ $t('HTML', { locale: this.locale }) }}</label>
           <div class="col-lg-11 col-md-10 col-sm-6">
             <editor height="300px" :content="content.text" theme="chrome" lang="html" :sync="true" @change="changeContentText"></editor>
           </div>
@@ -65,7 +65,7 @@
         
         <!-- Header Inject Content -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6">{{ $t('CSS', { locale: locale }) }}</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6">{{ $t('CSS', { locale: this.locale }) }}</label>
           <div class="col-lg-10 col-md-8 col-sm-6">
             <editor height="300px" :content="content.header_inject" theme="chrome" lang="css" :sync="true" @change="changeContentHeaderInject"></editor>
           </div>
@@ -73,7 +73,7 @@
         
         <!-- Footer Inject Content -->
         <div class="form-group col-md-6 col-sm-12">
-          <label class="control-label col-lg-2 col-md-4 col-sm-6">{{ $t('JS', { locale: locale }) }}</label>
+          <label class="control-label col-lg-2 col-md-4 col-sm-6">{{ $t('JS', { locale: this.locale }) }}</label>
           <div class="col-lg-10 col-md-8 col-sm-6">
             <editor height="300px" :content="content.footer_inject" theme="chrome" lang="javascript" :sync="true" @change="changeContentFooterInject"></editor>
           </div>
@@ -84,12 +84,12 @@
         <div class="col-md-12 col-sm-12">
           <div class="col-md-6 col-sm-12">
             <button class="btn btn-danger btn-xl" @click="cancelEdit" type="button">
-              {{ $t('Cancel', { locale: locale }) }}
+              {{ $t('Cancel', { locale: this.locale }) }}
             </button>
           </div>
           <div class="col-md-6 col-sm-12">
             <button class="btn btn-success btn-xl pull-right" type="submit">
-              <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save', { locale: locale }) }}
+              <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ $t('Save', { locale: this.locale }) }}
             </button>
           </div>
         </div>
@@ -105,10 +105,11 @@
   import 'brace/mode/javascript'
   import 'brace/mode/css'
   import 'brace/theme/chrome'
+  import { mapState } from 'vuex'
   
   export default {
     name: 'ContentForm',
-    props: [ 'locale', 'content' ],
+    props: [ 'content' ],
     components: {
       editor
     },
@@ -119,6 +120,10 @@
       }
     },
     
+    computed : {
+      ...mapState([ 'locale' ])
+    },
+
     methods: {
       changeContentText (value) {
         this.content.text = value
@@ -145,7 +150,7 @@
       
       validateBeforeSubmitContent () {
         this.$validator.validateAll().then(result => {
-          if (!result) {
+          if ( !result ) {
             console.log('Form not validate')
           } else {
             this.$emit('saveEditContentEvent', this.content)
