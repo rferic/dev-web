@@ -53,8 +53,8 @@ class CreateAppsTable extends Migration
         Schema::create('app_user', function (Blueprint $table) {
             $table->unsignedInteger('app_id');
             $table->unsignedInteger('user_id');
+            $table->boolean('active')->default(false);
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('app_id')->references('id')->on('apps');
             $table->foreign('user_id')->references('id')->on('users');

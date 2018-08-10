@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AppLocaleController;
 use App\Http\Controllers\Admin\AppImageController;
 
 use App\App;
+use App\User;
 
 use App\Http\Helpers\AppHelper;
 
@@ -23,6 +24,14 @@ class AppController extends Controller
         $status = AppHelper::getStatus();
 
         return view('admin.app.index', compact('apps', 'types', 'status'));
+    }
+
+    public function indexPrivateUsers ()
+    {
+        $apps = App::where('type', 'private')->with('locales', 'users')->get();
+        $users = User::role('public')->get();
+
+        return view('admin.app.users', compact('apps', 'users'));
     }
 
     public function store (Request $request)
@@ -88,6 +97,27 @@ class AppController extends Controller
     public function destroy (Request $request, App $app)
     {
         $app->forceDelete();
+        return Response::json(true);
+    }
+
+    // Sync user with App
+    public function sync (Request $request, App $app)
+    {
+        $user = User::find(Input::get('user')['id']);
+        $app->users()->detach($user->id);
+
+        if ( $user->hasRole('public') ) {
+            $app->users()->attach($user->id, [ 'active' => Input::get('active') ]);
+            $users = $app->users()->get();
+            return Response::json(compact('users'));
+        }
+    }
+
+    // Revoke user with App
+    public function revoke (Request $request, App $app)
+    {
+        $user = User::find(Input::get('user')['id']);
+        $app->users()->detach($user->id);
         return Response::json(true);
     }
 

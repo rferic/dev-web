@@ -3,7 +3,7 @@
 @section('title', 'CoffeCode')
 
 @section('content_header')
-    <h1>{{ __('Apps') }}</h1>
+    <h1>{{ __('Apps administration') }}</h1>
 @stop
 
 @section('content')

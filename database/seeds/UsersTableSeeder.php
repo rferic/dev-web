@@ -20,7 +20,10 @@ class UsersTableSeeder extends Seeder
         Role::create(['name' => 'public']);
         Role::create(['name' => 'admin']);
 
-        factory(User::class, 1)->create()->first()->assignRole('public');
+        factory(User::class, 5)->create()->each(function ($user) {
+            $user->assignRole('public');
+        });
+
         factory(User::class, 1)->create([
             'email' => config('mail.from')['address'],
             'password' => Hash::make('secret')

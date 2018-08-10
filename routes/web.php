@@ -64,11 +64,18 @@ Route::group(
         Route::post('/apps/{app}/update', 'Admin\AppController@update')->name('admin.app.update');
         Route::post('/apps/{app}/destroy', 'Admin\AppController@destroy')->name('admin.app.destroy');
 
-         /*
+        /*
          * Admin Images App Routes
          */
         Route::post('/app-images/upload', 'Admin\AppImageController@upload')->name('admin.app-images.upload');
         Route::post('/app-images/destroy', 'Admin\AppImageController@destroy')->name('admin.app-images.destroy');
+
+        /*
+         * Admin Users Private App Routes
+         */
+        Route::get('/apps-private-users', 'Admin\AppController@indexPrivateUsers')->name('admin.apps.users');
+        Route::post('/apps-private-users/{app}/sync', 'Admin\AppController@sync')->name('admin.apps.users.sync');
+        Route::post('/apps-private-users/{app}/revoke', 'Admin\AppController@revoke')->name('admin.apps.users.revoke');
         
         /*
          * Admin Users Routes

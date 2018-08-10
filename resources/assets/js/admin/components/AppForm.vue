@@ -499,6 +499,7 @@
                 this.currentLocaleIso = iso
             }
       	},
+        
         mounted () {
             this.types = this.data.types
             this.status = this.data.status

@@ -18,7 +18,7 @@ class MenuTest extends TestCase
 {
     use DatabaseMigrations;
     
-    protected $user, $menu, $menuItems, $pages;
+    protected $user, $menu, $pages;
     
     protected function setUp ()
     {

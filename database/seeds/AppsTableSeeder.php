@@ -18,7 +18,7 @@ class AppsTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::role('public')->get()->first();
+        $users = User::role('public')->get();
 
         $apps = factory(App::class, 5)->create()->each(function ($app) {
             factory(AppLocale::class)->create([
@@ -35,7 +35,15 @@ class AppsTableSeeder extends Seeder
                 'app_id' => $app->id
             ]);
         });
+
+        foreach ( $apps AS $app ) {
+            foreach ( $users AS $user ) {
+                if ( (bool)random_int(0, 1) ) {
+                    $app->users()->attach($user->id, [ 'active' => (bool)random_int(0, 1) ]);
+                }
+            }
+        }
         
-        $user->apps()->sync($apps);
+        //$user->apps()->sync($apps, [ 'active' => true ]);
     }
 }

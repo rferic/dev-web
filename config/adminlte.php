@@ -58,7 +58,7 @@ return [
     |
     */
 
-    'layout' => 'top-nav',
+    'layout' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +108,7 @@ return [
     */
 
     'menu' => [
-        'CONTENT',
+        'GENERAL',
         [
             'text'  => 'Pages',
             'url'   => 'dev/pages',
@@ -121,8 +121,20 @@ return [
         ],
         [
             'text' => 'Apps',
-            'url'  => 'dev/apps',
+            'url'  => '#',
             'icon' => 'rocket',
+            'submenu'   =>  [
+                [
+                    'text'  => 'Edit / Create',
+                    'url'   => 'dev/apps',
+                    'icon'  => 'edit'
+                ],
+                [
+                    'text'  => 'Users (private apps)',
+                    'url'   => 'dev/apps-private-users',
+                    'icon'  => 'users'
+                ]
+            ]
         ],
         [
             'text' => 'Messages',
@@ -131,18 +143,16 @@ return [
         ],
         [
             'text'      => 'Users',
-            'url'       => 'dev/users',
+            'url'       => '#',
             'icon'      => 'users',
             'submenu'   =>  [
                 [
                     'text'  => 'Users',
-                    'url'   => 'dev/users',
-                    'icon'  => 'user'
+                    'url'   => 'dev/users'
                 ],
                 [
                     'text'  => 'Admins',
-                    'url'   => 'dev/admins',
-                    'icon'  => 'user-secret'
+                    'url'   => 'dev/admins'
                 ]
             ]
         ],
@@ -151,58 +161,7 @@ return [
             'text' => 'Settings',
             'url'  => 'dev/settings',
             'icon' => 'cog',
-        ]/*,
-        [
-            'text'    => 'Multilevel',
-            'icon'    => 'share',
-            'submenu' => [
-                [
-                    'text' => 'Level One',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'Level One',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'Level Two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'Level Two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'Level Three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'Level Three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'Level One',
-                    'url'  => '#',
-                ],
-            ],
-        ],
-        'LABELS',
-        [
-            'text'       => 'Important',
-            'icon_color' => 'red',
-        ],
-        [
-            'text'       => 'Warning',
-            'icon_color' => 'yellow',
-        ],
-        [
-            'text'       => 'Information',
-            'icon_color' => 'aqua',
-        ],*/
+        ]
     ],
 
     /*

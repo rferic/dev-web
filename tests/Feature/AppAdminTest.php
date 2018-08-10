@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 use Faker\Generator as Faker;
 use Spatie\Permission\Models\Role;
@@ -23,7 +24,7 @@ class AppAdminTest extends TestCase
 {
     use DatabaseMigrations;
 
-    protected $apps, $appCurrent, $user, $locale;
+    protected $apps, $appCurrent, $user, $locale, $usersPublic;
 
     protected function setUp ()
     {
@@ -32,8 +33,12 @@ class AppAdminTest extends TestCase
         app()['cache']->forget('spatie.permission.cache');
 
         Role::create(['name' => 'admin']);
+        Role::create(['name' => 'public']);
         
         $this->user = factory(User::class)->create()->assignRole('admin');
+        $this->usersPublic = factory(User::class, 10)->create()->each(function ($user) {
+            $user->assignRole('public');
+        });
 
         $this->apps = factory(App::class, 3)->create()->each(function ($app) {
             factory(AppLocale::class)->create([
@@ -50,10 +55,9 @@ class AppAdminTest extends TestCase
                 'app_id' => $app->id
             ]);
         });
-        
-        $this->user->apps()->sync($this->apps);
 
         $this->appCurrent = $this->apps[0];
+        $this->appCurrent->users()->sync($this->usersPublic, [ 'active' => true ]);
         $this->locale = LaravelLocalization::getCurrentLocale();
     }
 
@@ -239,5 +243,57 @@ class AppAdminTest extends TestCase
 
 
         Storage::disk('public')->assertMissing(  AppImageController::getPathWeb( $this->appCurrent->id ) . '/random.jpg' );
+    }
+
+    public function testSeeViewIndexPrivateUsers ()
+    {
+        $this->withExceptionHandling();
+
+       /******* SUCCESS *******/
+        $response = $this
+                ->actingAs($this->user)
+                ->get(route('admin.apps.users'))
+                ->assertStatus(200);
+    }
+
+    public function testSync ()
+    {
+        $this->withExceptionHandling();
+
+        /******* ERROR *******/
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.apps.users.sync', $this->appCurrent->id), [])
+                ->assertStatus(500);
+
+        /******* SUCCESS *******/
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.apps.users.sync', $this->appCurrent->id), [
+                    'user' => $this->usersPublic[0],
+                    'active' => true
+                ])
+                ->assertStatus(200)
+                ->assertJsonStructure([ 'users' ]);
+    }
+
+    public function testRevoke ()
+    {
+        $this->withExceptionHandling();
+
+        /******* ERROR *******/
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.apps.users.revoke', $this->appCurrent->id), [])
+                ->assertStatus(500);
+
+        /******* SUCCESS *******/
+        $response = $this
+                ->actingAs($this->user)
+                ->post(route('admin.apps.users.revoke', $this->appCurrent->id), [
+                    'user' => $this->usersPublic[0]
+                ])
+                ->assertStatus(200)
+                ->assertExactJson([true]);
     }
 }

@@ -19,6 +19,18 @@ const appModule = {
 		destroy ( { commit }, app ) {
 			commit('DESTROY', app)
 		},
+
+		addUser ( { commit }, params) {
+			commit('ADD_USER', params)
+		},
+
+		refreshUserStatus ( { commit }, params ) {
+			commit('REFRESH_USER_STATUS', params)
+		},
+
+		revokeUser ( { commit }, params ) {
+			commit('REVOKE_USER', params)
+		}
 	},
 	mutations: {
 		SET_LIST: ( state, payload ) => {
@@ -51,7 +63,6 @@ const appModule = {
 					})
 
 					appData.images.forEach((image, key) => {
-						console.log(image)
 						app.images.push({
 							id: image.id,
 							app_id: image.app_id,
@@ -68,6 +79,40 @@ const appModule = {
 			state.apps.forEach((app, key) => {
 				if ( app.id === appData.id ) {
 					state.apps.splice(key, 1);
+				}
+			})
+		},
+
+		ADD_USER: ( state, params ) => {
+			state.apps.forEach((app, key) => {
+				if ( params.app.id === app.id ) {
+					params.app.users.push(params.user)
+				}
+			})
+		},
+
+		REFRESH_USER_STATUS: ( state, params ) => {
+			state.apps.forEach((app, kapp) => {
+				if ( app.id === params.app.id ) {
+					app.users.forEach((user, kuser) => {
+						if ( user.id === params.user.id ) {
+							user.pivot.active = params.active ? 1 : 0
+						}
+					})
+				}
+			})
+		},
+
+		REVOKE_USER: ( state, params ) => {
+			state.apps.forEach((app, kapp) => {
+				if ( app.id === params.app.id ) {
+
+					app.users.forEach((user, kuser) => {
+						if ( user.id === params.user.id ) {
+							state.apps[kapp].users.splice(kuser, 1);
+						}
+					})
+
 				}
 			})
 		}
