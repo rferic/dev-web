@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\PageLocale;
+use App\Models\Core\PageLocale;
 
 class Content extends Model
 {

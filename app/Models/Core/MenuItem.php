@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\User;
-use App\Menu;
-use App\PageLocale;
+use App\Models\Core\User;
+use App\Models\Core\Menu;
+use App\Models\Core\PageLocale;
 
 class MenuItem extends Model
 {

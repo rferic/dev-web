@@ -8,11 +8,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Spatie\Permission\Models\Role;
 
-use App\User;
-use App\Page;
-use App\PageLocale;
-use App\Menu;
-use App\MenuItem;
+use App\Models\Core\User;
+use App\Models\Core\Page;
+use App\Models\Core\PageLocale;
+use App\Models\Core\Menu;
+use App\Models\Core\MenuItem;
 
 class MenuAdminTest extends TestCase
 {

@@ -1,16 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Support\Facades\App;
 
-use App\User;
-use App\PageLocale;
-use App\Content;
-use App\MenuItem;
+use App\Models\Core\User;
+use App\Models\Core\PageLocale;
+use App\Models\Core\Content;
+use App\Models\Core\MenuItem;
 
 class Page extends Model
 {

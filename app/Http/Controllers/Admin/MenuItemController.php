@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Controller;
 
-use App\MenuItem;
+use App\Models\Core\MenuItem;
 
 class MenuItemController extends Controller
 {

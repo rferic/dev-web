@@ -158,6 +158,11 @@ return [
         ],
         'ACCOUNT SETTINGS',
         [
+            'text' => 'Profile',
+            'url'  => 'dev/profile',
+            'icon' => 'user',
+        ],
+        [
             'text' => 'Settings',
             'url'  => 'dev/settings',
             'icon' => 'cog',

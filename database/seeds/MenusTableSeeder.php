@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Menu;
-use App\MenuItem;
+use App\Models\Core\Menu;
+use App\Models\Core\MenuItem;
 
 class MenusTableSeeder extends Seeder
 {

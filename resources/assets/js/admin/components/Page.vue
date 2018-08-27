@@ -92,7 +92,7 @@
             context.showConfirmSave()
         
         }).catch(function (error) {
-          console.log(error)
+          console.error(error)
         })
       },
       
@@ -108,7 +108,7 @@
             location.reload()
           }          
         }).catch(function (error) {
-          console.log(error)
+          console.error(error)
         })
       },
       

@@ -10,7 +10,6 @@
     @if (COUNT($apps) > 0)
         <modal-dynamic component=""></modal-dynamic>
         <apps-list
-    		locale="{{ LaravelLocalization::getCurrentLocale() }}"
     		apps_json="{{ json_encode($apps) }}"
     		types_json="{{ json_encode($types) }}"
     		status_json="{{ json_encode($status) }}"

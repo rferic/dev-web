@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
-use App\User;
+use App\Models\Core\User;
 
 class UsersTableSeeder extends Seeder
 {
@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
 
         factory(User::class, 1)->create([
             'email' => config('mail.from')['address'],
-            'password' => Hash::make('secret')
+            'password' => Hash::make('secret1!')
         ])->first()->assignRole('admin');
     }
 }

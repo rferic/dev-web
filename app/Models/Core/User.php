@@ -1,14 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models\Core;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\App;
-use App\Comment;
+use App\Models\Core\App;
+use App\Models\Core\Comment;
 
 class User extends Authenticatable
 {

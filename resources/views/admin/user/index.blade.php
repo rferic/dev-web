@@ -3,7 +3,7 @@
 @section('title', 'CoffeCode')
 
 @section('content_header')
-    <h1>{{ __('Pages') }}</h1>
+    <h1>{{ __('Users') }}</h1>
 @stop
 
 @section('content')

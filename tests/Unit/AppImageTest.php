@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Database\Eloquent\Collection;
 
-use App\App;
-use App\AppImage;
+use App\Models\Core\App;
+use App\Models\Core\AppImage;
 
 class AppImageTest extends TestCase
 {

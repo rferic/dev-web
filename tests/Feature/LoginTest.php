@@ -9,13 +9,14 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
-use App\User;
+use App\Models\Core\User;
 
 class LoginTest extends TestCase
 {
     use DatabaseMigrations;
     
-    protected $admin, $user, $passwordGlobal = 'secret';
+    protected $admin, $user;
+    protected $password = 'secret1!';
     
     protected function setUp ()
     {
@@ -28,12 +29,12 @@ class LoginTest extends TestCase
         
         $this->admin = factory(User::class)->create([
             'email' => config('mail.from')['address'],
-            'password' => Hash::make($this->passwordGlobal)
+            'password' => Hash::make($this->password)
         ])->assignRole('admin');
         
         $this->user = factory(User::class)->create([
             'email' => 'public@example.com',
-            'password' => Hash::make($this->passwordGlobal)
+            'password' => Hash::make($this->password)
         ])->assignRole('public');
     }
     
@@ -102,7 +103,7 @@ class LoginTest extends TestCase
     {
         $this->withExceptionHandling();
         
-        $response = $this->post(route('login'), ['email' => $this->admin->email, 'password' => $this->passwordGlobal]);
+        $response = $this->post(route('login'), ['email' => $this->admin->email, 'password' => $this->password]);
         $response
             ->assertStatus(302)
             ->assertRedirect(route('admin.dashboard'));
@@ -112,7 +113,7 @@ class LoginTest extends TestCase
     {
         $this->withExceptionHandling();
         
-        $response = $this->post(route('login'), ['email' => $this->user->email, 'password' => $this->passwordGlobal]);
+        $response = $this->post(route('login'), ['email' => $this->user->email, 'password' => $this->password]);
         $response
             ->assertStatus(302)
             ->assertRedirect(route('profile'));

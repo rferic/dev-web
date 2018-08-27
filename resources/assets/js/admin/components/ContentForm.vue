@@ -156,7 +156,7 @@
             this.$emit('saveEditContentEvent', this.content)
           }
         }).catch(error => {
-          console.log(error)
+          console.error(error)
         })
       }
     },

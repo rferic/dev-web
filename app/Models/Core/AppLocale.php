@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
-use App\App as AppModel;
+use App\Models\Core\App as AppModel;
 
 class AppLocale extends Model
 {

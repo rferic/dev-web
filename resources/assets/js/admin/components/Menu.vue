@@ -101,7 +101,7 @@ export default {
         context.serverOk();
         context.items = response.data
       }).catch(function (error) {
-        console.log(error)
+        console.error(error)
         context.serverError();
       })
     },
@@ -114,7 +114,7 @@ export default {
         context.serverOk();
         context.pages = response.data
       }).catch(function (error) {
-        console.log(error)
+        console.error(error)
         context.serverError();
       })
     },
@@ -188,7 +188,7 @@ export default {
         context.requireSave = false
         context.serverOk();
       }).catch(function (error) {
-        console.log(error)
+        console.error(error)
         context.serverError()
       })
     },

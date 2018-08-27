@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
-use App\App;
+use App\Models\Core\App;
 use Storage;
 
 use App\Http\Controllers\Admin\AppImageController;

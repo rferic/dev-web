@@ -7,11 +7,11 @@ use Tests\TestCase;
 
 use Spatie\Permission\Models\Role;
 
-use App\User;
-use App\Menu;
-use App\MenuItem;
-use App\Page;
-use App\PageLocale;
+use App\Models\Core\User;
+use App\Models\Core\Menu;
+use App\Models\Core\MenuItem;
+use App\Models\Core\Page;
+use App\Models\Core\PageLocale;
 
 class MenuItemTest extends TestCase
 {

@@ -281,7 +281,7 @@
             context.reorder()      
           }
         }).catch(function (error) {
-          console.log(error)
+          console.error(error)
         })
       },
       
@@ -325,7 +325,7 @@
             context.showListContents()
           }
         }).catch(function (error) {
-          console.log(error)
+          console.error(error)
         })
       },
       
@@ -337,7 +337,7 @@
             this.$emit('savePageLocaleEvent', this.item)
           }
         }).catch(error => {
-          console.log(error)
+          console.error(error)
         })
       }
     },

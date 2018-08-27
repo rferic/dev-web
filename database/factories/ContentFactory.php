@@ -3,9 +3,9 @@
 use Faker\Generator as Faker;
 use Faker\Provider\HtmlLorem;
 
-$factory->define(App\Content::class, function (Faker $faker) {
+$factory->define(App\Models\Core\Content::class, function (Faker $faker) {
     return [
-        'page_locale_id' => App\PageLocale::all()->random()->id,
+        'page_locale_id' => App\Models\Core\PageLocale::all()->random()->id,
         'key' => $faker->word,
         'id_html' => $faker->word,
         'class_html' => $faker->word,

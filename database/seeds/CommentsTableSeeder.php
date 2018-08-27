@@ -3,8 +3,8 @@
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-use App\User;
-use App\Comment;
+use App\Models\Core\User;
+use App\Models\Core\Comment;
 
 class CommentsTableSeeder extends Seeder
 {

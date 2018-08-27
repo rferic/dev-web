@@ -1,14 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
 
-use App\User;
-use App\MenuItem;
+use App\Models\Core\User;
+use App\Models\Core\MenuItem;
 
 class Menu extends Model
 {

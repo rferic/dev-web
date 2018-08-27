@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\PageLocale;
+use App\Models\Core\PageLocale;
 
 class PageLocaleController extends Controller
 {

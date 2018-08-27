@@ -1,14 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
-use App\User;
-use App\AppImage;
-use App\AppLocale;
+use App\Models\Core\User;
+use App\Models\Core\AppImage;
+use App\Models\Core\AppLocale;
 
 use App\Http\Controllers\Admin\AppImageController;
 

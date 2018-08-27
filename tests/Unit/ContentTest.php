@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 use Spatie\Permission\Models\Role;
 
-use App\User;
-use App\Page;
-use App\PageLocale;
-use App\Content;
+use App\Models\Core\User;
+use App\Models\Core\Page;
+use App\Models\Core\PageLocale;
+use App\Models\Core\Content;
 
 class ContentTest extends TestCase
 {

@@ -8,17 +8,19 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Spatie\Permission\Models\Role;
 
-use App\User;
-use App\Page;
-use App\PageLocale;
-use App\Content;
+use App\Models\Core\User;
+use App\Models\Core\Page;
+use App\Models\Core\PageLocale;
+use App\Models\Core\Content;
+
 use App\Http\Helpers\PageHelper;
 
 class PageAdminTest extends TestCase
 {
     use DatabaseMigrations;
     
-    protected $page, $locale1, $locale2, $contents, $urlOriginFake = '/fake';
+    protected $page, $locale1, $locale2, $contents;
+    protected $urlOriginFake = '/fake';
     
     protected function setUp ()
     {

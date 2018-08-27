@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\App;
-use App\AppImage;
+use App\Models\Core\App;
+use App\Models\Core\AppImage;
 use Storage;
 
 class AppImageController extends Controller

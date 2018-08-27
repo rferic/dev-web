@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use Spatie\Permission\Models\Role;
 
-use App\User;
+use App\Models\Core\User;
 
 class AdminPanelTest extends TestCase
 {

@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
-use App\PageLocale;
-use App\Page;
-use App\Content;
+use App\Models\Core\PageLocale;
+use App\Models\Core\Page;
+use App\Models\Core\Content;
 
 class PagesTableSeeder extends Seeder
 {

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Controller;
 
-use App\Page;
+use App\Models\Core\Page;
 
 use App\Http\Helpers\PageHelper;
 use App\Http\Controllers\Admin\PageLocaleController;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Content;
+use App\Models\Core\Content;
 
 class ContentController extends Controller
 {

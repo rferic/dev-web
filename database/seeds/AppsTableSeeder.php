@@ -3,11 +3,11 @@
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-use App\User;
-use App\Comment;
-use App\App;
-use App\AppLocale;
-use App\AppImage;
+use App\Models\Core\User;
+use App\Models\Core\Comment;
+use App\Models\Core\App;
+use App\Models\Core\AppLocale;
+use App\Models\Core\AppImage;
 
 class AppsTableSeeder extends Seeder
 {

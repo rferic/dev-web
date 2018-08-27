@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\App;
-use App\AppLocale;
+use App\Models\Core\App;
+use App\Models\Core\AppLocale;
 
 class AppLocaleController extends Controller
 {

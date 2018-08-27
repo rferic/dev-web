@@ -9,7 +9,7 @@ use App\Http\Requests\MenuRequest;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
-use App\Menu;
+use App\Models\Core\Menu;
 use App\Http\Controllers\Admin\MenuItemController;
 
 class MenuController extends Controller

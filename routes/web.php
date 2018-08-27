@@ -78,6 +78,14 @@ Route::group(
         Route::post('/apps-private-users/{app}/revoke', 'Admin\AppController@revoke')->name('admin.apps.users.revoke');
         
         /*
+         * Admin Profile Routes
+         */
+        Route::get('/profile', 'Admin\ProfileController@index')->name('admin.profile');
+        Route::post('/profile/validate-email-is-free', 'Admin\ProfileController@emailIsFree')->name('admin.profile.emailIsFree');
+        Route::post('/profile/update', 'Admin\ProfileController@update')->name('admin.profile.update');
+        Route::post('/profile/reset', 'Admin\ProfileController@reset')->name('admin.profile.reset');
+        
+        /*
          * Admin Users Routes
          */
         Route::get('/users', 'Admin\UserController@index')->name('admin.users');

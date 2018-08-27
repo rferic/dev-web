@@ -10,8 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\AppLocaleController;
 use App\Http\Controllers\Admin\AppImageController;
 
-use App\App;
-use App\User;
+use App\Models\Core\App;
+use App\Models\Core\User;
 
 use App\Http\Helpers\AppHelper;
 

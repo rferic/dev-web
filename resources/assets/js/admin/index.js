@@ -32,6 +32,7 @@ import PageForm from './components/Page'
 import AppsList from './components/AppsList'
 import AppPrivateUsersList from './components/AppPrivateUsersList'
 import ModalDynamic from './components/ModalDynamic'
+import ProfileForm from './components/ProfileForm'
 import store from './store'
 
 const app = new Vue({
@@ -42,6 +43,7 @@ const app = new Vue({
         PageForm,
         AppsList,
         AppPrivateUsersList,
-        ModalDynamic
+        ModalDynamic,
+        ProfileForm
     }
 });

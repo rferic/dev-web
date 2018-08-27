@@ -13,10 +13,10 @@ use Faker\Generator as Faker;
 use Spatie\Permission\Models\Role;
 use LaravelLocalization;
 
-use App\User;
-use App\App;
-use App\AppLocale;
-use App\AppImage;
+use App\Models\Core\User;
+use App\Models\Core\App;
+use App\Models\Core\AppLocale;
+use App\Models\Core\AppImage;
 
 use App\Http\Controllers\Admin\AppImageController;
 

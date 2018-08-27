@@ -159,7 +159,7 @@
             this.$emit(this.action, this.item)
           }
         }).catch(error => {
-          console.log(error)
+          console.error(error)
         })
       }
     },

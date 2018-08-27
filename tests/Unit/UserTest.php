@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 use Spatie\Permission\Models\Role;
 
-use App\User;
-use App\App;
-use App\Comment;
+use App\Models\Core\User;
+use App\Models\Core\App;
+use App\Models\Core\Comment;
 
 class UserTest extends TestCase
 {
