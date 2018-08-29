@@ -98,6 +98,16 @@ Route::group(
         Route::get('/admins', 'Admin\AdminController@index')->name('admin.admins');
         Route::get('/admins/create', 'Admin\AdminController@create')->name('admin.admin.create');
         Route::get('/admins/{user}', 'Admin\AdminController@detail')->name('admin.admin');
+
+        /*
+         * Admin Messages Routes
+         */
+        Route::get('/messages', 'Admin\MessageController@index')->name('admin.messages');
+        Route::post('/messages/getter', 'Admin\MessageController@getter')->name('admin.messages.getter');
+        Route::post('/messages/get-pendings', 'Admin\MessageController@getPendings')->name('admin.messages.getPendings');
+        Route::post('/messages/{message}/update', 'Admin\MessageController@update')->name('admin.messages.update');
+        Route::post('/messages/{message}/trash', 'Admin\MessageController@trash')->name('admin.messages.trash');
+        Route::post('/messages/{message}/destroy', 'Admin\MessageController@destroy')->name('admin.messages.destroy');
     }
 );
 

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import modalModule from './modules/modal'
 import appModule from './modules/app'
+import messageModule from './modules/message'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
 		csrfToken: csrfToken,
 		locale: locale,
 		supportedLocales: supportedLocales,
-		routes: typeof routes !== typeof undefined ? routes : {}
+		routes: typeof routes !== typeof undefined ? routes : {},
+		routesGlobal: typeof routesGlobal !== typeof undefined ? routesGlobal : {}
 	},
 	actions: {
 		pushRouteToArray ( { commit }, params ) {
@@ -29,7 +31,8 @@ export default new Vuex.Store({
 	},
 	modules: {
     	modalModule,
-    	appModule
+    	appModule,
+    	messageModule
   	},
   	strict: debug
 })

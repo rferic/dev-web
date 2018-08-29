@@ -1,11 +1,10 @@
 <?php
 
 use Faker\Generator as Faker;
-use App\Http\Helpers\AppHelper AS AppHelper;
 
 $factory->define(App\Models\Core\App::class, function (Faker $faker) {
-	$type = AppHelper::getTypes();
-	$status = AppHelper::getStatus();
+	$type =  App\Http\Helpers\AppHelper::getTypes();
+	$status =  App\Http\Helpers\AppHelper::getStatus();
 
 	return [
         'version' => $faker->word,

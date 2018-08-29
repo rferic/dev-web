@@ -7,7 +7,15 @@
 @stop
 
 @section('content')
-    <profile-form profile_json="{{ json_encode($user) }}" />
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
+            <profile-form-update profile_json="{{ json_encode($user) }}" />
+        </div>
+
+        <div class="col-md-6 col-xs-12">
+            <profile-form-reset />
+        </div>
+    </div>
 @endsection
 
 @section('script')

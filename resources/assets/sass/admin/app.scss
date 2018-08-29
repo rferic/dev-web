@@ -9,8 +9,12 @@
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
+// Vendor
+@import '~vuejs-noty/dist/vuejs-noty.css';
+
 // Layout
 @import "layout";
 
 // Components
 @import "components/modalDynamic";
+@import "components/notify";

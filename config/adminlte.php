@@ -110,6 +110,11 @@ return [
     'menu' => [
         'GENERAL',
         [
+            'text'  => 'Dashboard',
+            'url'   => 'dev',
+            'icon'  => 'dashboard'
+        ],
+        [
             'text'  => 'Pages',
             'url'   => 'dev/pages',
             'icon'  => 'file'
@@ -161,12 +166,12 @@ return [
             'text' => 'Profile',
             'url'  => 'dev/profile',
             'icon' => 'user',
-        ],
+        ]/*,
         [
             'text' => 'Settings',
             'url'  => 'dev/settings',
             'icon' => 'cog',
-        ]
+        ]*/
     ],
 
     /*

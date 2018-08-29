@@ -62,7 +62,11 @@
         <script>
             const csrfToken = "{{ csrf_token() }}"
             const locale = "{{ LaravelLocalization::getCurrentLocale() }}"
-            const supportedLocales = {!! json_encode(LaravelLocalization::getSupportedLocales()) !!}            
+            const supportedLocales = {!! json_encode(LaravelLocalization::getSupportedLocales()) !!}
+            const routesGlobal = {
+                routeMessageGetter: "{{ route('admin.messages.getter') }}",
+                routeMessagesGetPendings: "{{ route('admin.messages.getPendings') }}"
+            }  
         </script>
         @yield('script')
         @yield('adminlte_js')

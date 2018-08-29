@@ -151,7 +151,7 @@
       validateBeforeSubmitContent () {
         this.$validator.validateAll().then(result => {
           if ( !result ) {
-            console.log('Form not validate')
+            this.$root.generateErrorNotify(this.$t('Form not validate', { locale: this.locale }))
           } else {
             this.$emit('saveEditContentEvent', this.content)
           }

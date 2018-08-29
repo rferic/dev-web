@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
             CommentsTableSeeder::class,
             PagesTableSeeder::class,
             MenusTableSeeder::class,
-            AppsTableSeeder::class
+            AppsTableSeeder::class,
+            MessagesTableSeeder::class
         ]);
     }
 

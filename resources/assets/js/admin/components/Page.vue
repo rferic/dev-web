@@ -1,13 +1,6 @@
 <template>
   
   <div v-if="localesExists" class="nav-tabs-custom">
-    <div id="confirmSave" v-show="confirmSave" class="alert alert-success alert-dismissible">
-      <button type="button" class="close" aria-hidden="true" @click="hideConfirmSave">×</button>
-      <p><i class="icon fa fa-check"></i> {{ $t('This page has been saved', { locale: this.locale }) }}</p>
-    </div>
-
-    <p class="clearfix"></p>
-  
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
         <li v-for="(pageLocale, index) in pagesLocales" :key="index" :class="{ active: pageLocale.current }">
@@ -51,7 +44,6 @@
         loading: false,
         pagesLocales: [],
         pageLocaleCurrent: null,
-        confirmSave: false,
         isLoading: false
       }
     },
@@ -89,7 +81,7 @@
           if (context.isNew)
             window.location.href = response.data
           else
-            context.showConfirmSave()
+            context.$root.generateSuccessNotify(context.$t('This page has been saved', { locale: context.locale }) )
         
         }).catch(function (error) {
           console.error(error)
@@ -110,26 +102,6 @@
         }).catch(function (error) {
           console.error(error)
         })
-      },
-      
-      showConfirmSave () {
-        this.confirmSave = true
-        
-        VueScrollTo.scrollTo('#confirmSave', 500, {
-          container: "body",
-          duration: 500,
-          easing: "ease",
-          offset: 0,
-          cancelable: true,
-          onDone: false,
-          onCancel: false,
-          x: false,
-          y: true
-        })
-      },
-      
-      hideConfirmSave () {
-        this.confirmSave = false
       },
       
       mountPageLocaleVoid (item) {

@@ -388,6 +388,7 @@
 
                         this.toogleFirstFormLocaleNotValidate()
                         
+                        this.$root.generateErrorNotify(this.$t('Form not validate', { locale: this.locale }))
                         reject('Form not validate')
                     } else {
                         this.submitApp(resolve, reject)

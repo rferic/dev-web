@@ -36,9 +36,6 @@
       <div v-if="!error" class="alert alert-warning">
         {{ $t('Loading', { locale: this.locale }) }}...
       </div>
-      <div v-if="error" class="alert alert-danger">
-        {{ $t('Error on request. Please, reload page', { locale: this.locale }) }}
-      </div>
     </div>
   </div>
   <div v-else>
@@ -215,6 +212,8 @@ export default {
     serverError () {
       this.loading = false
       this.error = true
+
+      this.$root.generateErrorNotify(this.$t('Error on request. Please, reload page', { locale: context.locale }) )
     },
 
     serverOk () {

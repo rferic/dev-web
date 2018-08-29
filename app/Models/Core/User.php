@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Core\App;
 use App\Models\Core\Comment;
+use App\Models\Core\Message;
 
 class User extends Authenticatable
 {
@@ -41,6 +42,7 @@ class User extends Authenticatable
         static::deleting (function ($user) {
             if ($user->forceDeleting && !App::runningInConsole()) {
                 $user->comments()->forceDelete();
+                $user->messages()->forceDelete();
                 $user->apps()->detach();
             }
         });
@@ -64,5 +66,10 @@ class User extends Authenticatable
     public function comments ()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function messages ()
+    {
+        return $this->hasMany(Message::class);
     }
 }
