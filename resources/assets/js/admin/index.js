@@ -112,11 +112,12 @@ const app = new Vue({
         notifyNewMessage (messages) {
             let find, text
             let count = 0
+            let context = this
 
             messages.forEach(function (messageNew, i) {
                 find = false
 
-                this.messages.forEach(function(message, k) {
+                context.messages.forEach(function(message, k) {
                     if ( messageNew.id === message.id) {
                         find = true
                     }
@@ -128,9 +129,9 @@ const app = new Vue({
             })
 
             if ( count > 0 ) {
-                text = count === 1 ? this.$t('new message', { locale: this.locale }) : this.$t('new messages', { locale: this.locale })
+                text = count === 1 ? context.$t('new message', { locale: context.locale }) : context.$t('new messages', { locale: context.locale })
 
-                this.generateInfoNotify(count + ' ' + text)
+                context.generateInfoNotify(count + ' ' + text)
             }
         },
 
@@ -141,6 +142,7 @@ const app = new Vue({
                 context.getListMessages(function (response) {
                     context.notifyNewMessage(response.data.messages)
                     context.setListMessage(response.data)
+                    context.checkNewMessages()
                 })
             }, 60000);
         }
