@@ -64,8 +64,8 @@
             const locale = "{{ LaravelLocalization::getCurrentLocale() }}"
             const supportedLocales = {!! json_encode(LaravelLocalization::getSupportedLocales()) !!}
             const routesGlobal = {
-                routeMessageGetter: "{{ route('admin.messages.getter') }}",
-                routeMessagesGetPendings: "{{ route('admin.messages.getPendings') }}"
+                routeMessagesGetCountLast: "{{ route('admin.messages.getCountLastMessages') }}",
+                routeMessagesGetCountPendings: "{{ route('admin.messages.getCountPendings') }}"
             }  
         </script>
         @yield('script')

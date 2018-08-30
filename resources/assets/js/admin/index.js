@@ -16,9 +16,12 @@ import translations from './includes/translations'
 import ToggleButton from 'vue-js-toggle-button'
 import VModal from 'vue-js-modal'
 import VueScrollTo from 'vue-scrollto'
-import 'vue-instant/dist/vue-instant.css'
-import VueInstant   from 'vue-instant'
+import VueInstant from 'vue-instant'
+import VueMoment from 'vue-moment'
 import VueNoty from 'vuejs-noty'
+
+// CSS
+import 'vue-instant/dist/vue-instant.css'
 
 Vue.use(VueResource)
 Vue.use(VeeValidate)
@@ -27,6 +30,7 @@ Vue.use(ToggleButton)
 Vue.use(VModal, { dialog: true, dynamic: true })
 Vue.use(VueScrollTo)
 Vue.use(VueInstant)
+Vue.use(VueMoment);
 Vue.use(VueNoty, {
     layout: 'bottomRight',
     timeout: 4000,
@@ -43,7 +47,7 @@ import ModalDynamic from './components/ModalDynamic'
 import ProfileFormUpdate from './components/ProfileFormUpdate'
 import ProfileFormReset from './components/ProfileFormReset'
 import store from './store'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 const app = new Vue({
     el: '#app',
@@ -58,27 +62,19 @@ const app = new Vue({
         ProfileFormReset
     },
 
-    computed: {
-        ...mapState([ 'routesGlobal' ]),
-        ...mapState( 'messageModule', [ 'messages' ]),
-        pendingsMessages () {
-            let count = 0
-
-            this.messages.forEach(function (message, i) {
-                if ( message.status === 'pending' ) {
-                    count++
-                }
-            })
-
-            return count
+    data () {
+        return {
+            messagesAlerts: {
+                momentLastRequest: Vue.moment().subtract(1, 'month')
+            }
         }
     },
 
-    methods: {
-        ...mapActions('messageModule', {
-            setListMessage: 'setList'
-        }),
+    computed: {
+        ...mapState([ 'routesGlobal' ])
+    },
 
+    methods: {
         generateInfoNotify ( text ) {
             this.$noty.info('<i class="fa fa-info"></i> ' + text)
         },
@@ -95,55 +91,53 @@ const app = new Vue({
             this.$noty.success('<i class="fa fa-thumbs-o-up"></i> ' + text)
         },
 
-        getListMessages ( action ) {
-            axios.post(this.routesGlobal.routeMessageGetter, {}).then(action).catch(function (error) {
+        getCountPendings () {
+            let context = this
+
+            axios.post(this.routesGlobal.routeMessagesGetCountPendings, {}).then(function (response) {
+                context.notifyPengindsMessages(response.data.count)
+            }).catch(function (error) {
                 console.error(error)
             })
         },
 
-        notifyPengindsMessages () {
-            let text = this.pendingsMessages === 1 ? this.$t('unopened message', { locale: this.locale }) : this.$t('unopened messages', { locale: this.locale })
-
-            if ( this.pendingsMessages > 0 ) {
-                this.generateInfoNotify(this.pendingsMessages + ' ' + text)
-            }
-        },
-
-        notifyNewMessage (messages) {
-            let find, text
-            let count = 0
+        getCountLastMessages () {
             let context = this
 
-            messages.forEach(function (messageNew, i) {
-                find = false
-
-                context.messages.forEach(function(message, k) {
-                    if ( messageNew.id === message.id) {
-                        find = true
-                    }
-                })
-
-                if ( !find ) {
-                    count++
-                }
+            axios.post(this.routesGlobal.routeMessagesGetCountLast, {
+                timeSince: context.messagesAlerts.momentLastRequest
+            }).then(function (response) {
+                context.messagesAlerts.momentLastRequest = Vue.moment()
+                context.notifyNewMessages(response.data.count)
+                context.checkLastMessages()
+            }).catch(function (error) {
+                console.error(error)
             })
+        },
+
+        notifyPengindsMessages (count) {
+            let text
 
             if ( count > 0 ) {
-                text = count === 1 ? context.$t('new message', { locale: context.locale }) : context.$t('new messages', { locale: context.locale })
-
-                context.generateInfoNotify(count + ' ' + text)
+                text = count === 1 ? this.$t('unopened message', { locale: this.locale }) : this.$t('unopened messages', { locale: this.locale })
+                this.generateInfoNotify(count + ' ' + text)
             }
         },
 
-        checkNewMessages () {
+        notifyNewMessages (count) {
+            let text
+
+            if ( count > 0 ) {
+                text = count === 1 ? this.$t('new message since', { locale: context.locale }) : this.$t('new messages since', { locale: this.locale })
+                this.generateInfoNotify(count + ' ' + text + ' ' + this.messagesAlerts.momentLastRequest.format('LT'))
+            }
+        },
+
+        checkLastMessages () {
             let context = this
 
             setTimeout(function(){
-                context.getListMessages(function (response) {
-                    context.notifyNewMessage(response.data.messages)
-                    context.setListMessage(response.data)
-                    context.checkNewMessages()
-                })
+                context.getCountLastMessages()
             }, 60000);
         }
     },
@@ -151,11 +145,7 @@ const app = new Vue({
     mounted () {
         let context = this
 
-        context.getListMessages(function (response) {
-            context.setListMessage(response.data)
-            context.notifyPengindsMessages()
-        })
-
-        context.checkNewMessages()
+        context.getCountPendings()
+        context.checkLastMessages()
     }
 });

@@ -103,8 +103,8 @@ Route::group(
          * Admin Messages Routes
          */
         Route::get('/messages', 'Admin\MessageController@index')->name('admin.messages');
-        Route::post('/messages/getter', 'Admin\MessageController@getter')->name('admin.messages.getter');
-        Route::post('/messages/get-pendings', 'Admin\MessageController@getPendings')->name('admin.messages.getPendings');
+        Route::post('/messages/get-count-last-messages', 'Admin\MessageController@getCountLastMessages')->name('admin.messages.getCountLastMessages');
+        Route::post('/messages/get-count-pendings', 'Admin\MessageController@getCountPendings')->name('admin.messages.getCountPendings');
         Route::post('/messages/{message}/update', 'Admin\MessageController@update')->name('admin.messages.update');
         Route::post('/messages/{message}/trash', 'Admin\MessageController@trash')->name('admin.messages.trash');
         Route::post('/messages/{message}/destroy', 'Admin\MessageController@destroy')->name('admin.messages.destroy');

@@ -16,13 +16,13 @@ class MessageController extends Controller
         
     }
 
-    public function getter ()
+    public function getCountLastMessages ()
     {
-    	return Response::json([ 'messages' => Message::get() ]);
+        return Response::json([ 'count' => Message::where('created_at', '>', Input::get('timeSince'))->count() ]);
     }
 
     public function getCountPendings ()
     {
-        return Response::json([ 'pendings' => Message::where('status', 'new') ]);
+        return Response::json([ 'count' => Message::where('status', 'pending')->count() ]);
     }
 }
